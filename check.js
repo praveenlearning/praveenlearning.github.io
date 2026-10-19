@@ -28,6 +28,15 @@ class Node {
   get textContent() { return this._text + this.children.map((c) => c.textContent).join(''); }
   appendChild(child) { this.children.push(child); return child; }
   remove() {}
+  get classList() {
+    const self = this;
+    return {
+      add(name) { if (!(' ' + self.className + ' ').includes(' ' + name + ' ')) self.className = (self.className + ' ' + name).trim(); },
+      remove(name) { self.className = self.className.split(/\s+/).filter((c) => c && c !== name).join(' '); },
+      toggle(name) { const has = (' ' + self.className + ' ').includes(' ' + name + ' '); this[has ? 'remove' : 'add'](name); return !has; },
+      contains(name) { return (' ' + self.className + ' ').includes(' ' + name + ' '); }
+    };
+  }
   setAttribute(key, value) { this.attrs[key] = value; }
   getAttribute(key) { return this.attrs[key] || null; }
   addEventListener() {}
@@ -91,6 +100,8 @@ const problems = [];
 try {
   renderProfile(profileData);
   initTheme();
+  initNav();
+  initReveal();
 } catch (error) {
   console.error('\nRENDER FAILED:', error.message);
   console.error('A container class in index.html probably no longer matches the');
@@ -123,7 +134,11 @@ const report = [
   ['employers', count('.all-experiences')],
   ['education entries', count('.all-education')],
   ['roles', count('.all-experiences')],
-  ['projects (nested)', document.querySelectorAll('.project').length],
+  ['projects (nested)', document.querySelectorAll('.project').length - document.querySelectorAll('.all-personal-projects .project').length],
+  ['personal projects', count('.all-personal-projects')],
+  ['certifications', count('.all-certifications')],
+  ['social links', count('.social-links')],
+  ['tagline', profileData.tagline ? 'set' : 'EMPTY'],
   ['summary words (web)', webSummary.split(/\s+/).filter(Boolean).length],
   ['summary words (ats)', atsText.split(/\s+/).filter(Boolean).length]
 ];
