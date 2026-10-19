@@ -1,0 +1,108 @@
+/* Print / "Download PDF" styling: single column, ATS-friendly, no decoration. */
+@page {
+  size: A4;
+  margin: 13mm 14mm;
+}
+
+html, body {
+  background: #fff !important;
+  color: #000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 10pt !important;
+  line-height: 1.34 !important;
+}
+
+.document-actions,
+.highlights,
+.page-footer {
+  display: none !important;
+}
+
+/* Plain-text header first in the text stream for ATS parsers. */
+.ats-pre-header {
+  display: block !important;
+  white-space: pre-line;
+  font-size: 10pt;
+  margin-bottom: 8pt;
+}
+
+.ats-pre-header .ats-name { font-size: 17pt; font-weight: bold; display: block; }
+.ats-pre-header .ats-role { font-size: 10.5pt; font-weight: bold; display: block; }
+
+.profile-header { display: none !important; }
+
+/* The PDF carries the keyword-dense summary, the screen the readable one. */
+.profile-summary { display: none !important; }
+.profile-summary-ats { display: block !important; }
+
+.page {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.section {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 0 9pt !important;
+}
+
+.section > h2 {
+  font-size: 11pt !important;
+  color: #000 !important;
+  letter-spacing: 0.5pt;
+  border-bottom: 1px solid #000 !important;
+  margin: 10pt 0 4pt !important;
+  padding-bottom: 2pt !important;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.content-columns {
+  display: block !important;
+}
+
+.chips { display: block !important; }
+
+.chips li {
+  display: inline !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  font-size: 10pt !important;
+  color: #000 !important;
+}
+
+.chips li::after { content: ', '; }
+.chips li:last-child::after { content: ''; }
+
+.skill-group { margin-bottom: 3pt !important; }
+.skill-group h3 { display: inline !important; font-size: 10pt !important; }
+.skill-group h3::after { content: ': '; }
+.skill-group .chips { display: inline !important; }
+
+.entry-sub, .project-meta strong, .profile-role { color: #000 !important; }
+.entry-meta, .project-duration, .project-meta { color: #333 !important; font-size: 9.5pt !important; }
+
+.project {
+  padding: 0 0 7pt !important;
+  border-bottom: none !important;
+  break-inside: auto;
+}
+
+.project-head { display: block !important; }
+.project-name { display: inline !important; font-size: 10.5pt !important; }
+.project-name::after { content: ' | '; font-weight: normal; }
+.project-duration { display: inline !important; }
+
+.project ul { margin-top: 3pt !important; padding-left: 15pt !important; }
+.project li, .experience-entry, .education-entry {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+a { color: #000 !important; text-decoration: none !important; }
