@@ -78,6 +78,7 @@ global.document = {
   title: '',
   documentElement: new Node('html'),
   createElement: (tag) => new Node(tag),
+  createElementNS: (_ns, tag) => new Node(tag),
   createTextNode: (text) => { const n = new Node('#text'); n.textContent = text; return n; },
   querySelector: (selector) => find(body, selector),
   querySelectorAll: (selector) => findAll(body, selector),

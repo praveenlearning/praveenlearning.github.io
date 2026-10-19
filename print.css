@@ -184,9 +184,22 @@ html, body {
   page-break-inside: avoid;
 }
 
+/* Icons are decoration: an ATS reads the text stream, and a glyph in the middle of a
+   contact line is noise at best. Drop them and flatten the pills back to plain text. */
 .contact-items { display: block !important; font-size: 10pt !important; }
-.contact-items span, .contact-items a { color: #000 !important; }
-.contact-items span::after, .contact-items a::after { content: ' | '; }
+.contact-icon { display: none !important; }
+
+.contact-item {
+  display: inline !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  color: #000 !important;
+  transform: none !important;
+}
+
+.contact-item::after { content: ' | '; }
 .contact-items :last-child::after { content: ''; }
 
 a { color: #000 !important; text-decoration: none !important; }
