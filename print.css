@@ -5,6 +5,8 @@
 }
 
 html, body {
+  background-image: none !important;
+  background-color: #fff !important;
   background: #fff !important;
   color: #000 !important;
   font-family: Arial, Helvetica, sans-serif !important;
@@ -27,6 +29,13 @@ html, body {
 }
 
 .site-nav,
+.dag,
+.track,
+.stage-cards,
+#pipeline,
+.cta-spark,
+.cta-headline,
+.cta-copy,
 .hero-glow,
 .hero-actions,
 .social-links,
@@ -35,6 +44,7 @@ html, body {
 .hero-name,
 .hero-tagline,
 .section-index,
+.section-title,
 .section-lede,
 .contact-lede,
 .site-footer {
@@ -56,6 +66,29 @@ html, body {
 .profile-summary-ats { display: block !important; max-width: none !important; margin: 0 !important; }
 
 .hero { padding: 0 !important; overflow: visible !important; }
+.hero-stack, .hero-copy { display: block !important; gap: 0 !important; }
+.section-head { display: block !important; margin: 0 !important; }
+
+/* The decorative panel and grid wash have no place in an ATS text stream. */
+.grid-bg { background-image: none !important; }
+
+.cta-panel {
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  display: block !important;
+}
+
+.section-contact { padding: 0 !important; }
+
+.stage-card, .skill-group, .project {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 
 .shell, .hero-inner {
   max-width: none !important;
@@ -70,18 +103,7 @@ html, body {
   margin: 0 0 6pt !important;
 }
 
-.section-title {
-  display: block !important;
-  font-size: 11pt !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5pt;
-  color: #000 !important;
-  border-bottom: 1px solid #000 !important;
-  margin: 10pt 0 4pt !important;
-  padding-bottom: 2pt !important;
-  break-after: avoid;
-  page-break-after: avoid;
-}
+/* The editorial headline is replaced by .print-title in the PDF. */
 
 /* Chips become comma-separated text: pill layouts confuse ATS extraction. */
 .chips { display: block !important; margin: 3pt 0 0 !important; }
@@ -146,6 +168,11 @@ html, body {
   border-left: none !important;
 }
 
+/* The DAG nodes are screen decoration; an ATS would read them as stray glyphs. */
+.role-projects .project::before { display: none !important; }
+.role-projects::after { display: none !important; }
+.status-dot { display: none !important; }
+
 .project-name::before { content: 'Project: '; font-weight: bold; }
 
 .project {
@@ -204,20 +231,34 @@ html, body {
 
 a { color: #000 !important; text-decoration: none !important; }
 
-/* Roles print as a flat single column: the indent rail scrambles ATS text order. */
-.role { margin: 0 0 6pt !important; }
-
-.role-head {
-  border-bottom: none !important;
-  padding: 0 !important;
-  margin: 0 0 3pt !important;
+/* Standard section headings for the PDF: an ATS looks for "Work Experience",
+   not the page's editorial headline. */
+.print-title {
+  display: block !important;
+  font-size: 11pt !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5pt;
+  color: #000 !important;
+  border-bottom: 1px solid #000 !important;
+  margin: 10pt 0 4pt !important;
+  padding-bottom: 2pt !important;
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
-.role-head .entry-title { font-size: 11pt !important; }
+.mode-switch, .mode-caption, .section-head-row { display: none !important; }
 
-.role-summary { margin: 0 0 4pt !important; padding-left: 15pt !important; }
-.role-summary li { font-size: 10pt !important; margin-bottom: 2pt !important; break-inside: avoid; }
+/* Case-study cards flatten to the same shape as every other project in the PDF:
+   the flow strip and the metric tiles are screen furniture, the bullets are not. */
+.case-flow, .case-metrics, .case-kind { display: none !important; }
+.case-grid { display: block !important; }
+.project.case-study { padding: 0 0 7pt !important; }
+.case-body { display: block !important; padding: 0 !important; }
+.case-desc { margin: 0 !important; font-size: 10pt !important; color: #000 !important; }
+.case-bullets { display: block !important; margin: 3pt 0 0 !important; padding-left: 15pt !important; }
+.case-bullets li { font-size: 10pt !important; margin-bottom: 2pt !important; break-inside: avoid; }
+.case-meta { font-size: 9.5pt !important; color: #333 !important; margin: 0 !important; }
 
-.role-projects { padding-left: 0 !important; border-left: none !important; }
-
-.project-name::before { content: 'Project: '; font-weight: bold; }
+.case-block-label { display: none !important; }
+.case-block { margin: 0 !important; }

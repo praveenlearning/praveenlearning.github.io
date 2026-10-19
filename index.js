@@ -16,8 +16,10 @@ function chipList(items) {
   return ul;
 }
 
-function initials(name) {
-  return name.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').toUpperCase();
+// The wordmark follows the reference's `[name].data` form, so it wants the given
+// name in lower case rather than initials.
+function wordmark(name) {
+  return name.split(/\s+/).filter(Boolean)[0].toLowerCase();
 }
 
 function contactLine(contact) {
@@ -127,6 +129,7 @@ function renderContact(contact) {
 
 function renderSocialLinks(contact) {
   const target = document.querySelector('.social-links');
+  if (!target) return;  // the hero drops these; the contact section still carries them
   target.textContent = '';
 
   const entries = [];
@@ -146,6 +149,7 @@ function renderSocialLinks(contact) {
 
 function renderHighlights(highlights) {
   const target = document.querySelector('.highlights');
+  if (!target) return;  // the v3 hero drops the stat tiles
   target.textContent = '';
   (highlights || []).forEach((item) => {
     const li = el('li');
@@ -186,6 +190,19 @@ function renderExperiences(data) {
   const roles = data.experiences || [];
   const orphans = unmatchedProjects(data);
 
+  // Every data project in one grid, ahead of the roles. They are the work being
+  // applied for, so they read better together than scattered across employers.
+  const allCases = (data.projects || []).filter((project) => project.caseStudy);
+  if (allCases.length) {
+    const block = el('section', 'case-block');
+    block.appendChild(el('span', 'print-title', 'Data Projects'));
+    block.appendChild(el('p', 'case-block-label', 'Data projects'));
+    const grid = el('div', 'case-grid');
+    allCases.forEach((project) => grid.appendChild(projectCard(project)));
+    block.appendChild(grid);
+    target.appendChild(block);
+  }
+
   roles.forEach((job, index) => {
     const wrap = el('section', 'role');
 
@@ -210,9 +227,11 @@ function renderExperiences(data) {
     let projects = projectsFor(data, job.company);
     if (index === roles.length - 1) projects = projects.concat(orphans);
 
-    if (projects.length) {
+    const plain = projects.filter((project) => !project.caseStudy);
+
+    if (plain.length) {
       const list = el('div', 'role-projects');
-      projects.forEach((project) => list.appendChild(projectCard(project)));
+      plain.forEach((project) => list.appendChild(projectCard(project)));
       wrap.appendChild(list);
     }
 
@@ -248,7 +267,57 @@ function renderCertifications(certifications) {
   });
 }
 
+// Data projects get the case-study card from the design reference: a flow strip,
+// a short statement and two facts. The bullets stay in the DOM but print-only, so the
+// PDF keeps the full detail an ATS needs.
+function caseStudyCard(project) {
+  const c = project.caseStudy;
+  const wrap = el('article', 'project case-study');
+
+  const strip = el('div', 'case-flow grid-bg');
+  c.flow.forEach((label, index) => {
+    if (index) {
+      const conn = el('span', 'mconn');
+      const pkt = el('span', 'mpkt');
+      pkt.style.animationDelay = (index * 0.6) + 's';
+      conn.appendChild(pkt);
+      strip.appendChild(conn);
+    }
+    const hot = index === 1;
+    strip.appendChild(el('span', 'flow-node' + (hot ? ' is-hot' : ''), label));
+  });
+  wrap.appendChild(strip);
+
+  const body = el('div', 'case-body');
+  body.appendChild(el('p', 'case-kind', c.kind));
+  body.appendChild(el('h3', 'project-name', project.name));
+  body.appendChild(el('p', 'case-desc', c.desc));
+
+  const bullets = el('ul', 'case-bullets');
+  (project.bullets || []).forEach((bullet) => bullets.appendChild(el('li', null, bullet)));
+  body.appendChild(bullets);
+
+  if (project.tech && project.tech.length) body.appendChild(chipList(project.tech));
+
+  const metrics = el('div', 'case-metrics');
+  (c.metrics || []).forEach((metric) => {
+    const cell = el('div', 'metric');
+    cell.appendChild(el('span', 'metric-value', metric.v));
+    cell.appendChild(el('span', 'metric-label', metric.l));
+    metrics.appendChild(cell);
+  });
+  body.appendChild(metrics);
+
+  const meta = el('p', 'case-meta', [project.duration, project.role, project.employer].filter(Boolean).join('  \u00b7  '));
+  body.appendChild(meta);
+
+  wrap.appendChild(body);
+  return wrap;
+}
+
 function projectCard(project) {
+  if (project.caseStudy) return caseStudyCard(project);
+
   const wrap = el('article', 'project');
 
   const head = el('div', 'project-head');
@@ -299,13 +368,201 @@ function renderAtsPreHeader(data) {
   target.appendChild(el('span', 'ats-contact', contactLine(data.contact)));
 }
 
+
+/* ---------- the DAG card ---------- */
+
+function svgEl(tag, attrs) {
+  const node = document.createElementNS(SVG_NS, tag);
+  Object.keys(attrs || {}).forEach((k) => node.setAttribute(k, attrs[k]));
+  return node;
+}
+
+/* Source marks, drawn rather than imported so they inherit the theme colour.
+   Each is a different shape, because four identical cylinders would say nothing
+   about what kind of source each one is. */
+const SOURCE_SHAPES = {
+  database: [
+    ['path', { d: 'M2 8v28c0 3.3 7.2 6 16 6s16-2.7 16-6V8', fill: 'var(--cyl-fill)', stroke: 'currentColor', 'stroke-width': '1.5' }],
+    ['path', { d: 'M2 17c0 3.3 7.2 6 16 6s16-2.7 16-6M2 26c0 3.3 7.2 6 16 6s16-2.7 16-6', stroke: 'currentColor', 'stroke-opacity': '0.45', 'stroke-width': '1.5' }],
+    ['ellipse', { cx: '18', cy: '8', rx: '16', ry: '6', fill: 'var(--cyl-top)', stroke: 'currentColor', 'stroke-width': '1.5' }]
+  ],
+  files: [
+    ['path', { d: 'M4 10v26c0 1.7 1.3 3 3 3h17', fill: 'none', stroke: 'currentColor', 'stroke-opacity': '0.45', 'stroke-width': '1.5', 'stroke-linecap': 'round' }],
+    ['path', { d: 'M11 4h12l9 9v20c0 1.7-1.3 3-3 3H11c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3z', fill: 'var(--cyl-fill)', stroke: 'currentColor', 'stroke-width': '1.5' }],
+    ['path', { d: 'M23 4v9h9', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5', 'stroke-linejoin': 'round' }],
+    ['path', { d: 'M14 23h12M14 29h8', stroke: 'currentColor', 'stroke-opacity': '0.55', 'stroke-width': '1.5', 'stroke-linecap': 'round' }]
+  ],
+  bucket: [
+    ['path', { d: 'M3 9h30l-2.6 26.3A4 4 0 0 1 26.4 39H9.6a4 4 0 0 1-4-3.7L3 9z', fill: 'var(--cyl-fill)', stroke: 'currentColor', 'stroke-width': '1.5', 'stroke-linejoin': 'round' }],
+    ['ellipse', { cx: '18', cy: '9', rx: '15', ry: '5', fill: 'var(--cyl-top)', stroke: 'currentColor', 'stroke-width': '1.5' }],
+    ['path', { d: 'M8 20h20M9 28h18', stroke: 'currentColor', 'stroke-opacity': '0.4', 'stroke-width': '1.5', 'stroke-linecap': 'round' }]
+  ],
+  api: [
+    ['rect', { x: '3', y: '7', width: '30', height: '30', rx: '7', fill: 'var(--cyl-fill)', stroke: 'currentColor', 'stroke-width': '1.5' }],
+    ['path', { d: 'M14 16l-4 6 4 6M22 16l4 6-4 6', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }]
+  ]
+};
+
+function sourceMark(kind) {
+  const svg = svgEl('svg', { class: 'cyl', width: '36', height: '44', viewBox: '0 0 36 44', fill: 'none', 'aria-hidden': 'true' });
+  (SOURCE_SHAPES[kind] || SOURCE_SHAPES.database).forEach((spec) => svg.appendChild(svgEl(spec[0], spec[1])));
+  return svg;
+}
+
+// One isometric block of a lakehouse layer.
+function block(color, delay) {
+  const svg = svgEl('svg', { class: 'blk', width: '56', height: '49', viewBox: '0 0 64 56', 'aria-hidden': 'true' });
+  svg.style.color = color;
+  svg.style.animationDelay = delay;
+  svg.appendChild(svgEl('polygon', { points: '32,0 64,16 32,32 0,16', fill: 'currentColor', 'fill-opacity': '0.9' }));
+  svg.appendChild(svgEl('polygon', { points: '0,16 32,32 32,56 0,40', fill: 'currentColor', 'fill-opacity': '0.35' }));
+  svg.appendChild(svgEl('polygon', { points: '32,32 64,16 64,40 32,56', fill: 'currentColor', 'fill-opacity': '0.58' }));
+  svg.appendChild(svgEl('polyline', { points: '0,16 32,32 64,16', fill: 'none', stroke: 'var(--bg)', 'stroke-opacity': '0.5' }));
+  return svg;
+}
+
+function renderDag(data) {
+  const p = data.pipeline;
+  if (!p) return;
+
+  document.querySelector('.dag-id').textContent = p.dagName;
+  document.querySelector('.dag-meta').textContent = '\u00b7 ' + p.dagMeta;
+  document.querySelector('.dag-status-text').textContent = p.statusLabel;
+
+  const sources = document.querySelector('.source-list');
+  sources.textContent = '';
+  (p.sources || []).forEach((item) => {
+    const row = el('div', 'source');
+    row.appendChild(sourceMark(item.icon));
+    const text = el('div');
+    text.appendChild(el('p', 'source-name', item.name));
+    text.appendChild(el('p', 'source-kind', item.kind));
+    row.appendChild(text);
+    sources.appendChild(row);
+  });
+
+  document.querySelector('.engine-name').textContent = p.process.name;
+  document.querySelector('.engine-detail').textContent = p.process.detail;
+
+  const layers = document.querySelector('.layers');
+  layers.textContent = '';
+  (p.layers || []).forEach((layer) => {
+    const col = el('div', 'layer');
+    const stack = el('div', 'layer-stack');
+    for (let i = 0; i < layer.blocks; i += 1) stack.appendChild(block(layer.color, (i * 0.45) + 's'));
+    col.appendChild(stack);
+    col.appendChild(el('p', 'layer-name', layer.name));
+    layers.appendChild(col);
+  });
+
+  const note = document.querySelector('.store-note');
+  note.textContent = p.store || '';
+  note.hidden = !p.store;
+}
+
+/* ---------- stage cards ---------- */
+
+const STAGE_ICONS = {
+  extract: [['ellipse', { cx: '12', cy: '5', rx: '8', ry: '3' }], ['path', { d: 'M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3' }]],
+  load: [['path', { d: 'M12 3v11M7 9l5 5 5-5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4' }]],
+  serve: [['path', { d: 'M4 20V10M10 20V4M16 20v-7M22 20H2' }]]
+};
+
+// Transform is the stage this whole page is about, so it carries the spark: a filled
+// four-point mark rather than a stroked outline, and the warm colour instead of aqua.
+const SPARK_ICON = [['path', { d: 'M13 2c.8 6 2.8 8 9 9-6.2 1-8.2 3-9 9-.8-6-2.8-8-9-9 6.2-1 8.2-3 9-9z' }]];
+
+function stageIcon(name) {
+  const filled = name === 'spark';
+  const attrs = {
+    class: 'stage-icon', width: '22', height: '22', viewBox: '0 0 24 24', 'aria-hidden': 'true'
+  };
+  if (filled) {
+    attrs.fill = 'currentColor';
+  } else {
+    attrs.fill = 'none';
+    attrs.stroke = 'currentColor';
+    attrs['stroke-width'] = '1.8';
+    attrs['stroke-linecap'] = 'round';
+    attrs['stroke-linejoin'] = 'round';
+  }
+  const svg = svgEl('svg', attrs);
+  (filled ? SPARK_ICON : (STAGE_ICONS[name] || STAGE_ICONS.serve)).forEach((spec) => svg.appendChild(svgEl(spec[0], spec[1])));
+  return svg;
+}
+
+function pick(value, mode) {
+  return (value && typeof value === 'object' && !Array.isArray(value)) ? value[mode] : value;
+}
+
+function renderStages(data, mode) {
+  const target = document.querySelector('.stage-cards');
+  const modes = data.pipelineModes;
+  if (!target || !modes) return;
+
+  const caption = document.querySelector('.mode-caption');
+  if (caption) caption.textContent = modes.captions[mode] || '';
+
+  document.querySelectorAll('.mode-btn').forEach((button) => {
+    const on = button.getAttribute('data-mode') === mode;
+    button.setAttribute('aria-pressed', String(on));
+    button.classList[on ? 'add' : 'remove']('is-on');
+  });
+
+  target.textContent = '';
+  (modes.order[mode] || []).forEach((key, index) => {
+    const def = data.stageDefs[key];
+    if (!def) return;
+
+    const hot = key === 'transform';
+    const card = el('article', 'stage-card' + (hot ? ' is-hot' : ''));
+
+    const head = el('div', 'stage-head');
+    head.appendChild(el('span', 'stage-num', '0' + (index + 1)));
+    const box = el('span', 'stage-icon-box');
+    box.appendChild(stageIcon(def.icon));
+    head.appendChild(box);
+    card.appendChild(head);
+
+    card.appendChild(el('h3', 'stage-name', def.name));
+    card.appendChild(el('p', 'stage-detail', pick(def.desc, mode)));
+    card.appendChild(chipList(pick(def.tools, mode) || []));
+    target.appendChild(card);
+  });
+}
+
+function initModeSwitch(data) {
+  const modes = data.pipelineModes;
+  if (!modes) return;
+  let mode = modes.default || 'ELT';
+  renderStages(data, mode);
+  document.querySelectorAll('.mode-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      mode = button.getAttribute('data-mode');
+      renderStages(data, mode);
+    });
+  });
+}
+
+function renderCta(data) {
+  if (!data.cta) return;
+  document.querySelector('.cta-headline').textContent = data.cta.headline;
+  document.querySelector('.cta-copy').textContent = data.cta.copy;
+}
+
 function renderProfile(data) {
-  document.querySelector('.profile-name').textContent = data.name;
+  // The reference colours part of the headline; here that is the surname.
+  const nameNode = document.querySelector('.profile-name');
+  nameNode.textContent = '';
+  const parts = data.name.split(/\s+/).filter(Boolean);
+  const surname = parts.length > 1 ? parts.pop() : '';
+  if (parts.length) nameNode.appendChild(document.createTextNode(parts.join(' ') + ' '));
+  nameNode.appendChild(el('span', 'name-accent', surname || data.name));
   document.querySelector('.profile-role').textContent = data.role;
   document.querySelector('.hero-tagline').textContent = data.tagline || '';
   document.querySelector('.profile-summary').textContent = data.summary;
   document.querySelector('.profile-summary-ats').textContent = atsSummary(data);
-  document.querySelector('.nav-initials').textContent = initials(data.name);
+  document.querySelector('.nav-initials').textContent = wordmark(data.name);
   document.querySelector('.footer-name').textContent = data.name;
   document.title = data.name + ' | ' + data.role;
 
@@ -317,6 +574,9 @@ function renderProfile(data) {
   renderEducation(data.education);
   renderCertifications(data.certifications);
   renderPersonalProjects(data.personalProjects);
+  renderDag(data);
+  initModeSwitch(data);
+  renderCta(data);
   renderAtsPreHeader(data);
 }
 

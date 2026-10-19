@@ -1,1 +1,1 @@
-See [AGENTS.md](AGENTS.md) for repository guidance.
+See [docs/AGENTS.md](docs/AGENTS.md) for repository guidance.

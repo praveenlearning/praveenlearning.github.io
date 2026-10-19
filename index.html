@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Praveen Bathula | Senior Data Engineer</title>
     <meta name="description" content="Portfolio of Praveen Bathula, Senior Data Engineer: metadata-driven ETL, PySpark, dbt, Airflow, AWS and GCP data platforms." />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128202;</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9889;</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" media="print" href="print.css" />
     <script src="https://cdn.jsdelivr.net/npm/docx@9.5.1/dist/index.umd.cjs"></script>
@@ -20,92 +20,178 @@
     <div class="ats-pre-header" aria-hidden="true"></div>
 
     <header class="site-nav">
-      <div class="nav-inner">
-        <a class="nav-mark" href="#top"><span class="nav-initials"></span></a>
+      <nav class="nav-inner" aria-label="Sections">
+        <a class="nav-mark" href="#top">
+          <svg class="spark" width="26" height="26" viewBox="0 0 96 96" aria-hidden="true">
+            <path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="currentColor"/>
+            <path d="M10 90Q18 64 42 56" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"/>
+          </svg>
+          <span class="nav-wordmark"><span class="nav-initials"></span><span class="nav-domain">.data</span></span>
+        </a>
 
-        <nav class="nav-links" aria-label="Sections">
-          <a href="#work">Experience</a>
-          <a href="#skills">Skills</a>
-          <a href="#education">Education</a>
-        </nav>
+        <div class="nav-links">
+          <a href="#pipeline">Pipeline</a>
+          <a href="#work">Work</a>
+          <a href="#stack">Stack</a>
+        </div>
 
         <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Switch colour theme">
-            <span class="theme-toggle-label">Dark</span>
-          </button>
+          <button class="theme-toggle" type="button" aria-label="Switch colour theme"><span class="theme-toggle-label">Light</span></button>
           <button class="docx-download" type="button" title="Download as a Word document">DOCX</button>
           <button class="pdf-download" type="button" title="Download as a PDF">PDF</button>
           <a class="nav-cta" href="#contact">Let's talk</a>
         </div>
 
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </nav>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="shell hero-inner reveal">
-          <p class="hero-eyebrow profile-role"></p>
-          <h1 class="hero-name profile-name"></h1>
-          <p class="hero-tagline"></p>
-          <p class="hero-summary profile-summary"></p>
-          <!-- Keyword-dense variant: hidden on screen, swapped in by print.css. -->
-          <p class="profile-summary-ats"></p>
-
-          <div class="hero-actions">
-            <a class="button button-primary" href="#work">View the work</a>
-            <button class="button button-ghost pdf-download" type="button">Download resume</button>
+    <main>
+      <section class="hero grid-bg" id="top">
+        <div class="shell hero-stack">
+          <div class="hero-copy">
+            <span class="print-title">Summary</span>
+            <p class="hero-eyebrow"><span class="status-dot" aria-hidden="true"></span><span class="profile-role"></span></p>
+            <h1 class="hero-name profile-name"></h1>
+            <p class="hero-tagline"></p>
+            <p class="hero-summary profile-summary"></p>
+            <!-- Keyword-dense variant: hidden on screen, swapped in by print.css. -->
+            <p class="profile-summary-ats"></p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#work">View the work
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <button class="button button-ghost pdf-download" type="button">Download resume</button>
+            </div>
           </div>
 
-          <div class="social-links"></div>
-          <ul class="highlights"></ul>
+          <!-- The DAG card: sources, a processing engine, a lakehouse. -->
+          <figure class="dag" aria-label="How data moves through the platforms I build">
+            <figcaption class="dag-bar">
+              <span class="dag-name">dag <strong class="dag-id"></strong> <span class="dag-meta"></span></span>
+              <span class="dag-status"><span class="status-dot" aria-hidden="true"></span><span class="dag-status-text"></span></span>
+            </figcaption>
+            <div class="flow">
+              <div class="flow-col flow-sources">
+                <p class="flow-label">01 &middot; Sources</p>
+                <div class="source-list"></div>
+              </div>
+
+              <div class="conn conn-accent" aria-hidden="true"><span class="pkt"></span><span class="pkt d1"></span><span class="pkt d2"></span></div>
+
+              <div class="flow-col flow-process">
+                <p class="flow-label">02 &middot; Process</p>
+                <div class="engine" aria-hidden="true">
+                  <span class="engine-ring"></span>
+                  <span class="engine-inner"></span>
+                  <span class="engine-pulse"></span>
+                  <svg class="spark engine-spark" width="88" height="88" viewBox="0 0 96 96" aria-hidden="true">
+                    <path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="currentColor"/>
+                    <path d="M10 90Q18 64 42 56" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.75"/>
+                  </svg>
+                </div>
+                <p class="engine-name"></p>
+                <p class="engine-detail"></p>
+              </div>
+
+              <div class="conn conn-warm" aria-hidden="true"><span class="pkt"></span><span class="pkt d1"></span><span class="pkt d2"></span></div>
+
+              <div class="flow-col flow-store">
+                <p class="flow-label">03 &middot; Warehouse</p>
+                <div class="layers"></div>
+                <p class="store-note"></p>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="pipeline">
+        <div class="shell">
+          <div class="section-head-row">
+            <div class="section-head">
+              <span class="print-title">Pipeline</span>
+              <p class="section-index">01 / How I move data</p>
+              <h2 class="section-title">Source to warehouse, every stage accounted for.</h2>
+              <p class="mode-caption"></p>
+            </div>
+            <div class="mode-switch" role="group" aria-label="Pipeline pattern">
+              <button class="mode-btn" type="button" data-mode="ETL" aria-pressed="false">ETL</button>
+              <button class="mode-btn" type="button" data-mode="ELT" aria-pressed="true">ELT</button>
+            </div>
+          </div>
+          <div class="track" aria-hidden="true"><span class="track-pkt"></span></div>
+          <div class="stage-cards"></div>
         </div>
       </section>
 
       <section class="section" id="work">
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">01</span>Work Experience</h2>
-          <p class="section-lede reveal">Each role with the client work delivered under it, newest first.</p>
+          <div class="section-head">
+            <span class="print-title">Work Experience</span>
+            <p class="section-index">02 / Experience</p>
+            <h2 class="section-title">Pipelines in production.</h2>
+          </div>
           <div class="all-experiences"></div>
         </div>
       </section>
 
       <section class="section section-personal" id="personal" hidden>
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">02</span>Things I Built</h2>
+          <div class="section-head">
+            <span class="print-title">Projects</span>
+            <p class="section-index">03 / Side projects</p>
+            <h2 class="section-title">Things I built.</h2>
+          </div>
           <div class="all-personal-projects"></div>
         </div>
       </section>
 
-      <section class="section" id="skills">
+      <section class="section grid-bg" id="stack">
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">03</span>Skills</h2>
+          <div class="section-head">
+            <span class="print-title">Skills</span>
+            <p class="section-index">04 / Stack</p>
+            <h2 class="section-title">The tools behind the flow.</h2>
+          </div>
           <div class="key-skills"></div>
         </div>
       </section>
 
       <section class="section" id="education">
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">04</span>Education</h2>
+          <div class="section-head">
+            <span class="print-title">Education</span>
+            <p class="section-index">05 / Education</p>
+            <h2 class="section-title">Where it started.</h2>
+          </div>
           <div class="all-education"></div>
         </div>
       </section>
 
       <section class="section section-certifications" id="certifications" hidden>
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">05</span>Certifications</h2>
+          <div class="section-head">
+            <span class="print-title">Certifications</span>
+            <p class="section-index">06 / Certifications</p>
+            <h2 class="section-title">Credentials.</h2>
+          </div>
           <div class="all-certifications"></div>
         </div>
       </section>
 
       <section class="section section-contact" id="contact">
-        <div class="shell reveal">
-          <h2 class="section-title"><span class="section-index">06</span>Get in touch</h2>
-          <p class="contact-lede">Open to senior data engineering roles. The fastest way to reach me is email.</p>
-          <div class="contact contact-items"></div>
+        <div class="shell">
+          <div class="cta-panel grid-bg">
+            <svg class="spark cta-spark" width="48" height="48" viewBox="0 0 96 96" aria-hidden="true">
+              <path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="currentColor"/>
+              <path d="M10 90Q18 64 42 56" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"/>
+            </svg>
+            <span class="print-title">Contact</span>
+            <h2 class="cta-headline"></h2>
+            <p class="cta-copy"></p>
+            <div class="contact contact-items"></div>
+          </div>
         </div>
       </section>
     </main>
@@ -113,7 +199,7 @@
     <footer class="site-footer">
       <div class="shell footer-inner">
         <span class="footer-name"></span>
-        <span class="footer-note">Static page, no tracking. Content lives in <code>data.js</code>.</span>
+<!--        <span class="footer-note">Static page. Content lives in <code>data.js</code>.</span>-->
       </div>
     </footer>
   </body>

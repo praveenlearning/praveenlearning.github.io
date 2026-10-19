@@ -14,7 +14,7 @@ const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 
-const root = __dirname;
+const root = path.resolve(__dirname, '..');  // the site files live one level up
 
 class Node {
   constructor(tag) {
@@ -23,6 +23,7 @@ class Node {
     this.children = [];
     this._text = '';
     this.attrs = {};
+    this.style = {};
   }
   set textContent(value) { this._text = String(value); this.children = []; }
   get textContent() { return this._text + this.children.map((c) => c.textContent).join(''); }

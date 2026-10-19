@@ -16,7 +16,7 @@ source files.
 
 ## Steps
 
-1. Read `AGENTS.md`, then the part of `data.js` being changed.
+1. Read `docs/AGENTS.md`, then the part of `data.js` being changed.
 2. Read the canonical source for whatever is changing:
    - skills: `current_skills.md`
    - projects: `resume-projects.md`
@@ -47,13 +47,13 @@ source files.
    their existing constraints: no client or project names in the summary, no industry
    list, no opener that reads as a restriction, nothing about the earlier full stack
    work.
-8. Run `node check.js`. It must pass. It also warns if the two summaries have become
+6. Run `node docs/check.js`. It must pass. It also warns if the two summaries have become
    identical or if placeholders remain.
 9. Open `http://localhost:8000` and check the PDF preview if print layout could be
    affected, for instance when a section grows noticeably longer.
-10. Commit with a single short subject line, no body.
-11. If Praveen corrected you or stated a preference along the way, record it in
-   `AGENTS.md` under **Decisions** before finishing. See **Keeping this file current**.
+8. Commit with a single short subject line, no body.
+9. If Praveen corrected you or stated a preference along the way, record it in
+   `docs/AGENTS.md` under **Decisions** before finishing. See **Keeping this file current**.
 
 ## Ordering
 

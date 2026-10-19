@@ -19,7 +19,7 @@ page's structure.
 
 ## Steps
 
-1. Read `AGENTS.md` first, then `data.js`. Do not start rewriting before you know what
+1. Read `docs/AGENTS.md` first, then `data.js`. Do not start rewriting before you know what
    the baseline says.
 2. Get the posting. Fetch the URL if given one, otherwise use the pasted text.
 3. **Parse it as an ATS would.** Extract every keyword, skill and requirement it will
@@ -48,12 +48,12 @@ page's structure.
    short of keyword stuffing: no repetition for its own sake, no term list wedged into
    a sentence, no term that does not fit the bullet it sits in.
 10. Run the review checklist below and fix what fails.
-11. Run `node check.js`. It must pass.
+11. Run `node docs/check.js`. It must pass.
 12. Report: the extracted term list, the before and after match rate, the positioning
     changes made, and any term you deliberately left out because the experience does
     not support it.
 13. If Praveen corrected you or stated a preference along the way, record it in
-    `AGENTS.md` under **Decisions**, and mirror any prompt change across
+    `docs/AGENTS.md` under **Decisions**, and mirror any prompt change across
     `.claude/commands/` and `.github/prompts/`. See **Keeping this file current**.
 
 ## Variants

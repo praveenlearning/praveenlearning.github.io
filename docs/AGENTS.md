@@ -21,10 +21,10 @@ python3 -m http.server 8000
 Verify a change without a browser:
 
 ```
-node check.js
+node docs/check.js
 ```
 
-`check.js` runs the real render path from `index.js` against `data.js` under a DOM
+`docs/check.js` runs the real render path from `index.js` against `data.js` under a DOM
 stub, prints what each section produced, and exits non-zero on a problem. Run it after
 every content or render change. It does not check layout, CSS, or the DOCX build.
 
@@ -118,7 +118,7 @@ update the matching call in `index.js`. The classes it requires:
 Classes the renderer creates rather than looks up, but that `styles.css` and `print.css`
 both style: `.role` `.role-head` `.role-summary` `.role-projects` `.project`.
 
-Run `node check.js` after any such change; it exists to catch exactly this.
+Run `node docs/check.js` after any such change; it exists to catch exactly this.
 
 ## Source of truth for content
 
@@ -223,20 +223,20 @@ Recorded as they are made, newest first.
 
 **2026-10-19**
 
-- Projects are nested under the role they were delivered under, with one Work Experience
-  section, rather than a separate Experience list and Projects list. A reader follows one
-  career narrative instead of cross-referencing two sections by date.
-- Role-level summaries say what the role was and how far responsibility extended. They
-  carry no tool names, no client names and no project achievements, because the projects
-  directly beneath already hold all of that and repetition wastes the reader's attention.
-  Two bullets per role: what was built, then how far ownership went.
-- `print.css` keeps `@page { size: A4 }`. Printing with the dialog's paper set to Letter
-  makes Chrome scale the layout to reconcile the two, which looks stretched. The fix is
-  to select A4 in the dialog, not to drop the declaration, so output is A4 from any
-  machine. An attempt to remove it was rolled back.
-- A `portfolio-v2` branch holds a dark, full-portfolio redesign: sticky nav, hero,
-  scroll reveals, and optional certifications and personal-projects sections. `main`
-  keeps the compact resume layout. Both share the same `data.js` shape.
+- A `v3` branch, cut from `portfolio-v2`, implements the design reference in
+  `themes/theme-1/Main.dc.html`. That file is a mockup, not production code: its
+  inline styles carry the exact values, which belong in `styles.css` tokens rather than
+  being copied wholesale. Taken from it: `#060A12` ground, `#4DE8E0` accent with
+  `#FF8A3D` on the wordmark, `#0B111D` cards at 22px radius, a 48px cyan graph grid,
+  Bricolage Grotesque with JetBrains Mono, mono section labels in `NN / CATEGORY` form,
+  mono chips at 8px radius, and fully-rounded buttons. Not taken: its headline voice,
+  its section structure and its placeholder copy, all of which are template content.
+- The nested-project rail is v3's own addition, not the reference's: a pipeline with a
+  node per project and a packet animating down it, adapting the reference's horizontal
+  connector packets to the structure this site actually has. All of this is screen-only;
+  `print.css` strips the grid, nodes, packet and status dot, because an ATS reads
+  decoration as stray glyphs.
+
 - The summary names no industries, no client or project names, and no specific cloud in
   its opening line. Each of those reads as a restriction on the roles being sought,
   rather than as evidence. Specifics belong in Projects, where they read as range.

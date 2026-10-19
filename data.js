@@ -99,6 +99,80 @@ const profileData = {
     }
   ],
 
+  /* ---- content for the pipeline diagram and stage track (v3 design) ----
+     Every entry below is drawn from real work in resume-projects.md. */
+
+  // The hero DAG card.
+  pipeline: {
+    dagName: 'source_to_warehouse',
+    dagMeta: 'configuration-driven',
+    statusLabel: 'open to senior data engineering roles',
+    sources: [
+      { name: 'Files', kind: 'CSV - Parquet', icon: 'files' },
+      { name: 'Amazon S3', kind: 'object store', icon: 'bucket' },
+      { name: 'PostgreSQL', kind: 'operational', icon: 'database' },
+      { name: 'API', kind: 'REST - batch', icon: 'api' }
+    ],
+    process: { name: 'PySpark engine', detail: 'metadata-driven - batch' },
+    // Block counts give the medallion its shape: raw is deepest, gold is the thin
+    // analytics-ready layer on top. Colours and counts match the design reference.
+    layers: [
+      { name: 'bronze', color: '#c08457', blocks: 5 },
+      { name: 'silver', color: '#b7c6d8', blocks: 3 },
+      { name: 'gold', color: '#f4c350', blocks: 2 }
+    ]
+  },
+
+  /* The pipeline section. Both patterns are real: Spark-side transformation on the
+     OMOP and Mercedes-Benz work, warehouse-side dbt modelling at Mindvalley. */
+  pipelineModes: {
+    default: 'ELT',
+    captions: {
+      ELT: 'ELT: land raw first, then model inside the warehouse. Cheaper to change, fully replayable, easy to audit.',
+      ETL: 'ETL: transform in flight on Spark before loading. Lean storage, conformed tables only, suited to heavy joins at scale.'
+    },
+    order: {
+      ELT: ['extract', 'load', 'transform', 'serve'],
+      ETL: ['extract', 'transform', 'load', 'serve']
+    }
+  },
+
+  stageDefs: {
+    extract: {
+      name: 'Extract',
+      icon: 'extract',
+      tools: ['REDCap API', 'Amazon S3', 'PostgreSQL'],
+      desc: { ELT: 'Configurable per-source extraction into object storage, with no code change between sources.',
+              ETL: 'Configurable per-source extraction into object storage, with no code change between sources.' }
+    },
+    transform: {
+      name: 'Transform',
+      icon: 'spark',
+      tools: { ELT: ['dbt', 'SQL', 'BigQuery'], ETL: ['PySpark', 'Spark (Scala)', 'AWS Glue'] },
+      desc: { ELT: 'Model in the warehouse with dbt: versioned, tested, and rebuildable from raw at any time.',
+              ETL: 'Clean, conform and map in flight on Spark, so only curated data ever lands.' }
+    },
+    load: {
+      name: 'Load',
+      icon: 'load',
+      tools: ['Amazon S3', 'Amazon Aurora', 'BigQuery'],
+      desc: { ELT: 'Land raw data first, partitioned and untouched, so every downstream model can be replayed.',
+              ETL: 'Write conformed, schema-checked tables, resolving identifier collisions and preventing duplicates on re-runs.' }
+    },
+    serve: {
+      name: 'Serve',
+      icon: 'serve',
+      tools: ['OMOP schema', 'Star schema', 'Data quality gates'],
+      desc: { ELT: 'Publish only what passes automated data quality analysis, so researchers and analysts get a dataset they can trust.',
+              ETL: 'Publish only what passes automated data quality analysis, so researchers and analysts get a dataset they can trust.' }
+    }
+  },
+
+  cta: {
+    headline: 'Got data that needs to move? Let\'s build the pipeline.',
+    copy: 'Open to senior data engineering roles on data platform teams.'
+  },
+
   // Rendered only when non-empty. Add what you actually hold, e.g.
   // { name: 'AWS Certified AI Practitioner', issuer: 'Amazon Web Services', year: '2025' }
   certifications: [],
@@ -110,6 +184,12 @@ const profileData = {
   projects: [
     {
       name: 'OHDSI OMOP Standardisation',
+      caseStudy: {
+        kind: 'MCRI - healthcare research',
+        flow: ['Study data', 'Transform', 'Published dataset'],
+        desc: 'A greenfield, metadata-driven ETL application that standardises allergy research data into the OHDSI OMOP Common Data Model, onboarding each new study through configuration rather than code.',
+        metrics: [{ v: '3', l: 'studies in production' }, { v: '1', l: 'shared OMOP schema' }]
+      },
       employer: 'Everest Engineering',
       client: "Murdoch Children's Research Institute",
       role: 'Senior Data Engineer',
@@ -140,6 +220,12 @@ const profileData = {
     },
     {
       name: 'Data Platform Modernisation',
+      caseStudy: {
+        kind: 'Mindvalley - subscription commerce',
+        flow: ['Zuora + Stripe', 'Transform', 'Sales facts'],
+        desc: 'The consolidated and star-schema layers of a BigQuery warehouse on an L1/L2/L3 medallion architecture, unifying five source systems into conformed sales models.',
+        metrics: [{ v: '5', l: 'source systems unified' }, { v: 'L1/L2/L3', l: 'medallion layers' }]
+      },
       employer: 'Everest Engineering',
       client: 'Mindvalley',
       role: 'Data Engineer',
@@ -196,6 +282,12 @@ const profileData = {
     },
     {
       name: 'Product Merchandise Data',
+      caseStudy: {
+        kind: 'Mercedes-Benz - automotive',
+        flow: ['RDBMS', 'Transform', 'Neo4j + DQ checks'],
+        desc: 'Scalable Spark and Scala pipelines moving product and merchandise data out of relational tables into a Neo4j graph, with a Python framework flagging anomalies automatically.',
+        metrics: [{ v: 'Neo4j', l: 'graph target' }, { v: 'Spark', l: 'transformation engine' }]
+      },
       employer: 'ThoughtWorks',
       client: 'Mercedes-Benz (Daimler AG)',
       role: 'Data Engineer',
