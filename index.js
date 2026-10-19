@@ -1,4 +1,4 @@
-/* Renders profileData (data.js) into the page, and builds the DOCX download.
+/* Renders profileData (data.js) into the page, drives the nav, and builds the DOCX.
    PDF download is the browser's own print-to-PDF against print.css. */
 
 const THEME_KEY = 'portfolio-theme';
@@ -16,10 +16,20 @@ function chipList(items) {
   return ul;
 }
 
+function initials(name) {
+  return name.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').toUpperCase();
+}
+
 function contactLine(contact) {
   const parts = [contact.location, contact.email, contact.phone].filter(Boolean);
   const links = (contact.links || []).map((link) => link.url);
   return parts.concat(links).join(' | ');
+}
+
+// The PDF and DOCX use the keyword-dense summary; the page uses the readable one.
+// Falls back to `summary` when `summaryAts` is not set.
+function atsSummary(data) {
+  return data.summaryAts || data.summary;
 }
 
 function renderContact(contact) {
@@ -39,6 +49,25 @@ function renderContact(contact) {
     a.href = link.url;
     a.rel = 'noopener';
     a.target = '_blank';
+    target.appendChild(a);
+  });
+}
+
+function renderSocialLinks(contact) {
+  const target = document.querySelector('.social-links');
+  target.textContent = '';
+
+  const entries = [];
+  if (contact.email) entries.push({ label: 'Email', url: 'mailto:' + contact.email });
+  (contact.links || []).forEach((link) => entries.push({ label: link.label, url: link.url }));
+
+  entries.forEach((entry) => {
+    const a = el('a', null, entry.label);
+    a.href = entry.url;
+    if (!entry.url.startsWith('mailto:')) {
+      a.rel = 'noopener';
+      a.target = '_blank';
+    }
     target.appendChild(a);
   });
 }
@@ -67,7 +96,8 @@ function renderSkills(skills) {
 
 // Projects carry an `employer` naming the role they were delivered under, so each
 // role renders with its own work nested beneath it. A project whose employer matches
-// no role would silently vanish, so those are appended to the last role rather than lost.
+// no role would silently vanish, so those are collected and appended under the last
+// role rather than lost.
 function projectsFor(data, company) {
   return (data.projects || []).filter((project) => project.employer === company);
 }
@@ -88,9 +118,15 @@ function renderExperiences(data) {
     const wrap = el('section', 'role');
 
     const head = el('div', 'role-head');
-    head.appendChild(el('p', 'entry-title', job.title));
-    head.appendChild(el('p', 'entry-sub', job.company));
-    head.appendChild(el('p', 'entry-meta', [job.duration, job.location].filter(Boolean).join(' | ')));
+    const heading = el('div');
+    heading.appendChild(el('h3', 'entry-title', job.title));
+    heading.appendChild(el('p', 'entry-sub', job.company));
+    head.appendChild(heading);
+
+    const meta = el('div', 'role-meta');
+    meta.appendChild(el('p', 'entry-meta', job.duration));
+    if (job.location) meta.appendChild(el('p', 'entry-meta', job.location));
+    head.appendChild(meta);
     wrap.appendChild(head);
 
     if (job.summary && job.summary.length) {
@@ -124,6 +160,22 @@ function renderEducation(education) {
   });
 }
 
+// Hidden entirely until data.js has entries, so the page never shows an empty shell.
+function renderCertifications(certifications) {
+  const target = document.querySelector('.all-certifications');
+  const section = document.querySelector('.section-certifications');
+  target.textContent = '';
+  const items = certifications || [];
+  section.hidden = items.length === 0;
+  items.forEach((item) => {
+    const wrap = el('div', 'certification-entry');
+    wrap.appendChild(el('p', 'entry-title', item.name));
+    wrap.appendChild(el('p', 'entry-sub', item.issuer));
+    if (item.year) wrap.appendChild(el('p', 'entry-meta', item.year));
+    target.appendChild(wrap);
+  });
+}
+
 function projectCard(project) {
   const wrap = el('article', 'project');
 
@@ -140,12 +192,31 @@ function projectCard(project) {
     wrap.appendChild(meta);
   }
 
+  if (project.url) {
+    const line = el('p', 'project-link');
+    const a = el('a', null, project.url.replace(/^https?:\/\//, ''));
+    a.href = project.url;
+    a.rel = 'noopener';
+    a.target = '_blank';
+    line.appendChild(a);
+    wrap.appendChild(line);
+  }
+
   const ul = el('ul');
   (project.bullets || []).forEach((bullet) => ul.appendChild(el('li', null, bullet)));
   wrap.appendChild(ul);
 
   if (project.tech && project.tech.length) wrap.appendChild(chipList(project.tech));
   return wrap;
+}
+
+function renderPersonalProjects(projects) {
+  const target = document.querySelector('.all-personal-projects');
+  const section = document.querySelector('.section-personal');
+  target.textContent = '';
+  const items = projects || [];
+  section.hidden = items.length === 0;
+  items.forEach((project) => target.appendChild(projectCard(project)));
 }
 
 function renderAtsPreHeader(data) {
@@ -156,23 +227,24 @@ function renderAtsPreHeader(data) {
   target.appendChild(el('span', 'ats-contact', contactLine(data.contact)));
 }
 
-// The PDF and DOCX use the keyword-dense summary; the page uses the readable one.
-// Falls back to `summary` when `summaryAts` is not set.
-function atsSummary(data) {
-  return data.summaryAts || data.summary;
-}
-
 function renderProfile(data) {
   document.querySelector('.profile-name').textContent = data.name;
   document.querySelector('.profile-role').textContent = data.role;
+  document.querySelector('.hero-tagline').textContent = data.tagline || '';
   document.querySelector('.profile-summary').textContent = data.summary;
   document.querySelector('.profile-summary-ats').textContent = atsSummary(data);
+  document.querySelector('.nav-initials').textContent = initials(data.name);
+  document.querySelector('.footer-name').textContent = data.name;
   document.title = data.name + ' | ' + data.role;
+
   renderContact(data.contact);
+  renderSocialLinks(data.contact);
   renderHighlights(data.highlights);
   renderSkills(data.skills);
   renderExperiences(data);
   renderEducation(data.education);
+  renderCertifications(data.certifications);
+  renderPersonalProjects(data.personalProjects);
   renderAtsPreHeader(data);
 }
 
@@ -203,6 +275,17 @@ function docxBullet(text) {
   return docxParagraph(text, { bullet: { level: 0 }, spacing: { after: 40 } }, { size: 20 });
 }
 
+function docxProject(children, project) {
+  children.push(docxParagraph('Project: ' + project.name + (project.duration ? ' | ' + project.duration : ''), { spacing: { before: 120 } }, { bold: true, size: 20 }));
+  if (project.client || project.role) {
+    children.push(docxParagraph([project.client && 'Client: ' + project.client, project.role].filter(Boolean).join(' | '), { spacing: { after: 20 } }, { size: 19 }));
+  }
+  if (project.tech && project.tech.length) {
+    children.push(docxParagraph(project.tech.join(', '), { spacing: { after: 60 } }, { size: 19, italics: true }));
+  }
+  (project.bullets || []).forEach((bullet) => children.push(docxBullet(bullet)));
+}
+
 function buildResumeDocx(data) {
   const { Document, Packer } = window.docx;
   const children = [];
@@ -229,23 +312,26 @@ function buildResumeDocx(data) {
 
     let projects = projectsFor(data, job.company);
     if (index === roles.length - 1) projects = projects.concat(orphans);
-    projects.forEach((project) => {
-      children.push(docxParagraph('Project: ' + project.name + (project.duration ? ' | ' + project.duration : ''), { spacing: { before: 120 } }, { bold: true, size: 20 }));
-      if (project.client || project.role) {
-        children.push(docxParagraph([project.client && 'Client: ' + project.client, project.role].filter(Boolean).join(' | '), { spacing: { after: 20 } }, { size: 19 }));
-      }
-      if (project.tech && project.tech.length) {
-        children.push(docxParagraph(project.tech.join(', '), { spacing: { after: 60 } }, { size: 19, italics: true }));
-      }
-      (project.bullets || []).forEach((bullet) => children.push(docxBullet(bullet)));
-    });
+    projects.forEach((project) => docxProject(children, project));
   });
+
+  if (data.personalProjects && data.personalProjects.length) {
+    children.push(docxHeading('Personal Projects'));
+    data.personalProjects.forEach((project) => docxProject(children, project));
+  }
 
   children.push(docxHeading('Education'));
   data.education.forEach((item) => {
     children.push(docxParagraph(item.degree, { spacing: { before: 80 } }, { bold: true, size: 21 }));
     children.push(docxParagraph([item.institute, item.duration, item.note].filter(Boolean).join(' | '), { spacing: { after: 40 } }, { size: 19 }));
   });
+
+  if (data.certifications && data.certifications.length) {
+    children.push(docxHeading('Certifications'));
+    data.certifications.forEach((item) => {
+      children.push(docxParagraph([item.name, item.issuer, item.year].filter(Boolean).join(' | '), { spacing: { after: 40 } }, { size: 20 }));
+    });
+  }
 
   const doc = new Document({
     styles: { default: { document: { run: { font: 'Calibri', size: 20 }, paragraph: { spacing: { line: 276 } } } } },
@@ -286,14 +372,13 @@ function downloadResumeDocx() {
 /* ---------- theme ---------- */
 
 function currentTheme() {
-  const stored = document.documentElement.getAttribute('data-theme');
-  if (stored) return stored;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return document.documentElement.getAttribute('data-theme') || 'dark';
 }
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.querySelector('.theme-toggle-label').textContent = theme === 'dark' ? 'Light' : 'Dark';
+  const label = document.querySelector('.theme-toggle-label');
+  if (label) label.textContent = theme === 'dark' ? 'Light' : 'Dark';
   try {
     localStorage.setItem(THEME_KEY, theme);
   } catch (error) {
@@ -308,7 +393,64 @@ function initTheme() {
   } catch (error) {
     stored = null;
   }
-  applyTheme(stored || currentTheme());
+  applyTheme(stored || 'dark');
+}
+
+/* ---------- nav and scroll ---------- */
+
+function initNav() {
+  const nav = document.querySelector('.site-nav');
+  const toggle = document.querySelector('.nav-toggle');
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  document.querySelectorAll('.nav-links a').forEach((link) => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  if (!('IntersectionObserver' in window)) return;
+
+  const links = new Map();
+  document.querySelectorAll('.nav-links a').forEach((link) => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (section) links.set(section, link);
+  });
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      links.forEach((link) => link.classList.remove('is-active'));
+      const active = links.get(entry.target);
+      if (active) active.classList.add('is-active');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+
+  links.forEach((_link, section) => spy.observe(section));
+}
+
+function initReveal() {
+  const targets = document.querySelectorAll('.reveal, .project, .skill-group, .experience-entry, .education-entry, .certification-entry');
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach((node) => node.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+
+  targets.forEach((node) => observer.observe(node));
 }
 
 /* ---------- boot ---------- */
@@ -316,8 +458,11 @@ function initTheme() {
 function init() {
   renderProfile(profileData);
   initTheme();
-  document.querySelector('.docx-download').addEventListener('click', downloadResumeDocx);
-  document.querySelector('.pdf-download').addEventListener('click', () => window.print());
+  initNav();
+  initReveal();
+
+  document.querySelectorAll('.docx-download').forEach((button) => button.addEventListener('click', downloadResumeDocx));
+  document.querySelectorAll('.pdf-download').forEach((button) => button.addEventListener('click', () => window.print()));
   document.querySelector('.theme-toggle').addEventListener('click', () => {
     applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
   });

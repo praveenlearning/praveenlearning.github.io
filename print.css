@@ -1,4 +1,4 @@
-/* Print / "Download PDF" styling: single column, ATS-friendly, no decoration. */
+/* Print / "Download resume" styling: single column, ATS-friendly, no decoration. */
 @page {
   size: A4;
   margin: 13mm 14mm;
@@ -12,48 +12,70 @@ html, body {
   line-height: 1.34 !important;
 }
 
-.document-actions,
+/* Scroll-reveal leaves elements at opacity 0 until observed. Anything not yet
+   scrolled into view would print blank, so force every target visible. */
+.reveal,
+.role,
+.project,
+.skill-group,
+.experience-entry,
+.education-entry,
+.certification-entry {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.site-nav,
+.hero-glow,
+.hero-actions,
+.social-links,
 .highlights,
-.page-footer {
+.hero-eyebrow,
+.hero-name,
+.hero-tagline,
+.section-index,
+.section-lede,
+.contact-lede,
+.site-footer {
   display: none !important;
 }
 
 /* Plain-text header first in the text stream for ATS parsers. */
 .ats-pre-header {
   display: block !important;
-  white-space: pre-line;
-  font-size: 10pt;
   margin-bottom: 8pt;
 }
 
 .ats-pre-header .ats-name { font-size: 17pt; font-weight: bold; display: block; }
 .ats-pre-header .ats-role { font-size: 10.5pt; font-weight: bold; display: block; }
-
-.profile-header { display: none !important; }
+.ats-pre-header .ats-contact { font-size: 10pt; display: block; }
 
 /* The PDF carries the keyword-dense summary, the screen the readable one. */
 .profile-summary { display: none !important; }
-.profile-summary-ats { display: block !important; }
+.profile-summary-ats { display: block !important; max-width: none !important; margin: 0 !important; }
 
-.page {
+.hero { padding: 0 !important; overflow: visible !important; }
+
+.shell, .hero-inner {
   max-width: none !important;
-  margin: 0 !important;
   padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
 }
 
 .section {
-  background: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
   padding: 0 !important;
-  margin: 0 0 9pt !important;
+  border-top: none !important;
+  margin: 0 0 6pt !important;
 }
 
-.section > h2 {
+.section-title {
+  display: block !important;
   font-size: 11pt !important;
-  color: #000 !important;
+  text-transform: uppercase;
   letter-spacing: 0.5pt;
+  color: #000 !important;
   border-bottom: 1px solid #000 !important;
   margin: 10pt 0 4pt !important;
   padding-bottom: 2pt !important;
@@ -61,22 +83,8 @@ html, body {
   page-break-after: avoid;
 }
 
-/* Flatten both columns into one print flow, then order the sections explicitly.
-   `display: contents` lets the sections become siblings so `order` applies across
-   columns: skills, then work experience, then education. Without this the whole
-   left column prints first, putting Education ahead of Work Experience. */
-.content-columns {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.column-left, .column-right { display: contents !important; }
-
-.skills-section { order: 1; }
-.projects-section { order: 2; }
-.education-section { order: 3; }
-
-.chips { display: block !important; }
+/* Chips become comma-separated text: pill layouts confuse ATS extraction. */
+.chips { display: block !important; margin: 3pt 0 0 !important; }
 
 .chips li {
   display: inline !important;
@@ -84,6 +92,7 @@ html, body {
   border: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
   font-size: 10pt !important;
   color: #000 !important;
 }
@@ -91,30 +100,94 @@ html, body {
 .chips li::after { content: ', '; }
 .chips li:last-child::after { content: ''; }
 
-.skill-group { margin-bottom: 3pt !important; }
-.skill-group h3 { display: inline !important; font-size: 10pt !important; }
+.key-skills { display: block !important; }
+
+.skill-group {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin-bottom: 3pt !important;
+}
+
+.skill-group h3 { display: inline !important; font-size: 10pt !important; color: #000 !important; letter-spacing: 0 !important; }
 .skill-group h3::after { content: ': '; }
 .skill-group .chips { display: inline !important; }
 
-.entry-sub, .project-meta strong, .profile-role { color: #000 !important; }
-.entry-meta, .project-duration, .project-meta { color: #333 !important; font-size: 9.5pt !important; }
+.experience-entry {
+  display: block !important;
+  padding: 0 0 5pt !important;
+  border-bottom: none !important;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Roles print as a flat single column: the indent rail and side-by-side heading
+   both scramble ATS text extraction order. */
+.role { padding: 0 0 6pt !important; }
+
+.role-head {
+  display: block !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin: 0 0 3pt !important;
+}
+
+.role-head .entry-title { font-size: 11pt !important; }
+.role-meta { text-align: left !important; }
+
+.role-summary { margin: 0 0 4pt !important; padding-left: 15pt !important; color: #000 !important; }
+.role-summary li { font-size: 10pt !important; margin-bottom: 2pt !important; break-inside: avoid; }
+.role-summary li::marker { color: #000 !important; }
+
+.role-projects {
+  display: block !important;
+  padding-left: 0 !important;
+  border-left: none !important;
+}
+
+.project-name::before { content: 'Project: '; font-weight: bold; }
 
 .project {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
   padding: 0 0 7pt !important;
-  border-bottom: none !important;
+  margin: 0 !important;
+  transform: none !important;
   break-inside: auto;
 }
 
 .project-head { display: block !important; }
 .project-name { display: inline !important; font-size: 10.5pt !important; }
 .project-name::after { content: ' | '; font-weight: normal; }
-.project-duration { display: inline !important; }
+.project-duration { display: inline !important; font-family: Arial, Helvetica, sans-serif !important; }
 
-.project ul { margin-top: 3pt !important; padding-left: 15pt !important; }
-.project li, .experience-entry, .education-entry {
+.project ul { margin: 3pt 0 0 !important; padding-left: 15pt !important; color: #000 !important; }
+.project li { margin-bottom: 2pt !important; font-size: 10pt !important; break-inside: avoid; page-break-inside: avoid; }
+.project li::marker { color: #000 !important; }
+
+.entry-title { font-size: 10.5pt !important; margin: 0 !important; }
+.entry-sub { font-size: 10pt !important; color: #000 !important; margin: 0 !important; }
+.entry-meta, .project-meta, .project-duration {
+  color: #333 !important;
+  font-size: 9.5pt !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  margin: 0 !important;
+}
+.project-meta strong { color: #000 !important; }
+
+.education-entry, .certification-entry {
+  padding: 0 0 5pt !important;
+  border-bottom: none !important;
   break-inside: avoid;
   page-break-inside: avoid;
 }
+
+.contact-items { display: block !important; font-size: 10pt !important; }
+.contact-items span, .contact-items a { color: #000 !important; }
+.contact-items span::after, .contact-items a::after { content: ' | '; }
+.contact-items :last-child::after { content: ''; }
 
 a { color: #000 !important; text-decoration: none !important; }
 

@@ -13,6 +13,9 @@ const profileData = {
     ]
   },
 
+  // One line under the name in the hero. Stylistic, not a factual claim - edit freely.
+  tagline: 'Building data platforms where the next dataset is a matter of configuration, not code.',
+
   summary:
     'Senior Data Engineer with 6+ years of experience designing, building and modernising production data ' +
     'platforms end to end, from source ingestion through to analytics-ready models. Hands-on with ' +
@@ -95,6 +98,14 @@ const profileData = {
       ]
     }
   ],
+
+  // Rendered only when non-empty. Add what you actually hold, e.g.
+  // { name: 'AWS Certified AI Practitioner', issuer: 'Amazon Web Services', year: '2025' }
+  certifications: [],
+
+  // Your own builds, kept separate from client work below. Rendered only when non-empty.
+  // { name: '', duration: '', tech: [], url: '', bullets: [] }
+  personalProjects: [],
 
   projects: [
     {
