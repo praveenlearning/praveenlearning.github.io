@@ -32,11 +32,19 @@ class Node {
   getAttribute(key) { return this.attrs[key] || null; }
   addEventListener() {}
   querySelector(selector) { return find(this, selector); }
+  querySelectorAll(selector) { return findAll(this, selector); }
 }
 
 function matches(node, selector) {
   if (selector.startsWith('.')) return (' ' + node.className + ' ').includes(' ' + selector.slice(1) + ' ');
   return node.tag === selector;
+}
+
+function findAll(node, selector) {
+  const hits = [];
+  if (matches(node, selector)) hits.push(node);
+  for (const child of node.children) hits.push(...findAll(child, selector));
+  return hits;
 }
 
 function find(node, selector) {
@@ -63,6 +71,7 @@ global.document = {
   createElement: (tag) => new Node(tag),
   createTextNode: (text) => { const n = new Node('#text'); n.textContent = text; return n; },
   querySelector: (selector) => find(body, selector),
+  querySelectorAll: (selector) => findAll(body, selector),
   body
 };
 global.window = {
@@ -113,7 +122,8 @@ const report = [
   ['skill groups', count('.key-skills')],
   ['employers', count('.all-experiences')],
   ['education entries', count('.all-education')],
-  ['projects', count('.all-projects')],
+  ['roles', count('.all-experiences')],
+  ['projects (nested)', document.querySelectorAll('.project').length],
   ['summary words (web)', webSummary.split(/\s+/).filter(Boolean).length],
   ['summary words (ats)', atsText.split(/\s+/).filter(Boolean).length]
 ];
@@ -124,7 +134,13 @@ for (const [label, value] of report) {
 }
 
 if (!text('.ats-pre-header')) problems.push('ATS pre-header is empty: the PDF would lose its plain-text contact block.');
-if (count('.all-projects') === 0) problems.push('No projects rendered.');
+if (document.querySelectorAll('.project').length === 0) problems.push('No projects rendered.');
+const companies = profileData.experiences.map((job) => job.company);
+const orphaned = profileData.projects.filter((p) => !companies.includes(p.employer));
+if (orphaned.length) {
+  problems.push('Projects with no matching employer (appended to the last role): ' +
+    orphaned.map((p) => p.name + ' -> ' + p.employer).join('; '));
+}
 if (count('.key-skills') === 0) problems.push('No skill groups rendered.');
 if (webSummary && atsText && webSummary === atsText) {
   problems.push('summary and summaryAts are identical: the PDF gains nothing from the split.');

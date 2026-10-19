@@ -46,8 +46,23 @@ them imperatively on `DOMContentLoaded`. To change what the page says, edit `dat
 Never hand-write content into `index.html` and never edit a generated PDF or DOCX.
 
 `profileData` fields: `name`, `role`, `contact`, `summary`, `summaryAts`, `highlights`,
-`education[]`, `skills[]` (each `{category, items[]}`), `experiences[]` (employers),
-`projects[]` (each `{name, client, role, duration, tech[], bullets[]}`).
+`education[]`, `skills[]` (each `{category, items[]}`), `experiences[]` (employers, each
+optionally with a `summary[]` of role-level bullets), `projects[]` (each
+`{name, employer, client, role, duration, tech[], bullets[]}`).
+
+**Projects nest under the role they were delivered under.** There is one flat
+`projects[]` array; each project's `employer` names a company in `experiences[]`, and
+`renderExperiences(data)` groups them at render time. Keeping the array flat rather than
+nesting it inside `experiences` lets the same `data.js` serve both branches.
+
+A project whose `employer` matches no role would silently disappear, so those are
+appended to the last role instead, and `node check.js` reports them by name. If you add
+an employer or rename a company, update every affected project's `employer`.
+
+Role-level `summary` bullets sit above the nested projects. They describe what the role
+was and how the work was done. They must not restate project detail: no client names, no
+tool or platform names, no achievements that belong to one engagement. Two bullets per
+role is the working length.
 
 **Three outputs, one data source.**
 
@@ -71,6 +86,25 @@ plain-text name/role/contact block placed first in the DOM so it is first in the
 text stream. After changing `print.css`, check the *extracted* text order of the PDF by
 selecting and copying from it, not just how it looks.
 
+**Print section order is set independently of the screen layout.** On screen, skills and
+education sit in the left column and work experience in the right. Printed, the columns
+are flattened with `display: contents` so `order` can sequence the sections across both:
+skills, then work experience, then education. Without this the entire left column prints
+first, putting education ahead of six years of work. Re-check this after any change to
+`.content-columns` or the column contents.
+
+**Verifying the PDF without a browser.** `node check.js` covers rendering but says
+nothing about print. To see the real output:
+
+```
+python3 -m http.server 8000
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
+  --no-pdf-header-footer --print-to-pdf="out.pdf" http://localhost:8000/
+sips -s format png out.pdf --out page.png    # first page, viewable
+```
+
+`sips` ships with macOS, so this needs nothing installed.
+
 **The class-name contract.** `index.js` locates containers with `document.querySelector`
 and these lookups are unguarded, so a missing container throws on null and silently
 blanks every section after it. If you rename or delete a container in `index.html`,
@@ -78,8 +112,11 @@ update the matching call in `index.js`. The classes it requires:
 
 `.profile-name` `.profile-role` `.profile-summary` `.profile-summary-ats`
 `.contact-items` `.highlights` `.key-skills` `.all-experiences` `.all-education`
-`.all-projects` `.ats-pre-header` `.theme-toggle` `.theme-toggle-label`
-`.docx-download` `.pdf-download`
+`.ats-pre-header` `.theme-toggle` `.theme-toggle-label` `.docx-download`
+`.pdf-download`
+
+Classes the renderer creates rather than looks up, but that `styles.css` and `print.css`
+both style: `.role` `.role-head` `.role-summary` `.role-projects` `.project`.
 
 Run `node check.js` after any such change; it exists to catch exactly this.
 
@@ -116,6 +153,9 @@ Praveen directly.
 - **Outcomes over mechanisms** in project bullets: what changed and why it mattered.
 - The summary carries no client or project names, no industry list, and no framing that
   reads as a restriction on the kind of role being sought. Specifics belong in Projects.
+- Role-level summaries stay above project detail and use data engineering vocabulary:
+  ingestion, transformation, warehouse layers, schema design, modelling, orchestration,
+  scheduling, data quality, pipeline lifecycle. Not tool names, not client names.
 - Commit messages are a single short subject line, no body.
 
 ## Keeping this file current
@@ -153,6 +193,20 @@ Recorded as they are made, newest first.
 
 **2026-10-19**
 
+- Projects are nested under the role they were delivered under, with one Work Experience
+  section, rather than a separate Experience list and Projects list. A reader follows one
+  career narrative instead of cross-referencing two sections by date.
+- Role-level summaries say what the role was and how far responsibility extended. They
+  carry no tool names, no client names and no project achievements, because the projects
+  directly beneath already hold all of that and repetition wastes the reader's attention.
+  Two bullets per role: what was built, then how far ownership went.
+- `print.css` keeps `@page { size: A4 }`. Printing with the dialog's paper set to Letter
+  makes Chrome scale the layout to reconcile the two, which looks stretched. The fix is
+  to select A4 in the dialog, not to drop the declaration, so output is A4 from any
+  machine. An attempt to remove it was rolled back.
+- A `portfolio-v2` branch holds a dark, full-portfolio redesign: sticky nav, hero,
+  scroll reveals, and optional certifications and personal-projects sections. `main`
+  keeps the compact resume layout. Both share the same `data.js` shape.
 - The summary names no industries, no client or project names, and no specific cloud in
   its opening line. Each of those reads as a restriction on the roles being sought,
   rather than as evidence. Specifics belong in Projects, where they read as range.

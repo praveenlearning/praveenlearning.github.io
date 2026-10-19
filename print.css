@@ -61,9 +61,20 @@ html, body {
   page-break-after: avoid;
 }
 
+/* Flatten both columns into one print flow, then order the sections explicitly.
+   `display: contents` lets the sections become siblings so `order` applies across
+   columns: skills, then work experience, then education. Without this the whole
+   left column prints first, putting Education ahead of Work Experience. */
 .content-columns {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
+
+.column-left, .column-right { display: contents !important; }
+
+.skills-section { order: 1; }
+.projects-section { order: 2; }
+.education-section { order: 3; }
 
 .chips { display: block !important; }
 
@@ -106,3 +117,21 @@ html, body {
 }
 
 a { color: #000 !important; text-decoration: none !important; }
+
+/* Roles print as a flat single column: the indent rail scrambles ATS text order. */
+.role { margin: 0 0 6pt !important; }
+
+.role-head {
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin: 0 0 3pt !important;
+}
+
+.role-head .entry-title { font-size: 11pt !important; }
+
+.role-summary { margin: 0 0 4pt !important; padding-left: 15pt !important; }
+.role-summary li { font-size: 10pt !important; margin-bottom: 2pt !important; break-inside: avoid; }
+
+.role-projects { padding-left: 0 !important; border-left: none !important; }
+
+.project-name::before { content: 'Project: '; font-weight: bold; }

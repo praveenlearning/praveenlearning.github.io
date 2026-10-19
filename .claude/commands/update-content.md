@@ -37,17 +37,22 @@ source files.
      contributors, so git statistics understate the work.
    - No em dashes anywhere.
    - Keep `tech` arrays to what the project genuinely used.
-5. If the change affects how Praveen is positioned overall, consider whether `summary`
+5. A new project needs an `employer` matching a company in `experiences[]`, or it will
+   not appear under the right role. `node check.js` reports any that do not match.
+6. Role-level summaries in `experiences[]` stay above project detail: what the role was
+   and how far responsibility extended, in data engineering terms, with no tool or
+   client names. The projects beneath carry the specifics.
+7. If the change affects how Praveen is positioned overall, consider whether `summary`
    and `summaryAts` should change too. They must stay consistent in facts, and keep
    their existing constraints: no client or project names in the summary, no industry
    list, no opener that reads as a restriction, nothing about the earlier full stack
    work.
-6. Run `node check.js`. It must pass. It also warns if the two summaries have become
+8. Run `node check.js`. It must pass. It also warns if the two summaries have become
    identical or if placeholders remain.
-7. Open `http://localhost:8000` and check the PDF preview if print layout could be
+9. Open `http://localhost:8000` and check the PDF preview if print layout could be
    affected, for instance when a section grows noticeably longer.
-8. Commit with a single short subject line, no body.
-9. If Praveen corrected you or stated a preference along the way, record it in
+10. Commit with a single short subject line, no body.
+11. If Praveen corrected you or stated a preference along the way, record it in
    `AGENTS.md` under **Decisions** before finishing. See **Keeping this file current**.
 
 ## Ordering

@@ -65,14 +65,49 @@ function renderSkills(skills) {
   });
 }
 
-function renderExperiences(experiences) {
+// Projects carry an `employer` naming the role they were delivered under, so each
+// role renders with its own work nested beneath it. A project whose employer matches
+// no role would silently vanish, so those are appended to the last role rather than lost.
+function projectsFor(data, company) {
+  return (data.projects || []).filter((project) => project.employer === company);
+}
+
+function unmatchedProjects(data) {
+  const companies = (data.experiences || []).map((job) => job.company);
+  return (data.projects || []).filter((project) => !companies.includes(project.employer));
+}
+
+function renderExperiences(data) {
   const target = document.querySelector('.all-experiences');
   target.textContent = '';
-  experiences.forEach((job) => {
-    const wrap = el('div', 'experience-entry');
-    wrap.appendChild(el('p', 'entry-title', job.title));
-    wrap.appendChild(el('p', 'entry-sub', job.company));
-    wrap.appendChild(el('p', 'entry-meta', [job.duration, job.location].filter(Boolean).join(' | ')));
+
+  const roles = data.experiences || [];
+  const orphans = unmatchedProjects(data);
+
+  roles.forEach((job, index) => {
+    const wrap = el('section', 'role');
+
+    const head = el('div', 'role-head');
+    head.appendChild(el('p', 'entry-title', job.title));
+    head.appendChild(el('p', 'entry-sub', job.company));
+    head.appendChild(el('p', 'entry-meta', [job.duration, job.location].filter(Boolean).join(' | ')));
+    wrap.appendChild(head);
+
+    if (job.summary && job.summary.length) {
+      const ul = el('ul', 'role-summary');
+      job.summary.forEach((line) => ul.appendChild(el('li', null, line)));
+      wrap.appendChild(ul);
+    }
+
+    let projects = projectsFor(data, job.company);
+    if (index === roles.length - 1) projects = projects.concat(orphans);
+
+    if (projects.length) {
+      const list = el('div', 'role-projects');
+      projects.forEach((project) => list.appendChild(projectCard(project)));
+      wrap.appendChild(list);
+    }
+
     target.appendChild(wrap);
   });
 }
@@ -89,29 +124,28 @@ function renderEducation(education) {
   });
 }
 
-function renderProjects(projects) {
-  const target = document.querySelector('.all-projects');
-  target.textContent = '';
-  projects.forEach((project) => {
-    const wrap = el('article', 'project');
+function projectCard(project) {
+  const wrap = el('article', 'project');
 
-    const head = el('div', 'project-head');
-    head.appendChild(el('h3', 'project-name', project.name));
-    head.appendChild(el('span', 'project-duration', project.duration));
-    wrap.appendChild(head);
+  const head = el('div', 'project-head');
+  head.appendChild(el('h3', 'project-name', project.name));
+  if (project.duration) head.appendChild(el('span', 'project-duration', project.duration));
+  wrap.appendChild(head);
 
+  if (project.client || project.role) {
     const meta = el('p', 'project-meta');
-    meta.appendChild(el('strong', null, project.client));
-    meta.appendChild(document.createTextNode(' | ' + project.role));
+    if (project.client) meta.appendChild(el('strong', null, project.client));
+    if (project.client && project.role) meta.appendChild(document.createTextNode(' | '));
+    if (project.role) meta.appendChild(document.createTextNode(project.role));
     wrap.appendChild(meta);
+  }
 
-    const ul = el('ul');
-    project.bullets.forEach((bullet) => ul.appendChild(el('li', null, bullet)));
-    wrap.appendChild(ul);
+  const ul = el('ul');
+  (project.bullets || []).forEach((bullet) => ul.appendChild(el('li', null, bullet)));
+  wrap.appendChild(ul);
 
-    wrap.appendChild(chipList(project.tech));
-    target.appendChild(wrap);
-  });
+  if (project.tech && project.tech.length) wrap.appendChild(chipList(project.tech));
+  return wrap;
 }
 
 function renderAtsPreHeader(data) {
@@ -137,9 +171,8 @@ function renderProfile(data) {
   renderContact(data.contact);
   renderHighlights(data.highlights);
   renderSkills(data.skills);
-  renderExperiences(data.experiences);
+  renderExperiences(data);
   renderEducation(data.education);
-  renderProjects(data.projects);
   renderAtsPreHeader(data);
 }
 
@@ -186,18 +219,26 @@ function buildResumeDocx(data) {
     children.push(docxParagraph(group.category + ': ' + group.items.join(', '), { spacing: { after: 40 } }, { size: 20 }));
   });
 
-  children.push(docxHeading('Experience'));
-  data.experiences.forEach((job) => {
-    children.push(docxParagraph(job.title + ' - ' + job.company, { spacing: { before: 80 } }, { bold: true, size: 21 }));
-    children.push(docxParagraph([job.duration, job.location].filter(Boolean).join(' | '), { spacing: { after: 40 } }, { size: 19 }));
-  });
+  children.push(docxHeading('Work Experience'));
+  const roles = data.experiences || [];
+  const orphans = unmatchedProjects(data);
+  roles.forEach((job, index) => {
+    children.push(docxParagraph(job.title + ' - ' + job.company, { spacing: { before: 160 } }, { bold: true, size: 22 }));
+    children.push(docxParagraph([job.duration, job.location].filter(Boolean).join(' | '), { spacing: { after: 60 } }, { size: 19 }));
+    (job.summary || []).forEach((line) => children.push(docxBullet(line)));
 
-  children.push(docxHeading('Projects'));
-  data.projects.forEach((project) => {
-    children.push(docxParagraph(project.name + ' | ' + project.duration, { spacing: { before: 120 } }, { bold: true, size: 21 }));
-    children.push(docxParagraph('Client: ' + project.client + ' | ' + project.role, { spacing: { after: 20 } }, { size: 19 }));
-    children.push(docxParagraph(project.tech.join(', '), { spacing: { after: 60 } }, { size: 19, italics: true }));
-    project.bullets.forEach((bullet) => children.push(docxBullet(bullet)));
+    let projects = projectsFor(data, job.company);
+    if (index === roles.length - 1) projects = projects.concat(orphans);
+    projects.forEach((project) => {
+      children.push(docxParagraph('Project: ' + project.name + (project.duration ? ' | ' + project.duration : ''), { spacing: { before: 120 } }, { bold: true, size: 20 }));
+      if (project.client || project.role) {
+        children.push(docxParagraph([project.client && 'Client: ' + project.client, project.role].filter(Boolean).join(' | '), { spacing: { after: 20 } }, { size: 19 }));
+      }
+      if (project.tech && project.tech.length) {
+        children.push(docxParagraph(project.tech.join(', '), { spacing: { after: 60 } }, { size: 19, italics: true }));
+      }
+      (project.bullets || []).forEach((bullet) => children.push(docxBullet(bullet)));
+    });
   });
 
   children.push(docxHeading('Education'));

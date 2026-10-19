@@ -288,3 +288,29 @@ body {
   .page { padding: 20px 16px 40px; }
   .document-actions { padding: 10px 16px; }
 }
+
+/* ---------- roles with nested projects ---------- */
+
+.role { margin-bottom: 26px; }
+.role:last-child { margin-bottom: 0; }
+
+.role-head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.role-head .entry-title { font-size: 16px; }
+
+.role-summary { margin: 0 0 16px; padding-left: 18px; color: var(--text-muted); }
+.role-summary li { margin-bottom: 5px; }
+
+/* Nested projects sit inboard of the role heading so the hierarchy is visible. */
+.role-projects { padding-left: 16px; border-left: 2px solid var(--border); }
+
+.role-projects .project:first-child { padding-top: 0; }
+.role-projects .project:last-child { padding-bottom: 0; border-bottom: none; }
+
+@media (max-width: 860px) {
+  .role-projects { padding-left: 10px; }
+}

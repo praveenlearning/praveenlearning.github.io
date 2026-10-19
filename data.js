@@ -74,13 +74,32 @@ const profileData = {
   ],
 
   experiences: [
-    { title: 'Software Craftsperson / Data Engineer', company: 'Everest Engineering', location: 'Hyderabad, India', duration: 'Sep 2022 - Present' },
-    { title: 'Application Developer', company: 'ThoughtWorks', location: 'Hyderabad, India', duration: 'Jun 2020 - Sep 2022' }
+    {
+      title: 'Software Craftsperson / Data Engineer',
+      company: 'Everest Engineering',
+      location: 'Hyderabad, India',
+      duration: 'Sep 2022 - Present',
+      summary: [
+        'Data engineer on client delivery teams, building the ingestion, transformation and warehouse layers of production platforms and carrying them from first schema design through to a published dataset.',
+        'Responsible for the full pipeline lifecycle rather than the transformation step alone: source ingestion, data modelling, orchestration and scheduling, data quality, and the cloud infrastructure and release automation underneath.'
+      ]
+    },
+    {
+      title: 'Application Developer',
+      company: 'ThoughtWorks',
+      location: 'Hyderabad, India',
+      duration: 'Jun 2020 - Sep 2022',
+      summary: [
+        'Data engineer on a long-running automotive engagement, building batch ETL at scale and the automated data quality checks that guarded what it produced.',
+        'Responsible for how pipelines ran in production, not only the transformation logic: the data models they loaded into, the infrastructure they ran on, and the scheduled deployments that shipped them.'
+      ]
+    }
   ],
 
   projects: [
     {
       name: 'OHDSI OMOP Standardisation',
+      employer: 'Everest Engineering',
       client: "Murdoch Children's Research Institute",
       role: 'Senior Data Engineer',
       duration: 'Sep 2025 - Sep 2026',
@@ -98,6 +117,7 @@ const profileData = {
     },
     {
       name: 'Stripe Migration and Integration',
+      employer: 'Everest Engineering',
       client: 'Travello',
       role: 'Backend Developer',
       duration: 'Nov 2024 - Jan 2025',
@@ -109,6 +129,7 @@ const profileData = {
     },
     {
       name: 'Data Platform Modernisation',
+      employer: 'Everest Engineering',
       client: 'Mindvalley',
       role: 'Data Engineer',
       duration: 'Jan 2024 - Oct 2024',
@@ -124,6 +145,7 @@ const profileData = {
     },
     {
       name: 'Learning Portal',
+      employer: 'Everest Engineering',
       client: 'KidsGetMoney',
       role: 'Full Stack Developer',
       duration: 'Aug 2023 - Nov 2023',
@@ -138,6 +160,7 @@ const profileData = {
     },
     {
       name: 'SEQTA School Management Platform',
+      employer: 'Everest Engineering',
       client: 'Education Horizons',
       role: 'Full Stack Developer',
       duration: 'Nov 2022 - Jun 2023',
@@ -150,6 +173,7 @@ const profileData = {
     },
     {
       name: 'Timesheets',
+      employer: 'Everest Engineering',
       client: 'Everest Engineering (internal product)',
       role: 'Full Stack Developer',
       duration: 'Oct 2022 - Nov 2022',
@@ -161,6 +185,7 @@ const profileData = {
     },
     {
       name: 'Product Merchandise Data',
+      employer: 'ThoughtWorks',
       client: 'Mercedes-Benz (Daimler AG)',
       role: 'Data Engineer',
       duration: 'Sep 2020 - Sep 2022',
@@ -175,6 +200,7 @@ const profileData = {
     },
     {
       name: 'Agricultural Retailer Platform',
+      employer: 'ThoughtWorks',
       client: 'Yara International',
       role: 'Full Stack Developer',
       duration: 'Jun 2020 - Aug 2020',
