@@ -23,6 +23,7 @@ class Node {
     this.children = [];
     this._text = '';
     this.attrs = {};
+    this.style = {};
   }
   set textContent(value) { this._text = String(value); this.children = []; }
   get textContent() { return this._text + this.children.map((c) => c.textContent).join(''); }

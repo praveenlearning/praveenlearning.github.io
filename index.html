@@ -8,10 +8,12 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128202;</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=Fragment+Mono&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" media="print" href="print.css" />
-    <script src="https://cdn.jsdelivr.net/npm/docx@9.5.1/dist/index.umd.cjs"></script>
+    <!-- unpkg, not jsDelivr: jsDelivr serves .cjs as application/node with nosniff,
+         so the browser refuses to execute it and window.docx is never defined. -->
+    <script src="https://unpkg.com/docx@9.5.1/dist/index.umd.cjs"></script>
     <script src="data.js" defer></script>
     <script src="index.js" defer></script>
   </head>
@@ -20,101 +22,148 @@
     <div class="ats-pre-header" aria-hidden="true"></div>
 
     <header class="site-nav">
-      <div class="nav-inner">
-        <a class="nav-mark" href="#top"><span class="nav-initials"></span></a>
-
-        <nav class="nav-links" aria-label="Sections">
-          <a href="#work">Experience</a>
-          <a href="#skills">Skills</a>
-          <a href="#education">Education</a>
-        </nav>
-
-        <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Switch colour theme">
-            <span class="theme-toggle-label">Dark</span>
-          </button>
-          <button class="docx-download" type="button" title="Download as a Word document">DOCX</button>
-          <button class="pdf-download" type="button" title="Download as a PDF">PDF</button>
-          <a class="nav-cta" href="#contact">Let's talk</a>
+      <nav class="nav-inner" aria-label="Sections">
+        <a class="nav-mark" href="#top">
+          <span class="nav-slash">~/</span><span class="nav-initials"></span><span class="nav-caret" aria-hidden="true"></span>
+        </a>
+        <div class="nav-links">
+          <a href="#plan">./plan</a>
+          <a href="#jobs">./jobs</a>
+          <a href="#tools">./tools</a>
         </div>
-
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Switch colour theme"><span class="theme-toggle-label">Light</span></button>
+          <button class="docx-download" type="button" title="Download as a Word document">docx</button>
+          <button class="pdf-download" type="button" title="Download as a PDF">pdf</button>
+          <a class="nav-cta" href="#contact">Contact</a>
+        </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </nav>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="shell hero-inner reveal">
-          <p class="hero-eyebrow profile-role"></p>
-          <h1 class="hero-name profile-name"></h1>
-          <p class="hero-tagline"></p>
-          <p class="hero-summary profile-summary"></p>
-          <!-- Keyword-dense variant: hidden on screen, swapped in by print.css. -->
-          <p class="profile-summary-ats"></p>
-
-          <div class="hero-actions">
-            <a class="button button-primary" href="#work">View the work</a>
-            <button class="button button-ghost pdf-download" type="button">Download resume</button>
+    <main>
+      <section class="hero dots" id="top">
+        <div class="shell hero-stack">
+          <div class="hero-copy">
+            <span class="print-title">Summary</span>
+            <p class="hero-meta">
+              <span class="profile-name"></span>
+              <span class="dot-sep">&middot;</span>
+              <span class="profile-role"></span>
+              <span class="dot-sep">&middot;</span>
+              <span class="status"><span class="status-dot" aria-hidden="true"></span><span class="status-text"></span></span>
+            </p>
+            <h1 class="hero-name hero-tagline"></h1>
+            <p class="hero-summary profile-summary"></p>
+            <!-- Keyword-dense variant: hidden on screen, swapped in by print.css. -->
+            <p class="profile-summary-ats"></p>
           </div>
 
-          <div class="social-links"></div>
-          <ul class="highlights"></ul>
+          <!-- The query console: editor on the left, result pane on the right. -->
+          <div class="console">
+            <div class="console-editor">
+              <div class="tabs" role="tablist" aria-label="Code samples"></div>
+              <pre class="code" tabindex="0"></pre>
+            </div>
+            <div class="console-result">
+              <div class="result-bar">
+                <span class="result-title"></span>
+                <span class="result-ok">&#10003; 0.00 s</span>
+              </div>
+              <div class="result-load"><span></span></div>
+              <div class="result-body">
+                <table class="result-table"><thead><tr class="result-cols"></tr></thead><tbody><tr class="result-row"></tr></tbody></table>
+              </div>
+              <div class="result-foot"></div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="section" id="work">
+      <section class="section" id="plan">
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">01</span>Work Experience</h2>
-          <p class="section-lede reveal">Each role with the client work delivered under it, newest first.</p>
+          <div class="section-head">
+            <span class="print-title">Pipeline</span>
+            <p class="section-index">EXPLAIN FORMATTED</p>
+            <h2 class="section-title">How a dataset reaches production.</h2>
+          </div>
+          <div class="plan-nodes"></div>
+        </div>
+      </section>
+
+      <section class="section" id="jobs">
+        <div class="shell">
+          <div class="section-head">
+            <span class="print-title">Work Experience</span>
+            <p class="section-index">SELECT * FROM job_history;</p>
+            <h2 class="section-title">Completed jobs.</h2>
+          </div>
           <div class="all-experiences"></div>
         </div>
       </section>
 
       <section class="section section-personal" id="personal" hidden>
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">02</span>Things I Built</h2>
+          <div class="section-head">
+            <span class="print-title">Projects</span>
+            <p class="section-index">SELECT * FROM side_projects;</p>
+            <h2 class="section-title">Things I built.</h2>
+          </div>
           <div class="all-personal-projects"></div>
         </div>
       </section>
 
-      <section class="section" id="skills">
-        <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">03</span>Skills</h2>
-          <div class="key-skills"></div>
+      <section class="section dots" id="tools">
+        <div class="shell tools-grid">
+          <div class="section-head">
+            <span class="print-title">Skills</span>
+            <p class="section-index">SHOW TOOLS;</p>
+            <h2 class="section-title">The toolbelt.</h2>
+            <p class="section-lede">What I reach for, grouped by where it sits in the pipeline.</p>
+          </div>
+          <div class="tools-panel"><div class="key-skills"></div></div>
         </div>
       </section>
 
       <section class="section" id="education">
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">04</span>Education</h2>
+          <div class="section-head">
+            <span class="print-title">Education</span>
+            <p class="section-index">SELECT * FROM education;</p>
+            <h2 class="section-title">Where it started.</h2>
+          </div>
           <div class="all-education"></div>
         </div>
       </section>
 
       <section class="section section-certifications" id="certifications" hidden>
         <div class="shell">
-          <h2 class="section-title reveal"><span class="section-index">05</span>Certifications</h2>
+          <div class="section-head">
+            <span class="print-title">Certifications</span>
+            <p class="section-index">SELECT * FROM certifications;</p>
+            <h2 class="section-title">Credentials.</h2>
+          </div>
           <div class="all-certifications"></div>
         </div>
       </section>
 
       <section class="section section-contact" id="contact">
-        <div class="shell reveal">
-          <h2 class="section-title"><span class="section-index">06</span>Get in touch</h2>
-          <p class="contact-lede">Open to senior data engineering roles. The fastest way to reach me is email.</p>
-          <div class="contact contact-items"></div>
+        <div class="shell">
+          <div class="cta-panel">
+            <div class="cta-copy-block">
+              <span class="print-title">Contact</span>
+              <h2 class="cta-headline"></h2>
+              <p class="cta-copy"></p>
+              <div class="cta-actions"></div>
+            </div>
+            <div class="terminal contact contact-items"></div>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="shell footer-inner">
-        <span class="footer-name"></span>
-        <span class="footer-note">Static page, no tracking. Content lives in <code>data.js</code>.</span>
-      </div>
+      <div class="shell footer-inner"><span class="footer-name"></span></div>
     </footer>
   </body>
 </html>

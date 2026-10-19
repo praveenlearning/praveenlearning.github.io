@@ -16,8 +16,9 @@ function chipList(items) {
   return ul;
 }
 
-function initials(name) {
-  return name.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').toUpperCase();
+// The wordmark reads as a shell prompt: `~/praveen` with a blinking caret.
+function wordmark(name) {
+  return name.split(/\s+/).filter(Boolean)[0].toLowerCase();
 }
 
 function contactLine(contact) {
@@ -127,6 +128,7 @@ function renderContact(contact) {
 
 function renderSocialLinks(contact) {
   const target = document.querySelector('.social-links');
+  if (!target) return;  // not present in this layout
   target.textContent = '';
 
   const entries = [];
@@ -146,6 +148,7 @@ function renderSocialLinks(contact) {
 
 function renderHighlights(highlights) {
   const target = document.querySelector('.highlights');
+  if (!target) return;  // not present in this layout
   target.textContent = '';
   (highlights || []).forEach((item) => {
     const li = el('li');
@@ -186,6 +189,17 @@ function renderExperiences(data) {
   const roles = data.experiences || [];
   const orphans = unmatchedProjects(data);
 
+  const dataJobs = (data.projects || []).filter((project) => project.job);
+  if (dataJobs.length) {
+    const block = el('section', 'job-group');
+    block.appendChild(el('span', 'print-title', 'Data Projects'));
+    block.appendChild(el('p', 'job-group-label', 'data projects'));
+    const list = el('div', 'job-list');
+    dataJobs.forEach((project) => list.appendChild(dataJobCard(project)));
+    block.appendChild(list);
+    target.appendChild(block);
+  }
+
   roles.forEach((job, index) => {
     const wrap = el('section', 'role');
 
@@ -207,13 +221,24 @@ function renderExperiences(data) {
       wrap.appendChild(ul);
     }
 
-    let projects = projectsFor(data, job.company);
-    if (index === roles.length - 1) projects = projects.concat(orphans);
+    let projects = projectsFor(data, job.company).filter((project) => !project.job);
+    if (index === roles.length - 1) projects = projects.concat(orphans.filter((project) => !project.job));
 
     if (projects.length) {
       const list = el('div', 'role-projects');
       projects.forEach((project) => list.appendChild(projectCard(project)));
       wrap.appendChild(list);
+    }
+
+    // The screen shows data projects grouped at the top; the PDF wants them under the
+    // employer they were delivered for. Rendered here as well, print-only, so each
+    // medium gets the order that suits it.
+    let allForRole = projectsFor(data, job.company);
+    if (index === roles.length - 1) allForRole = allForRole.concat(orphans);
+    if (allForRole.length) {
+      const printList = el('div', 'role-projects print-only-projects');
+      allForRole.forEach((project) => printList.appendChild(projectCard(project)));
+      wrap.appendChild(printList);
     }
 
     target.appendChild(wrap);
@@ -248,39 +273,90 @@ function renderCertifications(certifications) {
   });
 }
 
+// Each project is a completed job: a status pill, a job id, what ran, and the
+// tools it ran on. The id is derived so it stays in step with the data.
+function jobId(project) {
+  const year = (project.duration.match(/\d{4}/) || ['0000'])[0];
+  const slug = project.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').split('_').slice(0, 2).join('_');
+  return 'job_' + year + '_' + slug;
+}
+
+/* Data projects render as the theme's job row exactly: status and id on the left,
+   title, statement and tags in the middle, two metrics on the right. */
+function dataJobCard(project) {
+  const j = project.job;
+  const wrap = el('article', 'project job-row');
+
+  const status = el('div', 'project-status');
+  status.appendChild(el('span', 'job-pill', '\u25cf SUCCEEDED'));
+  const year = (project.duration.match(/\d{4}/) || ['0000'])[0];
+  status.appendChild(el('span', 'job-id', 'job_' + year + ' \u00b7 ' + j.kind));
+  wrap.appendChild(status);
+
+  const main = el('div', 'project-main');
+  const head = el('div', 'project-head');
+  head.appendChild(el('h3', 'project-name', project.name));
+  head.appendChild(el('span', 'job-id', project.duration));
+  main.appendChild(head);
+  main.appendChild(el('p', 'project-meta', [project.client, project.role].filter(Boolean).join(' | ')));
+  main.appendChild(el('p', 'job-desc', j.desc));
+
+  // The bullets stay in the DOM, hidden on screen, so the PDF keeps full detail.
+  const bullets = el('ul', 'job-bullets');
+  (project.bullets || []).forEach((bullet) => bullets.appendChild(el('li', null, bullet)));
+  main.appendChild(bullets);
+
+  if (project.tech && project.tech.length) {
+    const tags = el('div', 'job-tags');
+    project.tech.forEach((tech) => tags.appendChild(el('span', 'job-tag', tech)));
+    main.appendChild(tags);
+  }
+  wrap.appendChild(main);
+
+  const metrics = el('div', 'job-metrics');
+  (j.metrics || []).forEach((metric) => {
+    const cell = el('div', 'job-metric');
+    cell.appendChild(el('span', 'metric-value', metric.v));
+    cell.appendChild(el('span', 'metric-label', metric.l));
+    metrics.appendChild(cell);
+  });
+  wrap.appendChild(metrics);
+
+  return wrap;
+}
+
 function projectCard(project) {
   const wrap = el('article', 'project');
 
-  const head = el('div', 'project-head');
-  head.appendChild(el('h3', 'project-name', project.name));
-  if (project.duration) head.appendChild(el('span', 'project-duration', project.duration));
-  wrap.appendChild(head);
+  const status = el('div', 'project-status');
+  status.appendChild(el('span', 'job-pill', '\u25cf SUCCEEDED'));
+  status.appendChild(el('span', 'job-id', jobId(project)));
+  wrap.appendChild(status);
+
+  const main = el('div', 'project-main');
+  main.appendChild(el('h3', 'project-name', project.name));
 
   if (project.client || project.role) {
     const meta = el('p', 'project-meta');
     if (project.client) meta.appendChild(el('strong', null, project.client));
     if (project.client && project.role) meta.appendChild(document.createTextNode(' | '));
     if (project.role) meta.appendChild(document.createTextNode(project.role));
-    wrap.appendChild(meta);
-  }
-
-  if (project.url) {
-    const line = el('p', 'project-link');
-    const a = el('a', null, project.url.replace(/^https?:\/\//, ''));
-    a.href = project.url;
-    a.rel = 'noopener';
-    a.target = '_blank';
-    line.appendChild(a);
-    wrap.appendChild(line);
+    main.appendChild(meta);
   }
 
   const ul = el('ul');
   (project.bullets || []).forEach((bullet) => ul.appendChild(el('li', null, bullet)));
-  wrap.appendChild(ul);
+  main.appendChild(ul);
+  wrap.appendChild(main);
 
-  if (project.tech && project.tech.length) wrap.appendChild(chipList(project.tech));
+  const side = el('div', 'project-side');
+  side.appendChild(el('span', 'job-id', project.duration));
+  if (project.tech && project.tech.length) side.appendChild(chipList(project.tech));
+  wrap.appendChild(side);
+
   return wrap;
 }
+
 
 function renderPersonalProjects(projects) {
   const target = document.querySelector('.all-personal-projects');
@@ -299,13 +375,153 @@ function renderAtsPreHeader(data) {
   target.appendChild(el('span', 'ats-contact', contactLine(data.contact)));
 }
 
+
+/* ---------- the query console ---------- */
+
+const SVG_NS2 = 'http://www.w3.org/2000/svg';
+
+const KEYWORDS = {
+  sql: ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'ORDER', 'BY', 'LIMIT', 'DESC', 'ASC', 'IN', 'GROUP', 'JOIN', 'ON', 'AS'],
+  python: ['import', 'from', 'def', 'return', 'with', 'for', 'in', 'if', 'else', 'lambda', 'class'],
+  yaml: []
+};
+
+/* A deliberately small highlighter: comments, strings, numbers, keywords, and for
+   YAML the key before a colon. Enough for three short snippets, and it keeps the
+   code in data.js as plain text rather than pre-tokenised markup. */
+function tokenise(line, lang) {
+  const out = [];
+  const commentAt = lang === 'sql' ? line.indexOf('--') : line.indexOf('#');
+  if (commentAt === 0) return [{ t: line, c: 'c-comment' }];
+
+  const body = commentAt > 0 ? line.slice(0, commentAt) : line;
+  const tail = commentAt > 0 ? line.slice(commentAt) : '';
+
+  if (lang === 'yaml') {
+    const m = body.match(/^(\s*-?\s*)([A-Za-z_][\w.]*)(:)?(.*)$/);
+    if (m) {
+      out.push({ t: m[1], c: '' });
+      out.push({ t: m[2], c: m[3] ? 'c-key' : '' });
+      if (m[3]) out.push({ t: m[3], c: '' });
+      if (m[4]) out.push({ t: m[4], c: '' });
+      if (tail) out.push({ t: tail, c: 'c-comment' });
+      return out;
+    }
+  }
+
+  const words = (KEYWORDS[lang] || []);
+  const re = /('[^']*')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_][\w.]*)|([^A-Za-z_'\d]+)/g;
+  let m;
+  while ((m = re.exec(body)) !== null) {
+    if (m[1]) out.push({ t: m[1], c: 'c-str' });
+    else if (m[2]) out.push({ t: m[2], c: 'c-num' });
+    else if (m[3]) {
+      const hit = words.some((w) => w.toLowerCase() === m[3].toLowerCase());
+      out.push({ t: m[3], c: hit ? 'c-kw' : '' });
+    } else out.push({ t: m[4], c: '' });
+  }
+  if (tail) out.push({ t: tail, c: 'c-comment' });
+  return out;
+}
+
+function renderCode(tab) {
+  const target = document.querySelector('.code');
+  target.textContent = '';
+  tab.code.split('\n').forEach((line, index) => {
+    const row = el('div', 'code-line');
+    row.appendChild(el('span', 'code-no', String(index + 1)));
+    const body = el('span', 'code-text');
+    tokenise(line, tab.lang).forEach((token) => body.appendChild(el('span', token.c, token.t)));
+    row.appendChild(body);
+    target.appendChild(row);
+  });
+}
+
+function renderConsole(data) {
+  const c = data.console;
+  if (!c) return;
+
+  const tabs = document.querySelector('.tabs');
+  tabs.textContent = '';
+  c.tabs.forEach((tab, index) => {
+    const button = el('button', 'tab' + (index === 0 ? ' is-on' : ''), tab.file);
+    button.type = 'button';
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-selected', String(index === 0));
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach((other) => {
+        other.classList.remove('is-on');
+        other.setAttribute('aria-selected', 'false');
+      });
+      button.classList.add('is-on');
+      button.setAttribute('aria-selected', 'true');
+      renderCode(tab);
+    });
+    tabs.appendChild(button);
+  });
+  renderCode(c.tabs[0]);
+
+  document.querySelector('.result-title').textContent = c.result.title;
+  const cols = document.querySelector('.result-cols');
+  cols.textContent = '';
+  c.result.cols.forEach((name) => {
+    const th = el('th', null, name);
+    th.setAttribute('scope', 'col');
+    cols.appendChild(th);
+  });
+  const row = document.querySelector('.result-row');
+  row.textContent = '';
+  c.result.row.forEach((value, index) => row.appendChild(el('td', index === 0 ? 'cell-accent' : null, value)));
+  document.querySelector('.result-foot').textContent = c.result.foot;
+
+  document.querySelector('.status-text').textContent = c.status;
+}
+
+function renderPlan(plan) {
+  const target = document.querySelector('.plan-nodes');
+  if (!target) return;
+  target.textContent = '';
+  (plan || []).forEach((node, index) => {
+    const row = el('div', 'plan-node');
+    row.style.marginLeft = (index * 22) + 'px';
+    const text = el('div', 'plan-text');
+    text.appendChild(el('span', 'plan-op', node.op));
+    text.appendChild(el('span', 'plan-detail', node.detail));
+    row.appendChild(text);
+    row.appendChild(el('span', 'plan-badge', node.badge));
+    target.appendChild(row);
+  });
+}
+
+function renderCtaActions(data) {
+  const target = document.querySelector('.cta-actions');
+  if (!target) return;
+  target.textContent = '';
+  if (data.contact.email) {
+    const a = el('a', 'button button-primary', 'Email me');
+    a.href = 'mailto:' + data.contact.email;
+    target.appendChild(a);
+  }
+  (data.contact.links || []).forEach((link) => {
+    const a = el('a', 'button button-ghost', link.label);
+    a.href = link.url;
+    a.rel = 'noopener';
+    a.target = '_blank';
+    target.appendChild(a);
+  });
+  if (data.cta) {
+    document.querySelector('.cta-headline').textContent = data.cta.headline;
+    document.querySelector('.cta-copy').textContent = data.cta.copy;
+  }
+}
+
 function renderProfile(data) {
   document.querySelector('.profile-name').textContent = data.name;
   document.querySelector('.profile-role').textContent = data.role;
   document.querySelector('.hero-tagline').textContent = data.tagline || '';
   document.querySelector('.profile-summary').textContent = data.summary;
   document.querySelector('.profile-summary-ats').textContent = atsSummary(data);
-  document.querySelector('.nav-initials').textContent = initials(data.name);
+  document.querySelector('.nav-initials').textContent = wordmark(data.name);
   document.querySelector('.footer-name').textContent = data.name;
   document.title = data.name + ' | ' + data.role;
 
@@ -317,6 +533,9 @@ function renderProfile(data) {
   renderEducation(data.education);
   renderCertifications(data.certifications);
   renderPersonalProjects(data.personalProjects);
+  renderConsole(data);
+  renderPlan(data.plan);
+  renderCtaActions(data);
   renderAtsPreHeader(data);
 }
 

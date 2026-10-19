@@ -99,6 +99,63 @@ const profileData = {
     }
   ],
 
+  /* ---- content for the query-console design (v4) ---- */
+
+  console: {
+    status: 'available',
+    tabs: [
+      { file: 'whoami.sql', lang: 'sql', code:
+"-- who is behind this portfolio?\n" +
+"SELECT name, role, focus\n" +
+"FROM   engineers\n" +
+"WHERE  works_with IN ('pyspark', 'dbt', 'airflow')\n" +
+"  AND  pipelines_in_prod > 0\n" +
+"ORDER  BY years DESC\n" +
+"LIMIT  1;" },
+      { file: 'pipeline.py', lang: 'python', code:
+"# one pipeline, many studies: the spec is data, not code\n" +
+"spec = load_spec(study_id)\n" +
+"\n" +
+"(spark.read.format(spec.source)\n" +
+"      .options(**spec.options)\n" +
+"      .load()\n" +
+"      .transform(conform_to(spec.target))\n" +
+"      .write.mode('overwrite')\n" +
+"      .saveAsTable(spec.table))" },
+      { file: 'stack.yaml', lang: 'yaml', code:
+"# what actually runs in production\n" +
+"orchestration:\n" +
+"  - aws_glue_workflows\n" +
+"  - apache_airflow\n" +
+"transform:\n" +
+"  - pyspark\n" +
+"  - dbt\n" +
+"warehouse:\n" +
+"  - bigquery\n" +
+"  - amazon_aurora" }
+    ],
+    result: {
+      title: 'result - 1 row',
+      cols: ['name', 'role', 'focus'],
+      row: ['Praveen Bathula', 'Senior Data Engineer', 'pipelines + warehouses'],
+      foot: 'Scanned data.js - cached'
+    }
+  },
+
+  // The query-plan section: how a dataset reaches production.
+  plan: [
+    { op: 'Extract', detail: 'per-source config, no code change between sources', badge: 'S3' },
+    { op: 'Validate', detail: 'schema checks before anything is trusted', badge: 'Glue' },
+    { op: 'Transform', detail: 'PySpark and dbt models against conformed schemas', badge: 'PySpark' },
+    { op: 'Load', detail: 'idempotent, collision-safe, replayable', badge: 'Aurora' },
+    { op: 'Publish', detail: 'only after automated data quality analysis passes', badge: 'OMOP' }
+  ],
+
+  cta: {
+    headline: 'Ready when your data is.',
+    copy: 'Open to senior data engineering roles on data platform teams.'
+  },
+
   // Rendered only when non-empty. Add what you actually hold, e.g.
   // { name: 'AWS Certified AI Practitioner', issuer: 'Amazon Web Services', year: '2025' }
   certifications: [],
@@ -110,6 +167,11 @@ const profileData = {
   projects: [
     {
       name: 'OHDSI OMOP Standardisation',
+      job: {
+        kind: 'batch',
+        desc: 'A greenfield, metadata-driven ETL application standardising allergy research data into the OHDSI OMOP Common Data Model, onboarding each study through configuration rather than code.',
+        metrics: [{ v: '3', l: 'studies in production' }, { v: '1', l: 'shared OMOP schema' }]
+      },
       employer: 'Everest Engineering',
       client: "Murdoch Children's Research Institute",
       role: 'Senior Data Engineer',
@@ -140,6 +202,11 @@ const profileData = {
     },
     {
       name: 'Data Platform Modernisation',
+      job: {
+        kind: 'warehouse',
+        desc: 'The consolidated and star-schema layers of a BigQuery warehouse on an L1/L2/L3 medallion architecture, unifying five source systems into conformed sales models.',
+        metrics: [{ v: '5', l: 'source systems unified' }, { v: 'L1/L2/L3', l: 'medallion layers' }]
+      },
       employer: 'Everest Engineering',
       client: 'Mindvalley',
       role: 'Data Engineer',
@@ -196,6 +263,11 @@ const profileData = {
     },
     {
       name: 'Product Merchandise Data',
+      job: {
+        kind: 'graph',
+        desc: 'Spark and Scala pipelines moving product and merchandise data out of relational tables into a Neo4j graph, with a Python framework flagging anomalies automatically.',
+        metrics: [{ v: 'Neo4j', l: 'graph target' }, { v: 'Spark', l: 'transformation engine' }]
+      },
       employer: 'ThoughtWorks',
       client: 'Mercedes-Benz (Daimler AG)',
       role: 'Data Engineer',
