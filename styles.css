@@ -360,10 +360,54 @@ body {
 .section-contact { border-top: 1px solid var(--border); }
 .contact-lede { margin: 0 0 24px; color: var(--text-dim); max-width: 56ch; }
 
-.contact-items { display: flex; flex-wrap: wrap; gap: 12px 32px; font-size: 15px; }
-.contact-items a { color: var(--accent); text-decoration: none; }
-.contact-items a:hover { text-decoration: underline; }
-.contact-items span { color: var(--text-dim); }
+.contact-items { display: flex; flex-wrap: wrap; gap: 12px; font-size: 15px; }
+
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+a.contact-item:hover,
+a.contact-item:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--surface-strong);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+a.contact-item:active { transform: translateY(0); }
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--text-faint);
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+a.contact-item:hover .contact-icon,
+a.contact-item:focus-visible .contact-icon {
+  color: var(--accent);
+  transform: scale(1.12);
+}
+
+/* The location is not a link, so it should not look clickable. */
+span.contact-item { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-item, .contact-icon { transition: none; }
+  a.contact-item:hover, a.contact-item:focus-visible { transform: none; }
+  a.contact-item:hover .contact-icon { transform: none; }
+}
 
 /* ---------- footer ---------- */
 

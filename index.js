@@ -32,24 +32,96 @@ function atsSummary(data) {
   return data.summaryAts || data.summary;
 }
 
+/* Inline SVG rather than an icon font or a CDN library: nothing to install, nothing
+   to fetch at runtime, and print.css can drop them for the ATS text stream.
+   Each entry is a list of [tag, attributes] drawn on a 24x24 grid. */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+const ICONS = {
+  location: [
+    ['path', { d: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' }],
+    ['circle', { cx: '12', cy: '10', r: '3' }]
+  ],
+  email: [
+    ['rect', { x: '2', y: '4', width: '20', height: '16', rx: '2' }],
+    ['path', { d: 'm2 7 10 7 10-7' }]
+  ],
+  phone: [
+    ['path', { d: 'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z' }]
+  ],
+  linkedin: [
+    ['path', { d: 'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-13h4v1.5A6 6 0 0 1 16 8z' }],
+    ['rect', { x: '2', y: '9', width: '4', height: '12' }],
+    ['circle', { cx: '4', cy: '4', r: '2' }]
+  ],
+  // The GitHub mark is a filled glyph on a 16-grid, not a stroked 24 one.
+  github: {
+    viewBox: '0 0 16 16',
+    filled: true,
+    parts: [['path', { d: 'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z' }]]
+  },
+  link: [
+    ['path', { d: 'M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7' }],
+    ['path', { d: 'M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7' }]
+  ]
+};
+
+function icon(name) {
+  const entry = ICONS[name] || ICONS.link;
+  const parts = Array.isArray(entry) ? entry : entry.parts;
+  const viewBox = Array.isArray(entry) ? '0 0 24 24' : (entry.viewBox || '0 0 24 24');
+  const filled = !Array.isArray(entry) && entry.filled;
+
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'contact-icon');
+  svg.setAttribute('viewBox', viewBox);
+  svg.setAttribute('aria-hidden', 'true');
+
+  if (filled) {
+    svg.setAttribute('fill', 'currentColor');
+  } else {
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.7');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+  }
+
+  parts.forEach((spec) => {
+    const node = document.createElementNS(SVG_NS, spec[0]);
+    Object.keys(spec[1]).forEach((key) => node.setAttribute(key, spec[1][key]));
+    svg.appendChild(node);
+  });
+
+  return svg;
+}
+
+function contactItem(iconName, text, href) {
+  const node = href ? el('a', 'contact-item') : el('span', 'contact-item');
+  if (href) {
+    node.href = href;
+    if (!href.startsWith('mailto:') && !href.startsWith('tel:')) {
+      node.rel = 'noopener';
+      node.target = '_blank';
+    }
+  }
+  node.appendChild(icon(iconName));
+  node.appendChild(el('span', 'contact-text', text));
+  return node;
+}
+
 function renderContact(contact) {
   const target = document.querySelector('.contact-items');
   target.textContent = '';
 
-  if (contact.location) target.appendChild(el('span', null, contact.location));
-  if (contact.email) {
-    const a = el('a', null, contact.email);
-    a.href = 'mailto:' + contact.email;
-    target.appendChild(a);
+  if (contact.location) target.appendChild(contactItem('location', contact.location));
+  if (contact.email) target.appendChild(contactItem('email', contact.email, 'mailto:' + contact.email));
+  if (contact.phone) {
+    target.appendChild(contactItem('phone', contact.phone, 'tel:' + contact.phone.replace(/[^+\d]/g, '')));
   }
-  if (contact.phone) target.appendChild(el('span', null, contact.phone));
 
   (contact.links || []).forEach((link) => {
-    const a = el('a', null, link.label);
-    a.href = link.url;
-    a.rel = 'noopener';
-    a.target = '_blank';
-    target.appendChild(a);
+    target.appendChild(contactItem(link.icon || 'link', link.label, link.url));
   });
 }
 
