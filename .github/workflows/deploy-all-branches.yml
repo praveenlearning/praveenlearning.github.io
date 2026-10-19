@@ -1,0 +1,79 @@
+# Publishes every branch to GitHub Pages in one deploy:
+#   main        -> /
+#   <branch>    -> /<branch>/
+#
+# Branches are discovered at run time, so adding or deleting one needs no edit here.
+#
+# Pages must be set to Settings -> Pages -> Source: "GitHub Actions" for this to
+# take effect. While the source is still "Deploy from a branch", this workflow runs
+# but changes nothing.
+name: Deploy all branches
+
+on:
+  push:
+    branches: [main]
+  # GitHub reads a workflow from the branch that was pushed, so a push to another
+  # branch will not trigger this one. Use "Run workflow" in the Actions tab after
+  # pushing any branch other than main.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # bring every branch, not just the triggering one
+
+      - name: Assemble one directory per branch
+        run: |
+          set -euo pipefail
+          mkdir -p site
+
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
+            branch="${ref#origin/}"
+            [ "$branch" = "HEAD" ] && continue
+
+            if [ "$branch" = "main" ]; then dest="site"; else dest="site/$branch"; fi
+            mkdir -p "$dest"
+
+            # git archive writes the tree without a .git directory, so there is
+            # nothing to clean up afterwards.
+            git archive "$ref" | tar -x -C "$dest"
+
+            # Repository furniture: useful in the repo, pointless on the site, and
+            # otherwise published once per branch. Delete this line to publish it.
+            rm -rf "$dest/docs" "$dest/themes" "$dest/.claude" "$dest/.github"
+            rm -f  "$dest/AGENTS.md" "$dest/CLAUDE.md" "$dest/_README.md" \
+                   "$dest/README.md" "$dest/check.js" "$dest/.gitignore"
+
+            echo "published $branch -> ${dest#site}/"
+          done
+
+          touch site/.nojekyll
+          echo "--- tree ---"
+          find site -maxdepth 2 -name index.html | sort
+          du -sh site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
