@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Comic Issue #1</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&amp;family=Comic+Neue:ital,wght@0,400;0,700;1,700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF6E0}
+a{color:#111111}a:hover{color:#E6007E}
+.dots{background-image:radial-gradient(rgba(17,17,17,.16) 1.6px,transparent 1.8px);background-size:10px 10px}
+.dots-c{background-image:radial-gradient(rgba(0,166,224,.35) 2px,transparent 2.2px);background-size:12px 12px}
+.dots-m{background-image:radial-gradient(rgba(230,0,126,.3) 2px,transparent 2.2px);background-size:12px 12px}
+.panel{border:5px solid #111111;background:#FFFFFF;box-shadow:8px 8px 0 #111111;position:relative;overflow:hidden}
+.bubble{position:relative;background:#FFFFFF;border:4px solid #111111;border-radius:28px;padding:14px 18px;font-family:'Comic Neue',sans-serif;font-weight:700}
+@keyframes pop{0%,100%{transform:scale(1) rotate(-6deg)}50%{transform:scale(1.06) rotate(-4deg)}}
+@keyframes zoom{0%{transform:translateX(-30px);opacity:0}30%,70%{opacity:1}100%{transform:translateX(60px);opacity:0}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.cols > *{grid-column:auto !important;grid-row:auto !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #FFF6E0; color: #111111; font-family: 'Comic Neue', sans-serif; font-size: 18px">
+
+<header style="background: #111111; color: #FFF6E0">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #FFF6E0; text-decoration: none; font-family: 'Bangers', sans-serif; font-size: 26px; letter-spacing: 0.04em"><span style="padding: 2px 10px; background: {{accent}}; color: #111111">DE</span>Data Engineer Comics</a>
+<div style="display: flex; gap: 22px; font-weight: 700; font-size: 16px">
+<a href="#story" style="color: #FFF6E0">The story</a>
+<a href="#powers" style="color: #FFF6E0">Powers</a>
+<a href="#rogues" style="color: #FFF6E0">Villains</a>
+<a href="#issues" style="color: #FFF6E0">Back issues</a>
+</div>
+</nav>
+</header>
+
+<section id="top" class="dots" style="padding: 48px 24px 72px">
+<div class="panel" style="max-width: 1240px; margin: 0 auto; box-sizing: border-box; background: #FFE600">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 10px 20px; border-bottom: 5px solid #111111; background: #FFFFFF; font-family: 'Bangers', sans-serif; font-size: 22px; letter-spacing: 0.06em">
+<span>ISSUE #1</span><span>[MONTH] 2026</span><span>ORIGIN STORY</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0">
+<div style="display: flex; flex-direction: column; gap: 22px; padding: 40px 36px 44px">
+<span style="width: fit-content; padding: 6px 14px; background: #111111; color: #FFE600; font-family: 'Bangers', sans-serif; font-size: 22px; letter-spacing: 0.06em; transform: rotate(-2deg)">Featuring [YOUR NAME]!</span>
+<h1 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(64px, 11vw, 168px); line-height: 0.86; font-weight: 400; letter-spacing: 0.02em; color: #FFFFFF; -webkit-text-stroke: 4px #111111; text-shadow: 8px 8px 0 #111111">The<br><span style="color: {{accent}}">Data</span><br>Engineer</h1>
+<div class="bubble" style="max-width: 460px; font-size: 21px; line-height: 1.4">Raw data in. Trusted tables out. No row left behind!</div>
+</div>
+<div class="dots-m" style="position: relative; min-height: 460px; border-left: 5px solid #111111; background-color: #00A6E0; overflow: hidden">
+<div aria-hidden="true" style="{{bigBurst}}"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Bangers', sans-serif; font-size: clamp(56px, 7vw, 96px); color: #111111; animation: pop 1.6s ease-in-out infinite">KA-BLAM!</span>
+</div>
+<sc-for list="{{flyingDbs}}" as="d" hint-placeholder-count="3">
+<svg viewBox="0 0 40 48" aria-hidden="true" style="{{d.style}}"><path d="M2 8v32c0 3.3 8 6 18 6s18-2.7 18-6V8" fill="#FFFFFF" stroke="#111111" stroke-width="3"></path><path d="M2 20c0 3.3 8 6 18 6s18-2.7 18-6M2 31c0 3.3 8 6 18 6s18-2.7 18-6" fill="none" stroke="#111111" stroke-width="3"></path><ellipse cx="20" cy="8" rx="18" ry="6" fill="#FFE600" stroke="#111111" stroke-width="3"></ellipse></svg>
+</sc-for>
+<span style="position: absolute; left: 16px; bottom: 16px; padding: 6px 12px; background: #FFFFFF; border: 3px solid #111111; font-weight: 700; font-size: 15px">Who keeps the data flowing when the batch job falls?</span>
+</div>
+</div>
+</div>
+</section>
+
+<section id="story" style="padding: 24px 24px 80px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; letter-spacing: 0.03em">Chapter one: the night shift</h2>
+<div class="cols" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px">
+<div class="panel" style="grid-column: span 5; min-height: 300px; display: flex; flex-direction: column">
+<div style="padding: 10px 14px; background: #FFE600; border-bottom: 4px solid #111111; font-weight: 700">3:07 A.M. Somewhere in the cloud…</div>
+<div class="dots" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 24px; background-color: #FFE3EE">
+<span style="font-family: 'Bangers', sans-serif; font-size: 44px; color: #E8262B; letter-spacing: 0.03em; transform: rotate(-3deg)">JOB FAILED!</span>
+<span style="font-family: monospace; font-size: 14px; padding: 8px 10px; background: #111111; color: #FF8A8A">ERROR stage 4/7 · null key in orders</span>
+<div aria-hidden="true" style="display: flex; align-items: flex-end; gap: 8px; height: 60px"><span style="flex: 1; height: 80%; background: #E8262B; border: 3px solid #111111"></span><span style="flex: 1; height: 30%; background: #E8262B; border: 3px solid #111111"></span><span style="flex: 1; height: 10%; background: #E8262B; border: 3px solid #111111"></span><span style="flex: 1; height: 4%; background: #E8262B; border: 3px solid #111111"></span></div>
+</div>
+</div>
+<div class="panel" style="grid-column: span 7; min-height: 300px; display: flex; flex-direction: column">
+<div style="padding: 10px 14px; background: #FFE600; border-bottom: 4px solid #111111; font-weight: 700">But one engineer was still awake.</div>
+<div class="dots-c" style="position: relative; flex: 1; display: flex; align-items: center; gap: 24px; padding: 24px; background-color: #E6F7FF; overflow: hidden">
+<div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; flex: 1">
+<span style="height: 6px; width: 70%; background: #111111; animation: zoom 1.4s linear infinite"></span>
+<span style="height: 6px; width: 90%; background: #111111; animation: zoom 1.4s linear infinite; animation-delay: 0.3s"></span>
+<span style="height: 6px; width: 60%; background: #111111; animation: zoom 1.4s linear infinite; animation-delay: 0.6s"></span>
+<span style="font-family: 'Bangers', sans-serif; font-size: 48px; letter-spacing: 0.04em">WHOOSH!</span>
+</div>
+<div class="bubble" style="flex: 1; font-size: 22px">"Not on my watch. Rolling back to the last good partition."</div>
+</div>
+</div>
+<div class="panel" style="grid-column: span 7; min-height: 300px; display: flex; flex-direction: column">
+<div style="padding: 10px 14px; background: #FFE600; border-bottom: 4px solid #111111; font-weight: 700">With a single Spark job, the data was transformed!</div>
+<div class="dots-m" style="position: relative; flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; background-color: #FFF2C2; overflow: hidden">
+<div aria-hidden="true" style="{{smallBurst}}"></div>
+<div style="position: relative; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; font-family: 'Bangers', sans-serif; font-size: 30px; letter-spacing: 0.03em">
+<span style="padding: 8px 14px; background: #FFFFFF; border: 4px solid #111111">EXTRACT</span><span>→</span>
+<span style="padding: 8px 14px; background: {{accent}}; border: 4px solid #111111">TRANSFORM</span><span>→</span>
+<span style="padding: 8px 14px; background: #FFFFFF; border: 4px solid #111111">LOAD</span>
+</div>
+</div>
+</div>
+<div class="panel" style="grid-column: span 5; min-height: 300px; display: flex; flex-direction: column">
+<div style="padding: 10px 14px; background: #FFE600; border-bottom: 4px solid #111111; font-weight: 700">By sunrise, every dashboard was green.</div>
+<div class="dots" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 24px; background-color: #E3FFE8">
+<div aria-hidden="true" style="display: flex; align-items: flex-end; gap: 8px; height: 90px"><span style="flex: 1; height: 50%; background: #22B04B; border: 3px solid #111111"></span><span style="flex: 1; height: 70%; background: #22B04B; border: 3px solid #111111"></span><span style="flex: 1; height: 85%; background: #22B04B; border: 3px solid #111111"></span><span style="flex: 1; height: 100%; background: #22B04B; border: 3px solid #111111"></span></div>
+<span style="font-weight: 700; font-style: italic">And the analysts never knew anything had happened.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="powers" class="dots" style="padding: 80px 24px; border-top: 5px solid #111111; background-color: #FFE600">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: start">
+<div class="panel" style="padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<span style="font-family: 'Bangers', sans-serif; font-size: 22px; letter-spacing: 0.06em; color: #E6007E">Hero file</span>
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: 52px; font-weight: 400; line-height: 0.95; letter-spacing: 0.02em">[Your name]</h2>
+<div style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 12px; font-size: 16px">
+<b>Alias</b><span>The Data Engineer</span>
+<b>Base</b><span>[City]</span>
+<b>Active since</b><span>[Year]</span>
+<b>Status</b><span>Recruiting allies</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 10px; border-top: 4px solid #111111">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><span style="font-weight: 700">{{s.l}}</span><span style="font-family: 'Bangers', sans-serif; font-size: 30px; letter-spacing: 0.03em; color: {{s.color}}">{{s.v}}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; letter-spacing: 0.03em">Powers and abilities</h2>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px">
+<sc-for list="{{powers}}" as="p" hint-placeholder-count="4">
+<div class="panel" style="padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Bangers', sans-serif; font-size: 28px; letter-spacing: 0.03em; color: {{p.color}}">{{p.name}}</span>
+<span style="font-size: 16px; line-height: 1.45">{{p.d}}</span>
+<span style="font-size: 14px; font-weight: 700; color: #555555">Gear: {{p.gear}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="rogues" style="padding: 80px 24px; border-top: 5px solid #111111; background: #111111; color: #FFF6E0">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; letter-spacing: 0.03em; color: #FFE600">Rogues' gallery</h2>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px">
+<sc-for list="{{villains}}" as="v" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; border: 5px solid #FFF6E0; background: #1C1C1C">
+<div class="dots-m" style="display: flex; align-items: center; justify-content: center; height: 120px; background-color: {{v.bg}}; border-bottom: 5px solid #FFF6E0">
+<span style="font-family: 'Bangers', sans-serif; font-size: 58px; color: #111111">{{v.glyph}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 18px">
+<span style="font-family: 'Bangers', sans-serif; font-size: 28px; letter-spacing: 0.03em">{{v.name}}</span>
+<span style="font-size: 15px; line-height: 1.45; color: #E0D8C4">{{v.d}}</span>
+<span style="font-size: 14px; font-weight: 700; color: #FFE600">Defeated by: {{v.by}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="issues" style="padding: 80px 24px; border-top: 5px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; letter-spacing: 0.03em">Back issues (selected work)</h2>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px">
+<sc-for list="{{issues}}" as="i" hint-placeholder-count="3">
+<a href="#contact" class="panel" style="display: flex; flex-direction: column; text-decoration: none; color: #111111">
+<div class="dots" style="display: flex; flex-direction: column; justify-content: space-between; gap: 18px; min-height: 200px; padding: 18px; background-color: {{i.bg}}; border-bottom: 5px solid #111111">
+<div style="display: flex; justify-content: space-between; font-family: 'Bangers', sans-serif; font-size: 22px; letter-spacing: 0.05em"><span>{{i.n}}</span><span>{{i.price}}</span></div>
+<span style="font-family: 'Bangers', sans-serif; font-size: 40px; line-height: 0.95; letter-spacing: 0.02em; color: #FFFFFF; -webkit-text-stroke: 2px #111111; text-shadow: 4px 4px 0 #111111">{{i.title}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 18px">
+<span style="font-size: 16px; line-height: 1.5">{{i.d}}</span>
+<div style="display: flex; gap: 22px">
+<sc-for list="{{i.metrics}}" as="m" hint-placeholder-count="2"><div style="display: flex; flex-direction: column"><span style="font-family: 'Bangers', sans-serif; font-size: 28px; letter-spacing: 0.03em; color: #E6007E">{{m.v}}</span><span style="font-size: 14px; font-weight: 700">{{m.l}}</span></div></sc-for>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+<span style="font-family: 'Bangers', sans-serif; font-size: 26px; letter-spacing: 0.04em; margin-right: 8px">Utility belt:</span>
+<sc-for list="{{belt}}" as="b" hint-placeholder-count="10"><span style="padding: 6px 12px; border: 3px solid #111111; background: #FFFFFF; font-weight: 700; font-size: 15px; box-shadow: 3px 3px 0 #111111">{{b}}</span></sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" class="dots-c" style="padding: 80px 24px; border-top: 5px solid #111111; background-color: #FFFFFF">
+<div class="panel" style="max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 56px); box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; background: {{accent}}">
+<span style="padding: 6px 14px; background: #111111; color: #FFE600; font-family: 'Bangers', sans-serif; font-size: 22px; letter-spacing: 0.06em">To be continued…</span>
+<h2 style="margin: 0; font-family: 'Bangers', sans-serif; font-size: clamp(48px, 7vw, 96px); font-weight: 400; line-height: 0.9; letter-spacing: 0.02em">…with your team!</h2>
+<div class="bubble" style="font-size: 20px">Open to [full-time / contract] missions. Send word!</div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; background: #111111; color: #FFE600; border: 4px solid #111111; font-family: 'Bangers', sans-serif; font-size: 24px; letter-spacing: 0.04em; text-decoration: none">[you@domain.com]</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 20px; background: #FFFFFF; border: 4px solid #111111; font-family: 'Bangers', sans-serif; font-size: 24px; letter-spacing: 0.04em; text-decoration: none; color: #111111">GitHub</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 20px; background: #FFFFFF; border: 4px solid #111111; font-family: 'Bangers', sans-serif; font-size: 24px; letter-spacing: 0.04em; text-decoration: none; color: #111111">LinkedIn</a>
+</div>
+</div>
+</section>
+
+<footer style="background: #111111; color: #FFF6E0; padding: 14px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 15px">
+<span>© [Year] [Your name] · an original story</span>
+<span>No rows were harmed in the making of this issue.</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E6007E","options":["#E6007E","#00A6E0","#22B04B","#FF7A00"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#E6007E';
+    const animate = this.props.animate ?? true;
+    const burst = (n, inner) => {
+      const pts = [];
+      for (let i = 0; i < n * 2; i++) {
+        const a = (Math.PI * i) / n - Math.PI / 2;
+        const r = i % 2 === 0 ? 50 : inner;
+        pts.push((50 + r * Math.cos(a)).toFixed(1) + '% ' + (50 + r * Math.sin(a)).toFixed(1) + '%');
+      }
+      return 'polygon(' + pts.join(', ') + ')';
+    };
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      bigBurst: 'position: absolute; left: 50%; top: 50%; width: 120%; aspect-ratio: 1; transform: translate(-50%, -50%); background: #FFE600; clip-path: ' + burst(18, 34) + '; filter: drop-shadow(0 0 0 #111111)',
+      smallBurst: 'position: absolute; left: 50%; top: 50%; width: 360px; aspect-ratio: 1; transform: translate(-50%, -50%); background: #FFFFFF; clip-path: ' + burst(14, 36),
+      flyingDbs: [
+        { style: 'position: absolute; left: 10%; top: 10%; width: 72px; transform: rotate(-18deg)' },
+        { style: 'position: absolute; right: 8%; top: 18%; width: 56px; transform: rotate(22deg)' },
+        { style: 'position: absolute; right: 18%; bottom: 18%; width: 84px; transform: rotate(-8deg)' }
+      ],
+      stats: [
+        { l: 'Data protected', v: '[X] PB', color: '#E6007E' },
+        { l: 'Events per day', v: '[X]B', color: '#00A6E0' },
+        { l: 'Pipelines guarded', v: '[N]', color: '#111111' },
+        { l: 'Missions on time', v: '[X]%', color: '#22B04B' }
+      ],
+      powers: [
+        { name: 'Stream sense', color: '#00A6E0', gear: 'Kafka, Flink', d: 'Feels every event the instant it happens, in order, exactly once.' },
+        { name: 'Spark strike', color: '#E6007E', gear: 'Apache Spark', d: 'Splits a petabyte-sized problem across a thousand executors at once.' },
+        { name: 'Schema shield', color: '#22B04B', gear: 'Contracts, dbt tests', d: 'Blocks malformed data at the gate before it can reach a dashboard.' },
+        { name: 'Time rewind', color: '#FF7A00', gear: 'Delta Lake', d: 'Restores any table to how it looked at any past version.' }
+      ],
+      villains: [
+        { name: 'The Schema Drifter', glyph: '?!', bg: '#FFE600', d: 'Renames columns upstream without telling anyone.', by: 'data contracts' },
+        { name: 'Doctor Duplicate', glyph: '×2', bg: '#00A6E0', d: 'Sneaks the same record in twice, inflating every metric.', by: 'idempotent MERGE' },
+        { name: 'Captain Latency', glyph: 'zZ', bg: '#FF7A00', d: 'Makes yesterday’s numbers arrive tomorrow.', by: 'streaming' },
+        { name: 'The Null Phantom', glyph: '∅', bg: '#22B04B', d: 'Haunts key columns, vanishing just before a join.', by: 'tests + quarantine' }
+      ],
+      issues: [
+        { n: '#2', price: '[X] s', bg: '#00A6E0', title: 'Stream of Destiny', d: 'Real-time clickstream lakehouse: Kafka into Spark Structured Streaming into Delta.', metrics: [{ v: '[X] s', l: 'latency' }, { v: '[X]B', l: 'events / day' }] },
+        { n: '#3', price: '[N] jobs', bg: '#FF7A00', title: 'Escape From Legacy', d: '[N] stored procedures rebuilt as tested dbt models on Snowflake.', metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'runtime' }] },
+        { n: '#4', price: '[X]%', bg: '#22B04B', title: 'Wardens of Quality', d: 'Freshness, volume and schema monitors with column-level lineage.', metrics: [{ v: '[X]%', l: 'coverage' }, { v: '[X] min', l: 'to detect' }] }
+      ],
+      belt: ['Spark', 'Kafka', 'Flink', 'dbt', 'Delta Lake', 'Iceberg', 'Snowflake', 'Airflow', 'Python', 'SQL', 'Terraform']
+    };
+  }
+}
+</script>
+</body>
+</html>

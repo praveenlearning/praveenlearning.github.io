@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — System Monitor</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&amp;family=Ubuntu:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#101114}
+a{color:#56C8F5}a:hover{color:#9FE0FA}
+@keyframes load{0%,100%{width:var(--a)}50%{width:var(--b)}}
+@keyframes blink{50%{opacity:0}}
+.paused *{animation-play-state:paused !important}
+.row{display:grid;grid-template-columns:64px 110px 44px 44px 72px 72px 28px 60px 60px 84px minmax(320px,1fr);gap:0 8px;width:100%;min-height:36px;align-items:center;padding:0 12px;border:0;text-align:left;font:inherit;cursor:pointer;white-space:pre}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #101114; color: #E4E6EA; font-family: 'Ubuntu Mono', ui-monospace, monospace; font-size: 17px">
+
+<header style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 10px 24px; background: #1A1C21; border-bottom: 1px solid #2A2D34; font-size: 16px">
+<span><span style="color: #6BD968">[your_name]@prod</span>:<span style="color: #6C8CFF">~</span>$ htop --user data-engineer</span>
+<span style="color: #9AA0A8">[City] · open to work</span>
+</header>
+
+<section style="max-width: 1280px; margin: 0 auto; padding: 64px 24px 40px; display: flex; flex-direction: column; gap: 18px">
+<span style="color: {{accent}}">● PID 1 · data-engineer · state: R (running)</span>
+<h1 style="margin: 0; font-family: 'Ubuntu', sans-serif; font-size: clamp(40px, 6vw, 80px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700">Always running.<br><span style="color: {{accent}}">Never swapping.</span></h1>
+<p style="margin: 0; max-width: 680px; font-size: 20px; line-height: 1.55; color: #B9BEC6">I'm [Your name], a data engineer who keeps pipelines healthy under load: batch and streaming jobs that saturate the cluster, not the on-call phone.</p>
+</section>
+
+<section style="max-width: 1280px; margin: 0 auto; padding: 0 24px 72px">
+<div style="border: 1px solid #2A2D34; background: #0B0C0E">
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 40px; padding: 18px 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{cores}}" as="c" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 110px 14px minmax(0, 1fr) 14px; align-items: center; gap: 4px">
+<span style="color: #56C8F5">{{c.name}}</span><span style="font-weight: 700">[</span>
+<span style="position: relative; height: 14px; overflow: hidden"><span style="{{c.bar}}"></span></span>
+<span style="font-weight: 700">]</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: grid; grid-template-columns: 110px 14px minmax(0, 1fr) 14px; align-items: center; gap: 4px">
+<span style="color: #56C8F5">Lake</span><span style="font-weight: 700">[</span><span style="height: 14px; display: flex"><span style="width: 52%; background: #6BD968"></span><span style="width: 18%; background: #6C8CFF"></span><span style="width: 14%; background: #F2D45C"></span></span><span style="font-weight: 700">]</span>
+</div>
+<div style="display: grid; grid-template-columns: 110px 14px minmax(0, 1fr) 14px; align-items: center; gap: 4px">
+<span style="color: #56C8F5">Backlog</span><span style="font-weight: 700">[</span><span style="height: 14px; color: #9AA0A8; font-size: 14px; line-height: 14px">0K / ∞</span><span style="font-weight: 700">]</span>
+</div>
+<span style="padding-top: 6px"><span style="color: #56C8F5">Storage:</span> <b>[X] PB</b> · bronze <span style="color: #6BD968">■</span> silver <span style="color: #6C8CFF">■</span> gold <span style="color: #F2D45C">■</span></span>
+<span><span style="color: #56C8F5">Tasks:</span> <b>[N]</b> pipelines, <b style="color: #6BD968">[N]</b> running</span>
+<span><span style="color: #56C8F5">Throughput:</span> <b>[X]B</b> events/day · <b>[X] TB</b>/day</span>
+<span><span style="color: #56C8F5">Uptime:</span> <b>[N]</b> years · SLA <b style="color: #6BD968">[X]%</b></span>
+</div>
+</div>
+
+<div style="overflow-x: auto; border-top: 1px solid #2A2D34">
+<div role="listbox" aria-label="Processes" style="min-width: 1060px">
+<div class="row" style="background: #6BD968; color: #0B0C0E; cursor: default; font-weight: 700"><span>PID</span><span>USER</span><span>PRI</span><span>NI</span><span>VIRT</span><span>RES</span><span>S</span><span>CPU%</span><span>MEM%</span><span>TIME+</span><span>Command</span></div>
+<sc-for list="{{procs}}" as="p" hint-placeholder-count="8">
+<button type="button" class="row" role="option" aria-selected="{{p.selected}}" onClick="{{p.pick}}" style="{{p.style}}">
+<span>{{p.pid}}</span><span>{{p.user}}</span><span>{{p.pri}}</span><span>{{p.ni}}</span><span>{{p.virt}}</span><span>{{p.res}}</span><span>{{p.s}}</span><span>{{p.cpu}}</span><span>{{p.mem}}</span><span>{{p.time}}</span><span><span style="{{p.treeStyle}}">{{p.tree}}</span>{{p.cmd}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); border-top: 1px solid #2A2D34">
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 24px 20px; border-right: 1px solid #2A2D34">
+<span style="color: #9AA0A8">/proc/{{sel.pid}}/status</span>
+<h2 style="margin: 0; font-family: 'Ubuntu', sans-serif; font-size: 28px; font-weight: 700; color: {{accent}}">{{sel.title}}</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #C9CDD3">{{sel.desc}}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 24px 20px">
+<sc-for list="{{sel.kv}}" as="k" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 16px; padding-bottom: 8px; border-bottom: 1px dashed #2A2D34"><span style="color: #56C8F5">{{k.k}}</span><b>{{k.v}}</b></div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; background: #0B0C0E; border-top: 1px solid #2A2D34">
+<sc-for list="{{fkeys}}" as="f" hint-placeholder-count="6">
+<a href="{{f.href}}" style="display: flex; align-items: center; min-height: 40px; text-decoration: none; color: #0B0C0E"><span style="padding: 0 4px; color: #E4E6EA; background: #0B0C0E">{{f.k}}</span><span style="padding: 0 18px 0 4px; background: #56C8F5; min-height: 40px; display: flex; align-items: center">{{f.l}}</span></a>
+</sc-for>
+</div>
+</div>
+<p style="margin: 14px 0 0; font-size: 14px; color: #9AA0A8">Click a process to inspect it. Meter values are decorative.</p>
+</section>
+
+<section id="stack" style="max-width: 1280px; margin: 0 auto; padding: 24px 24px 72px">
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="color: {{accent}}">$ lsblk --stack</span>
+<h2 style="margin: 0; font-family: 'Ubuntu', sans-serif; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; font-weight: 700">Mounted tooling.</h2>
+</div>
+<div style="padding: 22px 24px; background: #0B0C0E; border: 1px solid #2A2D34; font-size: 17px; line-height: 1.75; overflow-x: auto; white-space: pre"><span style="color: #9AA0A8">NAME                 TYPE    MOUNTPOINT</span>
+<sc-for list="{{blk}}" as="b" hint-placeholder-count="10"><span style="{{b.s}}">{{b.t}}</span>
+</sc-for></div>
+</div>
+</section>
+
+<section id="hire" style="max-width: 1280px; margin: 0 auto; padding: 24px 24px 96px">
+<div style="padding: clamp(28px, 4vw, 48px); border: 1px solid {{accent}}; background: #0B0C0E; display: flex; flex-direction: column; gap: 14px; font-size: 19px">
+<span><span style="color: #6BD968">recruiter@yourco</span>:<span style="color: #6C8CFF">~</span>$ sudo hire [your_name]</span>
+<span style="color: #9AA0A8">[sudo] password for recruiter: ••••••••</span>
+<span style="color: #6BD968">Permission granted. Opening channel…</span>
+<h2 style="margin: 8px 0 0; font-family: 'Ubuntu', sans-serif; font-size: clamp(32px, 4.6vw, 60px); line-height: 1.05; font-weight: 700">Open to [full-time / contract] roles.</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 48px; padding: 0 20px; background: {{accent}}; color: #0B0C0E; font-weight: 700; text-decoration: none">[you@domain.com]</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 48px; padding: 0 20px; border: 1px solid #56C8F5; color: #56C8F5; text-decoration: none">github</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 48px; padding: 0 20px; border: 1px solid #56C8F5; color: #56C8F5; text-decoration: none">linkedin</a>
+</div>
+<span>$ <span style="display: inline-block; width: 10px; height: 19px; vertical-align: text-bottom; background: #E4E6EA; animation: blink 1s steps(1) infinite"></span></span>
+</div>
+</section>
+
+<footer style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 12px 24px; background: #1A1C21; color: #9AA0A8; font-size: 15px">
+<span>© [Year] [Your name]</span>
+<span>load average: steady</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#6BD968","options":["#6BD968","#56C8F5","#F2D45C","#D885F2"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3400}}'>
+class Component extends DCLogic {
+  state = { sel: 2 };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#6BD968';
+    const animate = this.props.animate ?? true;
+    const G = '#6BD968', CY = '#56C8F5', R = '#F05D5D', B = '#6C8CFF', Y = '#F2D45C', M = '#D885F2';
+    const sel = this.state.sel;
+
+    const coreDefs = [['extract', 30, 62, 2.6], ['transform', 70, 95, 1.8], ['validate', 25, 48, 3.1], ['load', 40, 74, 2.2]];
+    const cores = coreDefs.map((c, i) => ({ name: c[0],
+      bar: '--a: ' + c[1] + '%; --b: ' + c[2] + '%; position: absolute; left: 0; top: 0; bottom: 0; width: ' + c[1] + '%; background: linear-gradient(90deg, ' + G + ' 0 60%, ' + R + ' 60% 80%, ' + B + ' 80%); animation: load ' + c[3] + 's ease-in-out infinite; animation-delay: -' + (i * 0.7) + 's' }));
+
+    const P = [
+      { pid: '1', tree: '', cmd: 'data-engineer --name [your_name] --years [N]', s: 'R', cpu: '98.0', mem: '12.4', time: '[N]y', treeColor: G,
+        title: 'data-engineer (init)', desc: 'The parent process: [Your name], data engineer. Designs, builds and operates the pipelines below, and keeps them healthy.',
+        kv: [['State', 'running'], ['Location', '[City]'], ['Status', 'open to work']] },
+      { pid: '214', tree: '├─ ', cmd: 'kafka-connect --source postgres-cdc --topic orders', s: 'S', cpu: '21.3', mem: '4.1', time: '412:07', treeColor: '#5A5F69',
+        title: 'Change data capture', desc: 'Debezium connectors stream every insert, update and delete from production databases into Kafka topics, with schemas registered at the edge.',
+        kv: [['Tools', 'Kafka · Debezium'], ['Delivery', 'at-least-once + dedup'], ['Lag', '[X] s']] },
+      { pid: '1042', tree: '├─ ', cmd: 'spark-submit clickstream_lakehouse.py --mode streaming', s: 'R', cpu: '87.6', mem: '31.2', time: '988:41', treeColor: '#5A5F69',
+        title: 'Real-time clickstream lakehouse', desc: 'Replaced a nightly batch with Spark Structured Streaming into bronze, silver and gold Delta tables. Dashboards refresh within seconds.',
+        kv: [['Latency', '[X] s'], ['Events / day', '[X]B'], ['Stack', 'Kafka · Spark · Delta']] },
+      { pid: '1043', tree: '│  └─ ', cmd: 'delta-writer --table gold.sessions --merge', s: 'S', cpu: '14.0', mem: '6.8', time: '233:15', treeColor: '#5A5F69',
+        title: 'Gold table writer', desc: 'Idempotent MERGE into partitioned, Z-ordered Delta tables, committed together with stream offsets for exactly-once results.',
+        kv: [['Format', 'Delta Lake'], ['Writes', 'MERGE · idempotent'], ['Tables', '[N]']] },
+      { pid: '2210', tree: '├─ ', cmd: 'dbt build --select finance+ --target snowflake', s: 'S', cpu: '35.9', mem: '9.0', time: '157:30', treeColor: '#5A5F69',
+        title: 'Legacy ETL to cloud warehouse', desc: 'Rebuilt [N] stored procedures as tested, documented dbt models on Snowflake, with lineage and Airflow orchestration.',
+        kv: [['Jobs migrated', '[N]'], ['Runtime', '−[X]%'], ['Stack', 'dbt · Snowflake']] },
+      { pid: '3001', tree: '├─ ', cmd: 'airflow scheduler --dags pipelines/', s: 'S', cpu: '6.2', mem: '3.3', time: '611:02', treeColor: '#5A5F69',
+        title: 'Orchestration', desc: 'Schedules, retries and alerts across every DAG, with explicit SLAs and on-call runbooks.',
+        kv: [['DAGs', '[N]'], ['SLA met', '[X]%'], ['Tool', 'Airflow']] },
+      { pid: '3377', tree: '└─ ', cmd: 'dq-monitor --lineage column --alert slack', s: 'S', cpu: '9.8', mem: '2.7', time: '98:44', treeColor: '#5A5F69',
+        title: 'Data quality and lineage platform', desc: 'Freshness, volume and schema monitors with column-level lineage, so a broken upstream feed is caught before it reaches a dashboard.',
+        kv: [['Coverage', '[X]% tables'], ['Detect', '[X] min'], ['Lineage', 'column-level']] }
+    ];
+
+    const procs = P.map((p, i) => {
+      const on = i === sel;
+      return { pid: p.pid, user: '[your_name]', pri: '20', ni: '0', virt: (2 + i * 1.7).toFixed(1) + 'G', res: (180 + i * 97) + 'M', s: p.s, cpu: p.cpu, mem: p.mem, time: p.time,
+        tree: p.tree, cmd: p.cmd, selected: on ? 'true' : 'false', pick: () => this.setState({ sel: i }),
+        style: on ? 'background: ' + CY + '; color: #0B0C0E' : 'background: transparent; color: #E4E6EA',
+        treeStyle: 'color: ' + (on ? '#0B0C0E' : p.treeColor) };
+    });
+    const cur = P[sel];
+
+    const blk = [
+      ['cluster', 'disk', '/', '#E4E6EA'],
+      ['├─ ingest', 'part', '/srv/kafka, /srv/debezium', CY],
+      ['├─ process', 'part', '/opt/spark, /opt/flink', G],
+      ['├─ store', 'part', '/lake/delta, /lake/iceberg', Y],
+      ['├─ model', 'part', '/etc/dbt', M],
+      ['├─ warehouse', 'part', '/mnt/snowflake, /mnt/bigquery', B],
+      ['├─ orchestrate', 'part', '/etc/airflow', '#E4E6EA'],
+      ['└─ infra', 'part', '/etc/terraform, /etc/k8s', '#E4E6EA']
+    ];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      cores,
+      procs,
+      sel: { pid: cur.pid, title: cur.title, desc: cur.desc, kv: cur.kv.map(k => ({ k: k[0], v: k[1] })) },
+      fkeys: [
+        { k: 'F1', l: 'About', href: '#top' }, { k: 'F2', l: 'Setup', href: '#stack' }, { k: 'F3', l: 'Search', href: '#stack' },
+        { k: 'F5', l: 'Tree', href: '#stack' }, { k: 'F9', l: 'Hire', href: '#hire' }, { k: 'F10', l: 'Email', href: 'mailto:[you@domain.com]' }
+      ],
+      blk: blk.map(b => ({ t: b[0].padEnd(21) + b[1].padEnd(8) + b[2], s: 'color: ' + b[3] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

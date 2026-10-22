@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Orbital Lakehouse</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Manrope:wght@400;500;600;700&amp;family=Spline+Sans+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#090D1F}
+a{color:#E9C46A}a:hover{color:#F6DFA4}
+.stars{background-image:radial-gradient(1px 1px at 20px 30px,#FFFFFF,transparent),radial-gradient(1px 1px at 140px 80px,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 90px 170px,#FFFFFF,transparent),radial-gradient(1px 1px at 210px 220px,rgba(255,255,255,.45),transparent),radial-gradient(1px 1px at 260px 40px,rgba(233,196,106,.8),transparent);background-size:300px 260px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 40px rgba(233,196,106,.35)}50%{box-shadow:0 0 80px rgba(233,196,106,.6)}}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.3}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #090D1F; color: #F3EFE4; font-family: 'Manrope', system-ui, sans-serif; overflow-x: hidden">
+
+<header style="border-bottom: 1px solid rgba(243,239,228,0.1)">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; min-height: 44px; color: #F3EFE4; text-decoration: none">
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><circle cx="15" cy="15" r="5" fill="{{accent}}"></circle><ellipse cx="15" cy="15" rx="13" ry="5" stroke="#F3EFE4" stroke-opacity="0.6" transform="rotate(-25 15 15)"></ellipse></svg>
+<span style="font-family: 'Instrument Serif', serif; font-size: 24px">[Your Name]</span>
+</a>
+<div class="navlinks" style="display: flex; gap: 30px; font-size: 15px">
+<a href="#mechanics" style="color: #B9BDD4; text-decoration: none">Mechanics</a>
+<a href="#scale" style="color: #B9BDD4; text-decoration: none">Distances</a>
+<a href="#missions" style="color: #B9BDD4; text-decoration: none">Missions</a>
+<a href="#catalogue" style="color: #B9BDD4; text-decoration: none">Catalogue</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 20px; border-radius: 999px; border: 1px solid {{accent}}; color: {{accent}}; font-weight: 600; font-size: 15px; text-decoration: none">Open a channel</a>
+</nav>
+</header>
+
+<section id="top" class="stars" style="padding: 72px 24px 88px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: #B9BDD4">CELESTIAL CHART Nº 01 · DATA ENGINEER</div>
+<h1 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(52px, 7.4vw, 104px); line-height: 0.96; font-weight: 400; letter-spacing: -0.02em">Everything orbits <span style="font-style: italic; color: {{accent}}">clean data.</span></h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; color: #B9BDD4; max-width: 520px">I'm [Your name]. I design lakehouses where raw sources circle inward, layer by layer, until they reach a single trusted core.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="#missions" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; background: {{accent}}; color: #1A1406; font-weight: 700; font-size: 16px; text-decoration: none">View missions</a>
+<a href="#contact" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(243,239,228,0.3); color: #F3EFE4; font-size: 16px; text-decoration: none">Résumé</a>
+</div>
+</div>
+
+<div role="img" aria-label="Orbit diagram: sources orbit the bronze ring, Spark and Flink orbit silver, dbt and Delta orbit gold, around a warehouse core" style="position: relative; width: min(540px, 100%); aspect-ratio: 1; justify-self: center">
+<sc-for list="{{rings}}" as="r" hint-placeholder-count="3">
+<div style="{{r.style}}"></div>
+<span style="{{r.labelStyle}}">{{r.name}}</span>
+</sc-for>
+<div style="position: absolute; inset: 39%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #F6DFA4, {{accent}} 55%, #A9802C); animation: glow 4s ease-in-out infinite; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; font-weight: 500; color: #1A1406; text-align: center; line-height: 1.3">WARE<br>HOUSE</span>
+</div>
+<sc-for list="{{planets}}" as="p" hint-placeholder-count="8">
+<div style="{{p.orbit}}">
+<div style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%)">
+<div style="{{p.counter}}">
+<span style="{{p.dot}}"></span>
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #F3EFE4; white-space: nowrap">{{p.name}}</span>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="mechanics" style="padding: 104px 24px; border-top: 1px solid rgba(243,239,228,0.1)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 700px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: {{accent}}">I · ORBITAL MECHANICS</div>
+<h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; font-weight: 400">Three orbits, each one <span style="font-style: italic">closer to the truth.</span></h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+<sc-for list="{{layers}}" as="l" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 18px; padding: 30px; border-radius: 24px; background: rgba(243,239,228,0.04); border: 1px solid rgba(243,239,228,0.12)">
+<div aria-hidden="true" style="position: relative; width: 72px; height: 72px">
+<span style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed {{l.color}}"></span>
+<span style="position: absolute; inset: 26px; border-radius: 50%; background: {{l.color}}"></span>
+<span style="position: absolute; inset: 0; animation: spin 6s linear infinite"><span style="position: absolute; top: -4px; left: 32px; width: 8px; height: 8px; border-radius: 50%; background: #F3EFE4"></span></span>
+</div>
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<span style="font-family: 'Instrument Serif', serif; font-size: 34px">{{l.name}}</span>
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #B9BDD4">{{l.tool}}</span>
+</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B9BDD4">{{l.d}}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="scale" class="stars" style="padding: 104px 24px; border-top: 1px solid rgba(243,239,228,0.1)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 700px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: {{accent}}">II · DISTANCES, IN BYTES</div>
+<h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; font-weight: 400">Each step is a thousand times <span style="font-style: italic">further out.</span></h2>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); height: 64px; align-items: center">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(243,239,228,0.3)"></div>
+<div aria-hidden="true" style="position: absolute; left: 41.66%; width: 33.34%; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: {{accent}}; box-shadow: 0 0 24px {{accent}}"></div>
+<sc-for list="{{units}}" as="u" hint-placeholder-count="6">
+<div style="position: relative; display: flex; justify-content: center">
+<span style="{{u.dot}}"></span>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr))">
+<sc-for list="{{units}}" as="u" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center">
+<span style="font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.4vw, 44px); color: {{u.color}}">{{u.name}}</span>
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #B9BDD4">{{u.pow}}</span>
+</div>
+</sc-for>
+</div>
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #B9BDD4; text-align: center; padding-top: 6px">the highlighted range, gigabytes to petabytes, is where my pipelines live</div>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 28px 0; border-top: 1px solid rgba(243,239,228,0.2)">
+<span style="font-family: 'Instrument Serif', serif; font-size: clamp(48px, 5.4vw, 72px); line-height: 1; color: {{s.color}}">{{s.v}}</span>
+<span style="font-size: 16px; color: #B9BDD4">{{s.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="missions" style="padding: 104px 24px; border-top: 1px solid rgba(243,239,228,0.1)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 700px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: {{accent}}">III · MISSION LOG</div>
+<h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; font-weight: 400">Missions <span style="font-style: italic">completed.</span></h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+<sc-for list="{{missions}}" as="m" hint-placeholder-count="3">
+<a href="#contact" style="display: flex; flex-direction: column; gap: 18px; padding: 30px; border-radius: 28px; background: rgba(243,239,228,0.04); border: 1px solid rgba(243,239,228,0.12); text-decoration: none; color: #F3EFE4">
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="{{m.patch}}">{{m.n}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #B9BDD4">{{m.code}}</span>
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #8FE3B4">● mission complete</span>
+</div>
+</div>
+<div style="font-family: 'Instrument Serif', serif; font-size: 30px; line-height: 1.1">{{m.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B9BDD4; flex: 1">{{m.desc}}</p>
+<div style="display: flex; gap: 28px; padding-top: 16px; border-top: 1px solid rgba(243,239,228,0.12)">
+<sc-for list="{{m.metrics}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Instrument Serif', serif; font-size: 28px; color: {{accent}}">{{x.v}}</span><span style="font-size: 13px; color: #B9BDD4">{{x.l}}</span></div>
+</sc-for>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="catalogue" class="stars" style="padding: 104px 24px; border-top: 1px solid rgba(243,239,228,0.1)">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: {{accent}}">IV · STAR CATALOGUE</div>
+<h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; font-weight: 400">The tools I <span style="font-style: italic">navigate by.</span></h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px">
+<sc-for list="{{catalogue}}" as="c" hint-placeholder-count="12">
+<div style="display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(243,239,228,0.12)">
+<span style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #B9BDD4">{{c.id}}</span>
+<span style="font-size: 17px; font-weight: 600">{{c.name}}</span>
+<span style="{{c.star}}"></span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" style="padding: 104px 24px; border-top: 1px solid rgba(243,239,228,0.1); text-align: center">
+<div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 24px">
+<div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: {{accent}}">V · OPEN A CHANNEL</div>
+<h2 style="margin: 0; font-family: 'Instrument Serif', serif; font-size: clamp(44px, 7vw, 96px); line-height: 0.98; font-weight: 400">Bring your data <span style="font-style: italic; color: {{accent}}">into orbit.</span></h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #B9BDD4">Open to [full-time roles / contract work] in data engineering.</p>
+<a href="mailto:[you@domain.com]" style="font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.4vw, 40px); font-style: italic; color: {{accent}}">[you@domain.com]</a>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(243,239,228,0.3); color: #F3EFE4; text-decoration: none">LinkedIn</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(243,239,228,0.3); color: #F3EFE4; text-decoration: none">GitHub</a>
+</div>
+</div>
+</section>
+
+<footer style="border-top: 1px solid rgba(243,239,228,0.1); padding: 20px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #B9BDD4">
+<span>© [Year] [Your name]</span>
+<span>Chart epoch 2026.10</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E9C46A","options":["#E9C46A","#8FD3FF","#F28C8C","#B9A3FF"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#E9C46A';
+    const animate = this.props.animate ?? true;
+    const BRONZE = '#D39A6A', SILVER = '#C9D2E3', ROSE = '#F28C8C', SKY = '#8FD3FF';
+
+    const ringDefs = [
+      { name: 'bronze', r: 47, color: BRONZE },
+      { name: 'silver', r: 33, color: SILVER },
+      { name: 'gold', r: 21, color: accent }
+    ];
+    const rings = ringDefs.map(d => ({ name: d.name,
+      style: 'position: absolute; inset: ' + (50 - d.r) + '%; border-radius: 50%; border: 1px dashed ' + d.color + '; opacity: 0.7',
+      labelStyle: 'position: absolute; left: ' + (50 + d.r * 0.71) + '%; top: ' + (50 + d.r * 0.71) + '%; font-family: \'Spline Sans Mono\', monospace; font-size: 11px; color: ' + d.color + '; transform: translate(4px, 4px)' }));
+
+    const pl = [
+      ['PostgreSQL', 47, 70, 0, ROSE], ['Kafka', 47, 70, 17.5, ROSE], ['S3', 47, 70, 35, ROSE], ['SaaS APIs', 47, 70, 52.5, ROSE],
+      ['Spark', 33, 46, 0, SKY], ['Flink', 33, 46, 23, SKY],
+      ['dbt', 21, 30, 5, accent], ['Delta', 21, 30, 20, accent]
+    ];
+    const planets = pl.map(p => {
+      const anim = p[2] + 's linear infinite; animation-delay: -' + p[3] + 's';
+      return { name: p[0],
+        orbit: 'position: absolute; inset: ' + (50 - p[1]) + '%; animation: spin ' + anim,
+        counter: 'display: flex; flex-direction: column; align-items: center; gap: 4px; animation: spinr ' + anim,
+        dot: 'width: 14px; height: 14px; border-radius: 50%; background: ' + p[4] + '; box-shadow: 0 0 14px ' + p[4] };
+    });
+
+    const unitDefs = [['KB', '10³'], ['MB', '10⁶'], ['GB', '10⁹'], ['TB', '10¹²'], ['PB', '10¹⁵'], ['EB', '10¹⁸']];
+    const units = unitDefs.map((u, i) => {
+      const on = i >= 2 && i <= 4;
+      return { name: u[0], pow: u[1] + ' bytes', color: on ? accent : '#8B90AC',
+        dot: 'width: ' + (on ? 18 : 10) + 'px; height: ' + (on ? 18 : 10) + 'px; border-radius: 50%; background: ' + (on ? '#F3EFE4' : '#4A5070') + (on ? '; box-shadow: 0 0 16px ' + accent : '') };
+    });
+
+    const star = (c, s) => 'width: ' + s + 'px; height: ' + s + 'px; border-radius: 50%; background: ' + c + '; box-shadow: 0 0 10px ' + c;
+    const cat = [
+      ['Apache Spark', SKY, 12], ['Kafka', ROSE, 12], ['dbt', accent, 10], ['Delta Lake', accent, 10],
+      ['Flink', SKY, 8], ['Iceberg', accent, 8], ['Snowflake', SILVER, 10], ['BigQuery', SILVER, 8],
+      ['Airflow', SILVER, 10], ['Debezium', ROSE, 8], ['Terraform', '#8B90AC', 8], ['Python · SQL', SKY, 12]
+    ];
+
+    const patch = (c) => 'display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; border: 2px solid ' + c + '; outline: 1px dashed ' + c + '; outline-offset: 4px; font-family: \'Instrument Serif\', serif; font-size: 24px; color: ' + c;
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      rings,
+      planets,
+      layers: [
+        { name: 'Bronze', tool: 'Kafka · S3', color: BRONZE, d: 'The outer orbit. Raw data lands exactly as it arrived, immutable and replayable, so nothing is ever lost.' },
+        { name: 'Silver', tool: 'Spark · Flink', color: SILVER, d: 'Cleansed, deduplicated and conformed. Schemas are enforced and bad records are quarantined, not silently dropped.' },
+        { name: 'Gold', tool: 'dbt · Delta', color: accent, d: 'The inner orbit. Modelled, tested, business-ready tables that dashboards and models can trust.' }
+      ],
+      units,
+      stats: [
+        { v: '[X] PB', l: 'stored across the lakehouse', color: accent },
+        { v: '[X]B', l: 'events in orbit each day', color: '#F3EFE4' },
+        { v: '[X]%', l: 'pipeline runs on schedule', color: '#F3EFE4' }
+      ],
+      missions: [
+        { n: 'I', code: 'MSN-01 · streaming', title: 'Real-time clickstream lakehouse', patch: patch(ROSE),
+          desc: 'Events pulled from the outer orbit to gold in seconds with Kafka, Spark Structured Streaming and Delta.', metrics: [{ v: '[X] s', l: 'latency' }, { v: '[X]B', l: 'events / day' }] },
+        { n: 'II', code: 'MSN-02 · migration', title: 'Legacy ETL to cloud warehouse', patch: patch(SKY),
+          desc: '[N] stored procedures brought into a stable orbit as tested dbt models on Snowflake.', metrics: [{ v: '[N]', l: 'jobs moved' }, { v: '−[X]%', l: 'runtime' }] },
+        { n: 'III', code: 'MSN-03 · quality', title: 'Data quality and lineage', patch: patch(accent),
+          desc: 'Freshness, volume and schema monitors with column-level lineage, so drift is spotted early.', metrics: [{ v: '[X]%', l: 'coverage' }, { v: '[X] min', l: 'to detect' }] }
+      ],
+      catalogue: cat.map((c, i) => ({ id: 'DE-' + String(i + 1).padStart(3, '0'), name: c[0], star: star(c[1], c[2]) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

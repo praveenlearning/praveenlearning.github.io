@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Query Console</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#111113}
+a{color:#FFB547}a:hover{color:#FFD08A}
+.dots{background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px}
+@keyframes blink{50%{opacity:0}}
+@keyframes load{0%{width:0}70%{width:100%}100%{width:100%}}
+@keyframes down{0%{top:-8px;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.tab{min-height:44px;padding:0 16px;border:0;border-right:1px solid #2A2A30;cursor:pointer;font-family:'Fragment Mono',monospace;font-size:13px}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #111113; color: #ECECEE; font-family: 'Schibsted Grotesk', system-ui, sans-serif">
+
+<header style="border-bottom: 1px solid #2A2A30; background: #111113">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 4px; min-height: 44px; text-decoration: none; color: #ECECEE; font-family: 'Fragment Mono', monospace; font-size: 16px">
+<span style="color: {{accent}}">~/</span>[your_name]<span style="display: inline-block; width: 9px; height: 18px; margin-left: 4px; background: {{accent}}; animation: blink 1s steps(1) infinite"></span>
+</a>
+<div class="navlinks" style="display: flex; gap: 28px; font-family: 'Fragment Mono', monospace; font-size: 14px">
+<a href="#plan" style="color: #A1A1AA; text-decoration: none">./plan</a>
+<a href="#scale" style="color: #A1A1AA; text-decoration: none">./scale</a>
+<a href="#jobs" style="color: #A1A1AA; text-decoration: none">./jobs</a>
+<a href="#tools" style="color: #A1A1AA; text-decoration: none">./tools</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 20px; border-radius: 8px; background: {{accent}}; color: #1A1204; font-weight: 700; font-size: 15px; text-decoration: none">Contact</a>
+</nav>
+</header>
+
+<section id="top" class="dots" style="padding: 88px 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 22px; max-width: 980px">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; color: #A1A1AA">[Your name] · Data Engineer · <span style="color: #4ADE80">● available</span></div>
+<h1 style="margin: 0; font-size: clamp(42px, 6.4vw, 84px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800">I write the query. Then I build the <span style="color: {{accent}}">pipeline</span> that makes it fast.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; color: #A1A1AA; max-width: 620px">Spark jobs, streaming systems and warehouse models, tuned until the answer comes back in seconds instead of hours.</p>
+</div>
+
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); border: 1px solid #2A2A30; border-radius: 14px; background: #18181B; overflow: hidden; box-shadow: 0 30px 80px -40px rgba(0,0,0,0.8)">
+<div style="display: flex; flex-direction: column; min-width: 0; border-right: 1px solid #2A2A30">
+<div role="tablist" aria-label="Code samples" style="display: flex; border-bottom: 1px solid #2A2A30; background: #141416; overflow-x: auto">
+<sc-for list="{{tabs}}" as="tb" hint-placeholder-count="3">
+<button type="button" role="tab" class="tab" aria-selected="{{tb.selected}}" onClick="{{tb.pick}}" style="{{tb.style}}">{{tb.file}}</button>
+</sc-for>
+</div>
+<div style="padding: 20px 0; font-family: 'Fragment Mono', monospace; font-size: 14px; line-height: 1.75; overflow-x: auto; min-height: 300px">
+<sc-for list="{{code}}" as="ln" hint-placeholder-count="8">
+<div style="display: flex; white-space: pre">
+<span style="flex: none; width: 48px; padding-right: 16px; box-sizing: border-box; text-align: right; color: #5E5E66; user-select: none">{{ln.no}}</span>
+<span><sc-for list="{{ln.toks}}" as="tk" hint-placeholder-count="4"><span style="{{tk.s}}">{{tk.t}}</span></sc-for></span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; min-width: 0; background: #151517">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 0 18px; border-bottom: 1px solid #2A2A30; font-family: 'Fragment Mono', monospace; font-size: 13px; color: #A1A1AA">
+<span>{{resultTitle}}</span>
+<span style="color: #4ADE80">✓ [X] s</span>
+</div>
+<div style="height: 3px; background: #222226"><div style="height: 3px; background: {{accent}}; animation: load 3.5s ease-in-out infinite"></div></div>
+<div style="padding: 18px; overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-family: 'Fragment Mono', monospace; font-size: 13px">
+<thead><tr><sc-for list="{{resultCols}}" as="rc" hint-placeholder-count="3"><th scope="col" style="text-align: left; padding: 8px 10px; color: #A1A1AA; font-weight: 400; border-bottom: 1px solid #2A2A30">{{rc}}</th></sc-for></tr></thead>
+<tbody>
+<sc-for list="{{resultRows}}" as="rr" hint-placeholder-count="3">
+<tr><sc-for list="{{rr.cells}}" as="cell" hint-placeholder-count="3"><td style="{{cell.s}}">{{cell.t}}</td></sc-for></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="margin-top: auto; padding: 14px 18px; border-top: 1px solid #2A2A30; font-family: 'Fragment Mono', monospace; font-size: 12px; color: #8B8B94">{{resultFoot}}</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="plan" style="padding: 104px 24px; border-top: 1px solid #2A2A30">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 680px">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; color: {{accent}}">EXPLAIN FORMATTED</div>
+<h2 style="margin: 0; font-size: clamp(32px, 4.2vw, 52px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 800">I read query plans like other people read maps.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{plan}}" as="pn" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid #2A2A30; border-radius: 10px; background: #18181B">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="font-family: 'Fragment Mono', monospace; font-size: 15px; color: {{accent}}">{{pn.op}}</span>
+<span style="font-family: 'Fragment Mono', monospace; font-size: 12px; color: #A1A1AA; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{pn.detail}}</span>
+</div>
+<span style="flex: none; font-family: 'Fragment Mono', monospace; font-size: 12px; padding: 5px 9px; border-radius: 6px; background: #222226; color: #ECECEE">{{pn.metric}}</span>
+</div>
+<sc-if value="{{pn.hasNext}}" hint-placeholder-val="{{true}}">
+<div aria-hidden="true" style="position: relative; width: 2px; height: 28px; margin-left: 28px; background: #2A2A30">
+<span style="position: absolute; left: -2px; top: -8px; width: 6px; height: 8px; border-radius: 3px; background: {{accent}}; animation: down 1.4s linear infinite; animation-delay: {{pn.delay}}"></span>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{tricks}}" as="tr" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border: 1px solid #2A2A30; border-radius: 12px; background: #18181B">
+<span style="font-family: 'Fragment Mono', monospace; font-size: 12px; color: #8B8B94">{{tr.tag}}</span>
+<div style="font-size: 19px; font-weight: 700; letter-spacing: -0.01em">{{tr.t}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #A1A1AA">{{tr.d}}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="scale" class="dots" style="padding: 104px 24px; border-top: 1px solid #2A2A30">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 680px">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; color: {{accent}}">EXPLAIN ANALYZE career;</div>
+<h2 style="margin: 0; font-size: clamp(32px, 4.2vw, 52px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 800">Measured in petabytes, not promises.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid #2A2A30; border-radius: 14px; background: #18181B; overflow: hidden">
+<sc-for list="{{stats}}" as="st" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; border-right: 1px solid #2A2A30">
+<div style="padding: 12px 22px; border-bottom: 1px solid #2A2A30; font-family: 'Fragment Mono', monospace; font-size: 12px; color: #8B8B94">{{st.col}}</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 26px 22px 30px">
+<div style="font-size: clamp(36px, 4vw, 52px); font-weight: 800; letter-spacing: -0.04em; color: {{st.color}}">{{st.v}}</div>
+<div style="font-size: 15px; line-height: 1.45; color: #A1A1AA">{{st.l}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="jobs" style="padding: 104px 24px; border-top: 1px solid #2A2A30">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 680px">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; color: {{accent}}">SELECT * FROM job_history;</div>
+<h2 style="margin: 0; font-size: clamp(32px, 4.2vw, 52px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 800">Completed jobs.</h2>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{jobs}}" as="j" hint-placeholder-count="3">
+<a href="#contact" class="cols" style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 5fr) minmax(0, 3fr); gap: 28px; align-items: center; padding: 26px 28px; border: 1px solid #2A2A30; border-radius: 14px; background: #18181B; text-decoration: none; color: #ECECEE">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="width: fit-content; font-family: 'Fragment Mono', monospace; font-size: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(74,222,128,0.12); color: #4ADE80">● SUCCEEDED</span>
+<span style="font-family: 'Fragment Mono', monospace; font-size: 13px; color: #8B8B94">{{j.id}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 23px; font-weight: 700; letter-spacing: -0.02em">{{j.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #A1A1AA">{{j.desc}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px">
+<sc-for list="{{j.tags}}" as="t" hint-placeholder-count="3"><span style="font-family: 'Fragment Mono', monospace; font-size: 12px; padding: 4px 8px; border-radius: 6px; border: 1px solid #2A2A30; color: #C9C9CF">{{t}}</span></sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{j.metrics}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: {{accent}}">{{m.v}}</span>
+<span style="font-size: 13px; color: #A1A1AA">{{m.l}}</span>
+</div>
+</sc-for>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="tools" style="padding: 104px 24px; border-top: 1px solid #2A2A30">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; color: {{accent}}">SHOW TOOLS;</div>
+<h2 style="margin: 0; font-size: clamp(32px, 4.2vw, 52px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 800">The toolbelt.</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #A1A1AA">What I reach for, grouped by where it sits in the pipeline.</p>
+</div>
+<div style="border: 1px solid #2A2A30; border-radius: 14px; background: #18181B; padding: 24px; overflow-x: auto">
+<div style="font-family: 'Fragment Mono', monospace; font-size: 14px; line-height: 1.7; white-space: pre; color: #ECECEE">
+<sc-for list="{{toolLines}}" as="tl" hint-placeholder-count="10"><div style="{{tl.s}}">{{tl.t}}</div></sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="contact" style="padding: 40px 24px 104px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; align-items: center; padding: clamp(32px, 5vw, 64px); box-sizing: border-box; border: 1px solid #2A2A30; border-radius: 20px; background: #18181B">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<h2 style="margin: 0; font-size: clamp(36px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800">Ready when your data is.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #A1A1AA">Open to [full-time roles / contract work] on data platform and analytics engineering teams.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 10px; background: {{accent}}; color: #1A1204; font-weight: 700; font-size: 16px; text-decoration: none">Email me</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 10px; border: 1px solid #3A3A42; color: #ECECEE; font-size: 16px; text-decoration: none">GitHub</a>
+</div>
+</div>
+<div style="border-radius: 12px; background: #0C0C0E; border: 1px solid #2A2A30; padding: 22px 24px; font-family: 'Fragment Mono', monospace; font-size: 14px; line-height: 1.9; overflow-x: auto; white-space: pre">
+<div><span style="color: #4ADE80">$</span> ./contact.sh</div>
+<div><span style="color: #8B8B94">&gt;</span> <span style="color: #B69CFF">email   </span> [you@domain.com]</div>
+<div><span style="color: #8B8B94">&gt;</span> <span style="color: #B69CFF">linkedin</span> linkedin.com/in/[handle]</div>
+<div><span style="color: #8B8B94">&gt;</span> <span style="color: #B69CFF">github  </span> github.com/[handle]</div>
+<div><span style="color: #8B8B94">&gt;</span> <span style="color: #B69CFF">status  </span> <span style="color: #4ADE80">open to work</span><span style="display: inline-block; width: 9px; height: 16px; margin-left: 6px; vertical-align: text-bottom; background: {{accent}}; animation: blink 1s steps(1) infinite"></span></div>
+</div>
+</div>
+</section>
+
+<footer style="border-top: 1px solid #2A2A30; padding: 20px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'Fragment Mono', monospace; font-size: 13px; color: #8B8B94">
+<span>© [Year] [Your name]</span>
+<span>(1 row) · query returned in [X] ms</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB547","options":["#FFB547","#4ADE80","#7DD3FC","#F472B6"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":4000}}'>
+class Component extends DCLogic {
+  state = { tab: 'sql' };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#FFB547';
+    const animate = this.props.animate ?? true;
+    const tab = this.state.tab;
+    const VIO = '#B69CFF', GRN = '#4ADE80', DIM = '#8B8B94', TXT = '#ECECEE';
+    const KW = ['SELECT', 'FROM', 'WHERE', 'AND', 'IN', 'ORDER', 'BY', 'DESC', 'LIMIT', 'import', 'from', 'as'];
+
+    const hl = (line) => {
+      const parts = line.match(/(--.*$|#.*$|'[^']*'|"[^"]*"|\s+|[A-Za-z_][A-Za-z0-9_]*|\d+|.)/g) || [' '];
+      return parts.map((p, i) => {
+        let c = TXT;
+        if (p.startsWith('--') || p.startsWith('#')) c = DIM;
+        else if (p[0] === '\'' || p[0] === '"') c = GRN;
+        else if (KW.indexOf(p) !== -1) c = VIO;
+        else if (/^\d+$/.test(p)) c = accent;
+        else if (/^[a-z_]+$/.test(p) && parts[i + 1] === ':') c = VIO;
+        else if (p === '.' || p === '(' || p === ')' || p === ',') c = '#A1A1AA';
+        return { t: p, s: 'color: ' + c };
+      });
+    };
+
+    const files = {
+      sql: { file: 'whoami.sql', lines: [
+        '-- who is behind this portfolio?',
+        'SELECT name, role, focus',
+        'FROM   engineers',
+        'WHERE  loves IN (\'spark\', \'kafka\', \'clean data\')',
+        '  AND  pipelines_in_prod > 0',
+        'ORDER  BY impact DESC',
+        'LIMIT  1;'
+      ] },
+      py: { file: 'stream_job.py', lines: [
+        'from pyspark.sql import functions as F',
+        '',
+        'events = (spark.readStream',
+        '    .format("kafka")',
+        '    .option("subscribe", "clickstream")',
+        '    .load())',
+        '',
+        'sessions = (events',
+        '    .withWatermark("ts", "10 minutes")',
+        '    .groupBy(F.window("ts", "30 minutes"), "user_id")',
+        '    .count())',
+        '',
+        'sessions.writeStream.format("delta").start("/gold/sessions")'
+      ] },
+      yaml: { file: 'pipeline.yaml', lines: [
+        '# orchestrated every five minutes',
+        'pipeline: events_to_lakehouse',
+        'schedule: "*/5 * * * *"',
+        'owner: [your_name]',
+        'tasks:',
+        '  - extract_cdc',
+        '  - spark_transform',
+        '  - dbt_build',
+        '  - publish_marts',
+        'sla_minutes: 15'
+      ] }
+    };
+
+    const td = (t, c) => ({ t, s: 'padding: 10px; border-bottom: 1px solid #222226; white-space: nowrap; color: ' + (c || TXT) });
+    const results = {
+      sql: { title: 'result · 1 row', cols: ['name', 'role', 'focus'],
+        rows: [[td('[Your name]', accent), td('Data Engineer'), td('streaming + lakehouse')]],
+        foot: 'Scanned [X] GB · partitions pruned: [X]%' },
+      py: { title: 'streaming query · ACTIVE', cols: ['metric', 'value'],
+        rows: [[td('input rate'), td('[X] rows/s', accent)], [td('batch duration'), td('[X] ms')], [td('watermark'), td('10 min')], [td('sink'), td('delta · gold')]],
+        foot: 'micro-batch [N] committed · exactly-once' },
+      yaml: { title: 'dag run · events_to_lakehouse', cols: ['task', 'state'],
+        rows: [[td('extract_cdc'), td('success', GRN)], [td('spark_transform'), td('success', GRN)], [td('dbt_build'), td('running', accent)], [td('publish_marts'), td('queued', DIM)]],
+        foot: 'SLA 15 min · on schedule' }
+    };
+
+    const r = results[tab];
+    const planOps = [
+      { op: 'Scan parquet', detail: 'bronze.events · PartitionFilters: [dt]', metric: '[X]B rows' },
+      { op: 'Filter', detail: 'isnotnull(user_id) AND event_type IN (...)', metric: '−[X]%' },
+      { op: 'Exchange', detail: 'hashpartitioning(user_id, 400) · AQE', metric: '[X] GB shuffle' },
+      { op: 'HashAggregate', detail: 'window(ts, 30m), user_id · count(1)', metric: '[X]M groups' },
+      { op: 'WriteDelta', detail: 'gold.sessions · MERGE · Z-ORDER(user_id)', metric: '[X] s' }
+    ];
+
+    const groups = [
+      ['ingest', 'Kafka, Debezium, Kinesis'],
+      ['process', 'Apache Spark, Flink, Python'],
+      ['store', 'Delta Lake, Iceberg, S3'],
+      ['model', 'dbt, SQL'],
+      ['warehouse', 'Snowflake, BigQuery'],
+      ['orchestrate', 'Airflow, Dagster'],
+      ['infra', 'Terraform, Kubernetes, AWS']
+    ];
+    const w1 = 13, w2 = 30;
+    const bar = '+' + '-'.repeat(w1 + 2) + '+' + '-'.repeat(w2 + 2) + '+';
+    const row = (a, b) => '| ' + a.padEnd(w1) + ' | ' + b.padEnd(w2) + ' |';
+    const toolLines = [
+      { t: 'warehouse=> SHOW TOOLS;', s: 'color: ' + accent },
+      { t: bar, s: 'color: #5E5E66' },
+      { t: row('layer', 'tools'), s: 'color: ' + VIO },
+      { t: bar, s: 'color: #5E5E66' }
+    ].concat(groups.map(g => ({ t: row(g[0], g[1]), s: 'color: ' + TXT })))
+     .concat([{ t: bar, s: 'color: #5E5E66' }, { t: '(' + groups.length + ' rows)', s: 'color: ' + DIM }]);
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      tabs: ['sql', 'py', 'yaml'].map(k => ({
+        file: files[k].file,
+        selected: k === tab ? 'true' : 'false',
+        pick: () => this.setState({ tab: k }),
+        style: k === tab ? 'background: #18181B; color: ' + TXT + '; box-shadow: inset 0 -2px 0 ' + accent : 'background: transparent; color: #A1A1AA'
+      })),
+      code: files[tab].lines.map((l, i) => ({ no: String(i + 1), toks: hl(l) })),
+      resultTitle: r.title,
+      resultCols: r.cols,
+      resultRows: r.rows.map(cells => ({ cells })),
+      resultFoot: r.foot,
+      plan: planOps.map((p, i) => ({ ...p, hasNext: i < planOps.length - 1, delay: (i * 0.25).toFixed(2) + 's' })),
+      tricks: [
+        { tag: 'io', t: 'Partition pruning', d: 'Lay data out by how it is queried, so scans read gigabytes instead of petabytes.' },
+        { tag: 'join', t: 'Broadcast joins', d: 'Ship small dimensions to every executor and skip the shuffle entirely.' },
+        { tag: 'skew', t: 'Skew handling', d: 'Salting hot keys and adaptive query execution keep one task from holding the job hostage.' },
+        { tag: 'cost', t: 'Incremental by default', d: 'MERGE only what changed. Compute cost follows the delta, not the table size.' }
+      ],
+      stats: [
+        { col: 'data_processed', v: '[X] PB', l: 'processed per month', color: accent },
+        { col: 'events_per_day', v: '[X]B', l: 'events ingested daily', color: TXT },
+        { col: 'p95_latency', v: '[X] s', l: 'source to dashboard', color: TXT },
+        { col: 'cost_delta', v: '−[X]%', l: 'compute spend after tuning', color: GRN }
+      ],
+      jobs: [
+        { id: 'job_0142 · streaming', title: 'Real-time clickstream lakehouse', desc: 'Replaced nightly batch with Structured Streaming into Delta bronze, silver and gold tables.',
+          tags: ['Kafka', 'Spark', 'Delta Lake'], metrics: [{ v: '[X] s', l: 'end-to-end latency' }, { v: '[X]B', l: 'events / day' }] },
+        { id: 'job_0097 · batch', title: 'Legacy ETL to cloud warehouse', desc: 'Moved [N] stored-procedure jobs to dbt on Snowflake, with tests, lineage and Airflow.',
+          tags: ['dbt', 'Snowflake', 'Airflow'], metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'runtime' }] },
+        { id: 'job_0063 · platform', title: 'Data quality and observability', desc: 'Freshness, volume and schema monitors with column-level lineage across the warehouse.',
+          tags: ['Great Expectations', 'OpenLineage'], metrics: [{ v: '[X]%', l: 'tables covered' }, { v: '[X] min', l: 'time to detect' }] }
+      ],
+      toolLines
+    };
+  }
+}
+</script>
+</body>
+</html>

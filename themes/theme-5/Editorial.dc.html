@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — The Data Review</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;family=Instrument+Sans:wght@400;500;600&amp;family=Azeret+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F5F1}
+a{color:#0B6E6E}a:hover{color:#074848}
+.flowline{stroke-dasharray:3 16;animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-38}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.cols > *{grid-column:auto !important;border-left:0 !important}
+.navlinks{flex-wrap:wrap}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #F6F5F1; color: #121212; font-family: 'Instrument Sans', system-ui, sans-serif">
+
+<header style="max-width: 1240px; margin: 0 auto; padding: 22px 24px 0">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid #121212; font-family: 'Azeret Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #4F4F4F">
+<span>Vol. 01 · [Month Year]</span>
+<span>Data engineering · Pipelines · Platforms</span>
+<span>[City]</span>
+</div>
+<a href="#top" style="display: block; padding: 28px 0 22px; text-align: center; text-decoration: none; color: #121212">
+<span style="font-family: 'Newsreader', serif; font-size: clamp(44px, 8vw, 112px); font-weight: 500; letter-spacing: -0.03em; line-height: 0.95">The [Your Name] <span style="font-style: italic; color: {{accent}}">Data</span> Review</span>
+</a>
+<nav class="navlinks" style="display: flex; justify-content: center; gap: 8px 36px; padding: 12px 0; border-top: 3px double #121212; border-bottom: 1px solid #121212; font-size: 15px; font-weight: 500">
+<a href="#figures" style="color: #121212; text-decoration: none; min-height: 32px; display: flex; align-items: center">In Figures</a>
+<a href="#cases" style="color: #121212; text-decoration: none; min-height: 32px; display: flex; align-items: center">Case Files</a>
+<a href="#methods" style="color: #121212; text-decoration: none; min-height: 32px; display: flex; align-items: center">Methods</a>
+<a href="#index" style="color: #121212; text-decoration: none; min-height: 32px; display: flex; align-items: center">Index</a>
+<a href="#letters" style="color: {{accent}}; text-decoration: none; min-height: 32px; display: flex; align-items: center">Write to me</a>
+</nav>
+</header>
+
+<section id="top" style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 72px; display: flex; flex-direction: column; gap: 40px">
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 48px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="font-family: 'Azeret Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}}">Cover story</div>
+<h1 style="margin: 0; font-family: 'Newsreader', serif; font-size: clamp(40px, 5.6vw, 76px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 500">Where the data goes, and <span style="font-style: italic">how it gets there.</span></h1>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding-left: 24px; border-left: 1px solid #121212">
+<p style="margin: 0; font-family: 'Newsreader', serif; font-size: 21px; line-height: 1.45; font-style: italic; color: #2B2B2B">A data engineer's account of moving billions of records from messy sources to trusted tables, every single day.</p>
+<span style="font-size: 14px; color: #4F4F4F">By <strong style="color: #121212">[Your name]</strong>, Data Engineer</span>
+</div>
+</div>
+
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="overflow-x: auto; padding: 28px 0; border-top: 1px solid #121212; border-bottom: 1px solid #121212">
+<svg viewBox="0 0 1000 420" role="img" aria-label="Sankey diagram: four sources flow through a Spark and dbt processing layer into marts, ML features, reverse ETL and archive" style="display: block; width: 100%; min-width: 720px; height: auto; font-family: 'Instrument Sans', sans-serif">
+<g fill="{{accent}}" fill-opacity="0.2">
+<path d="M16 20C246 20 246 50 476 50L476 140C246 140 246 110 16 110Z"></path>
+<path d="M16 130C246 130 246 140 476 140L476 270C246 270 246 260 16 260Z"></path>
+<path d="M16 280C246 280 246 270 476 270L476 330C246 330 246 340 16 340Z"></path>
+<path d="M16 360C246 360 246 330 476 330L476 370C246 370 246 400 16 400Z"></path>
+</g>
+<g fill="#C2410C" fill-opacity="0.18">
+<path d="M524 50C754 50 754 20 984 20L984 150C754 150 754 180 524 180Z"></path>
+<path d="M524 180C754 180 754 170 984 170L984 250C754 250 754 260 524 260Z"></path>
+<path d="M524 260C754 260 754 270 984 270L984 330C754 330 754 320 524 320Z"></path>
+<path d="M524 320C754 320 754 350 984 350L984 400C754 400 754 370 524 370Z"></path>
+</g>
+<g fill="none" stroke-width="2.5" stroke-linecap="round">
+<path class="flowline" stroke="{{accent}}" d="M16 65C246 65 246 95 476 95"></path>
+<path class="flowline" stroke="{{accent}}" d="M16 195C246 195 246 205 476 205"></path>
+<path class="flowline" stroke="{{accent}}" d="M16 310C246 310 246 300 476 300"></path>
+<path class="flowline" stroke="{{accent}}" d="M16 380C246 380 246 350 476 350"></path>
+<path class="flowline" stroke="#C2410C" d="M524 115C754 115 754 85 984 85"></path>
+<path class="flowline" stroke="#C2410C" d="M524 220C754 220 754 210 984 210"></path>
+<path class="flowline" stroke="#C2410C" d="M524 290C754 290 754 300 984 300"></path>
+<path class="flowline" stroke="#C2410C" d="M524 345C754 345 754 375 984 375"></path>
+</g>
+<g fill="#121212">
+<rect x="0" y="20" width="16" height="90"></rect><rect x="0" y="130" width="16" height="130"></rect><rect x="0" y="280" width="16" height="60"></rect><rect x="0" y="360" width="16" height="40"></rect>
+<rect x="476" y="50" width="48" height="320"></rect>
+<rect x="984" y="20" width="16" height="130"></rect><rect x="984" y="170" width="16" height="80"></rect><rect x="984" y="270" width="16" height="60"></rect><rect x="984" y="350" width="16" height="50"></rect>
+</g>
+<g font-size="15" font-weight="600" fill="#121212">
+<text x="26" y="70">PostgreSQL · CDC</text>
+<text x="26" y="200">Kafka · events</text>
+<text x="26" y="315">SaaS APIs</text>
+<text x="26" y="385">Files · S3</text>
+<text x="974" y="90" text-anchor="end">Gold marts · BI</text>
+<text x="974" y="215" text-anchor="end">ML features</text>
+<text x="974" y="305" text-anchor="end">Reverse ETL</text>
+<text x="974" y="380" text-anchor="end">Cold archive</text>
+<text x="500" y="36" text-anchor="middle">Spark · dbt</text>
+</g>
+</svg>
+</div>
+<figcaption style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 14px; color: #4F4F4F"><span><strong style="color: #121212">Fig. 1</strong> — Sources (left) are unified in one processing layer and published to every consumer (right).</span><span style="font-style: italic">Band widths illustrative.</span></figcaption>
+</figure>
+</section>
+
+<section id="figures" style="max-width: 1240px; margin: 0 auto; padding: 0 24px 88px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 3px double #121212; border-bottom: 1px solid #121212">
+<h2 style="margin: 0; font-family: 'Newsreader', serif; font-size: 30px; font-weight: 500">In figures</h2>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #4F4F4F">Section A</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<sc-for list="{{figures}}" as="f" hint-placeholder-count="4">
+<div style="{{f.style}}">
+<div style="font-family: 'Newsreader', serif; font-size: clamp(48px, 5.4vw, 76px); line-height: 1; font-weight: 500; letter-spacing: -0.03em">{{f.v}}</div>
+<div style="font-size: 15px; line-height: 1.5; color: #3A3A3A">{{f.l}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="cases" style="max-width: 1240px; margin: 0 auto; padding: 0 24px 88px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 3px double #121212; border-bottom: 1px solid #121212">
+<h2 style="margin: 0; font-family: 'Newsreader', serif; font-size: 30px; font-weight: 500">Case files</h2>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #4F4F4F">Section B</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0">
+<article style="grid-column: span 2; display: flex; flex-direction: column; gap: 18px; padding: 32px 32px 32px 0; border-bottom: 1px solid #121212">
+<div style="font-family: 'Azeret Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}}">Streaming · Lakehouse</div>
+<h3 style="margin: 0; font-family: 'Newsreader', serif; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.08; font-weight: 500; letter-spacing: -0.02em">The day the nightly batch job retired.</h3>
+<p style="margin: 0; font-family: 'Newsreader', serif; font-size: 19px; line-height: 1.6; color: #2B2B2B"><span style="float: left; font-size: 64px; line-height: 0.85; padding: 6px 10px 0 0; font-weight: 500; color: {{accent}}">P</span>roduct analytics used to wait a full day for yesterday's clicks. I rebuilt the path as a Kafka to Spark Structured Streaming pipeline writing bronze, silver and gold Delta tables, so dashboards now refresh within [X] seconds of an event.</p>
+<div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; padding: 18px 0 4px; border-top: 1px solid #D6D4CC">
+<div style="display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 12px; font-family: 'Azeret Mono', monospace; font-size: 12px; color: #4F4F4F"><span>Before</span><div style="display: flex; gap: 0; height: 14px"><div style="flex: 1; background: #D6D4CC"></div><div style="width: 6px; background: #121212"></div></div></div>
+<div style="display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 12px; font-family: 'Azeret Mono', monospace; font-size: 12px; color: #4F4F4F"><span>After</span><div style="height: 14px; background: repeating-linear-gradient(90deg, {{accent}} 0 4px, transparent 4px 10px)"></div></div>
+<div style="font-size: 13px; font-style: italic; color: #4F4F4F">One landing per day, versus a continuous stream. Schematic.</div>
+</div>
+</article>
+<sc-for list="{{sideCases}}" as="c" hint-placeholder-count="2">
+<article style="{{c.style}}">
+<div style="font-family: 'Azeret Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}}">{{c.kicker}}</div>
+<h3 style="margin: 0; font-family: 'Newsreader', serif; font-size: 27px; line-height: 1.15; font-weight: 500">{{c.title}}</h3>
+<p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.6; color: #2B2B2B">{{c.body}}</p>
+<div style="font-family: 'Azeret Mono', monospace; font-size: 12px; color: #4F4F4F">{{c.meta}}</div>
+</article>
+</sc-for>
+</div>
+<blockquote style="margin: 40px 0 0; padding: 0; text-align: center; font-family: 'Newsreader', serif; font-size: clamp(26px, 3.2vw, 40px); line-height: 1.3; font-style: italic; color: #121212">“A pipeline is only finished when nobody has to think about it.”<span style="display: block; margin-top: 12px; font-family: 'Instrument Sans', sans-serif; font-size: 14px; font-style: normal; color: #4F4F4F">— [Your name]</span></blockquote>
+</section>
+
+<section id="methods" style="max-width: 1240px; margin: 0 auto; padding: 0 24px 88px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 3px double #121212; border-bottom: 1px solid #121212">
+<h2 style="margin: 0; font-family: 'Newsreader', serif; font-size: 30px; font-weight: 500">Methods</h2>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #4F4F4F">Section C</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px">
+<sc-for list="{{methods}}" as="m" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid #D6D4CC">
+<span style="font-family: 'Newsreader', serif; font-size: 44px; line-height: 1; font-style: italic; color: {{accent}}">{{m.n}}</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-family: 'Newsreader', serif; font-size: 24px; font-weight: 500">{{m.t}}</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3A3A">{{m.d}}</p>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="index" style="max-width: 1240px; margin: 0 auto; padding: 0 24px 88px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 3px double #121212; border-bottom: 1px solid #121212">
+<h2 style="margin: 0; font-family: 'Newsreader', serif; font-size: 30px; font-weight: 500">Index of tools</h2>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #4F4F4F">Section D</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 48px; padding-top: 12px">
+<sc-for list="{{index}}" as="ix" hint-placeholder-count="12">
+<div style="display: flex; align-items: baseline; gap: 8px; padding: 10px 0; font-size: 16px">
+<span style="font-family: 'Newsreader', serif; font-size: 19px">{{ix.name}}</span>
+<span aria-hidden="true" style="flex: 1; border-bottom: 1.5px dotted #8A887F; transform: translateY(-4px)"></span>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 12px; color: #4F4F4F">{{ix.layer}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="letters" style="background: #121212; color: #F6F5F1; padding: 88px 24px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="font-family: 'Azeret Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #7FD1D1">Letters to the editor</div>
+<h2 style="margin: 0; font-family: 'Newsreader', serif; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.02; font-weight: 500; letter-spacing: -0.025em">Have a data problem worth a <span style="font-style: italic">front page?</span></h2>
+<a href="mailto:[you@domain.com]" style="font-family: 'Newsreader', serif; font-size: clamp(24px, 3vw, 36px); font-style: italic; color: #7FD1D1">[you@domain.com]</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding-left: 24px; border-left: 1px solid rgba(246,245,241,0.3); font-size: 16px">
+<span style="color: #C9C7BF">Open to [full-time roles / contract work] in data engineering.</span>
+<a href="https://linkedin.com/in/[handle]" style="color: #F6F5F1; min-height: 32px; display: flex; align-items: center">LinkedIn →</a>
+<a href="https://github.com/[handle]" style="color: #F6F5F1; min-height: 32px; display: flex; align-items: center">GitHub →</a>
+<a href="#top" style="color: #F6F5F1; min-height: 32px; display: flex; align-items: center">Résumé (PDF) →</a>
+</div>
+</div>
+</section>
+
+<footer style="max-width: 1240px; margin: 0 auto; padding: 20px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'Azeret Mono', monospace; font-size: 12px; color: #4F4F4F">
+<span>© [Year] [Your name]</span>
+<span>Set in Newsreader and Instrument Sans</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0B6E6E","options":["#0B6E6E","#1D4ED8","#7C2D92","#15803D"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#0B6E6E';
+    const animate = this.props.animate ?? true;
+    const figs = [
+      { v: '[X] PB', l: 'of data under management across the lakehouse and warehouse.' },
+      { v: '[X]B', l: 'events ingested on an average day, streaming and batch combined.' },
+      { v: '[N]', l: 'production pipelines owned end to end, from source to dashboard.' },
+      { v: '[X]%', l: 'of scheduled runs delivered inside their SLA over the past year.' }
+    ];
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      figures: figs.map((f, i) => ({ ...f,
+        style: 'display: flex; flex-direction: column; gap: 14px; padding: 32px ' + (i === 3 ? '0' : '24px') + ' 32px ' + (i === 0 ? '0' : '24px') + '; border-bottom: 1px solid #121212' + (i > 0 ? '; border-left: 1px solid #D6D4CC' : '') })),
+      sideCases: [
+        { kicker: 'Migration · ELT', title: '[N] stored procedures walk into dbt.', meta: '[N] jobs · runtime −[X]%',
+          body: 'A legacy warehouse full of opaque procedures became a tested, documented set of dbt models on Snowflake, orchestrated in Airflow with lineage anyone can read.' },
+        { kicker: 'Quality · Observability', title: 'Catching bad data before the CFO does.', meta: '[X]% tables covered · MTTD [X] min',
+          body: 'Freshness, volume and schema monitors with column-level lineage now flag broken upstream feeds long before a number reaches a board deck.' }
+      ].map((c, i) => ({ ...c,
+        style: 'display: flex; flex-direction: column; gap: 14px; padding: 32px 0 32px 32px; border-left: 1px solid #121212; border-bottom: 1px solid #121212' + (i === 1 ? '; grid-column: 3' : '') })),
+      methods: [
+        { n: 'i.', t: 'Model first, move second', d: 'Agree the grain, keys and contracts before writing a single job. Most pipeline bugs are modelling bugs in disguise.' },
+        { n: 'ii.', t: 'Make every run replayable', d: 'Idempotent writes and immutable raw layers mean any day can be rebuilt without fear.' },
+        { n: 'iii.', t: 'Pay for change, not size', d: 'Incremental processing and partition pruning keep compute proportional to what actually changed.' },
+        { n: 'iv.', t: 'Observe like production software', d: 'Tests, lineage and freshness alerts ship with the code, not as an afterthought.' }
+      ],
+      index: [
+        { name: 'Airflow', layer: 'orchestrate' }, { name: 'Apache Spark', layer: 'process' }, { name: 'AWS', layer: 'cloud' },
+        { name: 'BigQuery', layer: 'warehouse' }, { name: 'dbt', layer: 'model' }, { name: 'Debezium', layer: 'ingest' },
+        { name: 'Delta Lake', layer: 'store' }, { name: 'Flink', layer: 'process' }, { name: 'Iceberg', layer: 'store' },
+        { name: 'Kafka', layer: 'ingest' }, { name: 'Kubernetes', layer: 'infra' }, { name: 'Python', layer: 'language' },
+        { name: 'Snowflake', layer: 'warehouse' }, { name: 'SQL', layer: 'language' }, { name: 'Terraform', layer: 'infra' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

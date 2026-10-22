@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Data Engineer Portfolio</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#060A12}
+a{color:#7DF3EC}a:hover{color:#B8FFFA}
+.grid-bg{background-image:linear-gradient(rgba(125,243,236,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(125,243,236,.045) 1px,transparent 1px);background-size:48px 48px}
+.conn{position:relative;flex:1 1 40px;min-width:40px;height:2px;align-self:center}
+.pkt{position:absolute;top:-2px;left:-14px;width:14px;height:6px;border-radius:3px;animation:flowX 2.4s linear infinite}
+.mconn{position:relative;flex:1 1 14px;min-width:14px;height:2px}
+.mpkt{position:absolute;top:-2px;left:-8px;width:8px;height:6px;border-radius:3px;animation:flowX 1.8s linear infinite}
+.track-pkt{position:absolute;top:-5px;left:-60px;width:60px;height:12px;border-radius:6px;animation:flowX 4.5s cubic-bezier(.6,0,.4,1) infinite}
+.blk{animation:rise 3.2s ease-in-out infinite}
+@keyframes flowX{0%{left:-14px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes flowY{0%{top:-14px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes rise{0%,100%{opacity:.45}40%,60%{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:860px){
+.flow{flex-direction:column !important;align-items:center !important;gap:0 !important}
+.conn{width:2px;height:56px;flex:none;min-width:0}
+.pkt{left:-2px;top:-14px;width:6px;height:14px;animation-name:flowY}
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+.track{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #060A12; color: #E6ECF5; font-family: 'Bricolage Grotesque', system-ui, sans-serif; overflow-x: hidden">
+
+<header style="position: sticky; top: 0; z-index: 10; background: rgba(6,10,18,0.86); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06)">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #E6ECF5; min-height: 44px">
+<svg width="26" height="26" viewBox="0 0 96 96" aria-hidden="true"><path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="#FF8A3D"></path><path d="M10 90Q18 64 42 56" stroke="#FF8A3D" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"></path></svg>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500">[your_name]<span style="color: {{accent}}">.data</span></span>
+</a>
+<div class="navlinks" style="display: flex; gap: 32px; font-size: 15px">
+<a href="#pipeline" style="color: #A3AEC4; text-decoration: none">Pipeline</a>
+<a href="#scale" style="color: #A3AEC4; text-decoration: none">Scale</a>
+<a href="#projects" style="color: #A3AEC4; text-decoration: none">Projects</a>
+<a href="#stack" style="color: #A3AEC4; text-decoration: none">Stack</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 22px; border-radius: 999px; background: {{accent}}; color: #04121A; font-weight: 600; font-size: 15px; text-decoration: none">Hire me</a>
+</nav>
+</header>
+
+<section id="top" class="grid-bg" style="padding: 96px 24px 88px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-direction: column; gap: 24px; max-width: 940px">
+<div style="display: flex; align-items: center; gap: 10px; width: fit-content; padding: 8px 14px; border: 1px solid rgba(125,243,236,0.2); border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #A3AEC4">
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #5BE38A; box-shadow: 0 0 10px #5BE38A; animation: blink 1.6s ease-in-out infinite"></span>
+Data Engineer · Streaming · Lakehouse · Platform
+</div>
+<h1 style="margin: 0; font-size: clamp(44px, 7vw, 88px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 700">I turn raw events into <span style="color: {{accent}}">trusted data</span>, at petabyte scale.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.55; color: #A3AEC4; max-width: 640px">[Your name] designs and runs batch and streaming pipelines that move data from source systems to the warehouse: reliable, observable, and fast.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px">
+<a href="#projects" style="display: flex; align-items: center; gap: 10px; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; background: {{accent}}; color: #04121A; font-weight: 600; font-size: 16px; text-decoration: none">View case studies
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+<a href="#contact" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(230,236,245,0.22); color: #E6ECF5; font-weight: 500; font-size: 16px; text-decoration: none">Download résumé</a>
+</div>
+</div>
+
+<div style="border: 1px solid rgba(125,243,236,0.16); border-radius: 24px; background: rgba(10,16,28,0.88); box-shadow: 0 40px 120px -48px rgba(77,232,224,0.35); overflow: hidden">
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 14px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #A3AEC4">
+<span>dag <span style="color: #E6ECF5">events_to_lakehouse</span> · every 5 min</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #5BE38A; animation: blink 1.6s ease-in-out infinite"></span>running · [X] GB/s throughput</span>
+</div>
+<div class="flow" style="display: flex; align-items: center; padding: 40px 36px">
+
+<div style="flex: none; width: 190px; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #8794AD">01 · SOURCES</div>
+<sc-for list="{{sources}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg width="36" height="44" viewBox="0 0 36 44" fill="none" aria-hidden="true" style="flex: none"><path d="M2 8v28c0 3.3 7.2 6 16 6s16-2.7 16-6V8" fill="#0E1828" stroke="{{accent}}" stroke-width="1.5"></path><path d="M2 17c0 3.3 7.2 6 16 6s16-2.7 16-6M2 26c0 3.3 7.2 6 16 6s16-2.7 16-6" stroke="{{accent}}" stroke-opacity="0.45" stroke-width="1.5"></path><ellipse cx="18" cy="8" rx="16" ry="6" fill="#12223A" stroke="{{accent}}" stroke-width="1.5"></ellipse></svg>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 16px; font-weight: 600">{{s.name}}</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8794AD">{{s.kind}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div class="conn" aria-hidden="true" style="background: rgba(77,232,224,0.22)">
+<span class="pkt" style="background: {{accent}}; box-shadow: 0 0 12px {{accent}}"></span>
+<span class="pkt" style="background: {{accent}}; box-shadow: 0 0 12px {{accent}}; animation-delay: 0.8s"></span>
+<span class="pkt" style="background: {{accent}}; box-shadow: 0 0 12px {{accent}}; animation-delay: 1.6s"></span>
+</div>
+
+<div style="flex: none; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 0 12px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #8794AD">02 · PROCESS</div>
+<div style="position: relative; width: 168px; height: 168px; display: flex; align-items: center; justify-content: center">
+<div style="position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(255,138,61,0.5); animation: spin 18s linear infinite"></div>
+<div style="position: absolute; inset: 14px; border-radius: 50%; border: 1px solid rgba(255,138,61,0.18)"></div>
+<div style="position: absolute; inset: 20px; border-radius: 50%; background: radial-gradient(circle, rgba(255,138,61,0.32), rgba(255,138,61,0) 70%); animation: pulse 2.8s ease-in-out infinite"></div>
+<svg width="92" height="92" viewBox="0 0 96 96" role="img" aria-label="Spark processing engine" style="position: relative; filter: drop-shadow(0 0 14px rgba(255,138,61,0.7))"><path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="#FF8A3D"></path><path d="M10 90Q18 64 42 56" stroke="#FF8A3D" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.75"></path><path d="M24 92Q30 74 46 66" stroke="#FFB27A" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"></path><circle cx="80" cy="14" r="3.5" fill="#FFD2A8"></circle><circle cx="22" cy="18" r="2.5" fill="#FFD2A8" opacity="0.7"></circle></svg>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center">
+<div style="font-size: 17px; font-weight: 600">Spark engine</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8794AD">[N] executors · streaming</div>
+</div>
+</div>
+
+<div class="conn" aria-hidden="true" style="background: rgba(255,138,61,0.25)">
+<span class="pkt" style="background: #FF8A3D; box-shadow: 0 0 12px #FF8A3D; animation-delay: 0.4s"></span>
+<span class="pkt" style="background: #FF8A3D; box-shadow: 0 0 12px #FF8A3D; animation-delay: 1.2s"></span>
+<span class="pkt" style="background: #FF8A3D; box-shadow: 0 0 12px #FF8A3D; animation-delay: 2s"></span>
+</div>
+
+<div style="flex: none; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: #8794AD">03 · LAKEHOUSE</div>
+<div style="display: flex; gap: 18px; align-items: flex-end">
+<sc-for list="{{layers}}" as="l" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="display: flex; flex-direction: column-reverse; padding-bottom: 24px">
+<sc-for list="{{l.blocks}}" as="b" hint-placeholder-count="3">
+<svg class="blk" width="56" height="49" viewBox="0 0 64 56" aria-hidden="true" style="display: block; margin-bottom: -24px; color: {{l.color}}; animation-delay: {{b.delay}}"><polygon points="32,0 64,16 32,32 0,16" fill="currentColor" fill-opacity="0.9"></polygon><polygon points="0,16 32,32 32,56 0,40" fill="currentColor" fill-opacity="0.35"></polygon><polygon points="32,32 64,16 64,40 32,56" fill="currentColor" fill-opacity="0.58"></polygon><polyline points="0,16 32,32 64,16" fill="none" stroke="#060A12" stroke-opacity="0.5"></polyline></svg>
+</sc-for>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C3CCDB">{{l.name}}</div>
+</div>
+</sc-for>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8794AD">Delta · Iceberg · [X] PB stored</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section id="pipeline" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.05)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 640px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: {{accent}}">01 / HOW I MOVE DATA</div>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Source to warehouse, every stage accounted for.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #A3AEC4">{{modeCaption}}</p>
+</div>
+<div role="group" aria-label="Pipeline pattern" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: #0B111D">
+<button type="button" aria-pressed="{{etlPressed}}" onClick="{{setETL}}" style="{{etlStyle}}">ETL</button>
+<button type="button" aria-pressed="{{eltPressed}}" onClick="{{setELT}}" style="{{eltStyle}}">ELT</button>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px">
+<div class="track" aria-hidden="true" style="position: relative; height: 2px; margin: 0 4px; background: linear-gradient(90deg, rgba(77,232,224,0.15), rgba(255,138,61,0.35), rgba(77,232,224,0.15))">
+<span class="track-pkt" style="background: linear-gradient(90deg, rgba(77,232,224,0), {{accent}}); box-shadow: 0 0 18px {{accent}}"></span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{stages}}" as="st" hint-placeholder-count="4">
+<div style="{{st.cardStyle}}">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8794AD">{{st.num}}</span>
+<span style="{{st.iconStyle}}">
+<sc-if value="{{st.isExtract}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg></sc-if>
+<sc-if value="{{st.isTransform}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2c.8 6 2.8 8 9 9-6.2 1-8.2 3-9 9-.8-6-2.8-8-9-9 6.2-1 8.2-3 9-9z"></path></svg></sc-if>
+<sc-if value="{{st.isLoad}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11M7 9l5 5 5-5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path></svg></sc-if>
+<sc-if value="{{st.isServe}}" hint-placeholder-val="{{false}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></sc-if>
+</span>
+</div>
+<div style="font-size: 26px; font-weight: 600; letter-spacing: -0.02em">{{st.name}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #A3AEC4; flex: 1">{{st.desc}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{st.tools}}" as="t" hint-placeholder-count="3">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 5px 9px; border-radius: 6px; background: rgba(255,255,255,0.05); color: #C3CCDB">{{t}}</span>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="scale" class="grid-bg" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.05)">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: {{accent}}">02 / SCALE</div>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">From gigabytes to petabytes, without the 3 a.m. pages.</h2>
+</div>
+<div style="display: flex; align-items: flex-end; gap: 28px; flex-wrap: wrap">
+<sc-for list="{{scaleStacks}}" as="k" hint-placeholder-count="3">
+<div style="display: flex; align-items: flex-end; gap: 28px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+<div style="display: flex; flex-direction: column-reverse; padding-bottom: 28px">
+<sc-for list="{{k.blocks}}" as="b" hint-placeholder-count="3">
+<svg class="blk" width="72" height="63" viewBox="0 0 64 56" aria-hidden="true" style="display: block; margin-bottom: -30px; color: {{k.color}}; animation-delay: {{b.delay}}"><polygon points="32,0 64,16 32,32 0,16" fill="currentColor" fill-opacity="0.9"></polygon><polygon points="0,16 32,32 32,56 0,40" fill="currentColor" fill-opacity="0.35"></polygon><polygon points="32,32 64,16 64,40 32,56" fill="currentColor" fill-opacity="0.58"></polygon><polyline points="0,16 32,32 64,16" fill="none" stroke="#060A12" stroke-opacity="0.5"></polyline></svg>
+</sc-for>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500">{{k.unit}}</div>
+</div>
+<sc-if value="{{k.hasNext}}" hint-placeholder-val="{{true}}">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8794AD; padding-bottom: 44px">×1,000 →</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{stats}}" as="m" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 28px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); background: rgba(11,17,29,0.9)">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 40px; font-weight: 500; letter-spacing: -0.02em; color: {{m.color}}">{{m.value}}</div>
+<div style="font-size: 16px; line-height: 1.45; color: #A3AEC4">{{m.label}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="projects" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.05)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 640px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: {{accent}}">03 / CASE STUDIES</div>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Pipelines in production.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{projects}}" as="p" hint-placeholder-count="3">
+<a href="#contact" style="display: flex; flex-direction: column; border-radius: 22px; border: 1px solid rgba(255,255,255,0.08); background: #0B111D; overflow: hidden; text-decoration: none; color: #E6ECF5">
+<div class="grid-bg" style="display: flex; align-items: center; height: 150px; padding: 0 22px; border-bottom: 1px solid rgba(255,255,255,0.06); background-color: #080D17">
+<sc-for list="{{p.flow}}" as="f" hint-placeholder-count="3">
+<sc-if value="{{f.isConn}}" hint-placeholder-val="{{false}}">
+<div class="mconn" aria-hidden="true" style="background: rgba(77,232,224,0.25)"><span class="mpkt" style="background: {{accent}}; box-shadow: 0 0 8px {{accent}}; animation-delay: {{f.delay}}"></span></div>
+</sc-if>
+<sc-if value="{{f.isNode}}" hint-placeholder-val="{{true}}">
+<span style="{{f.style}}">{{f.label}}</span>
+</sc-if>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 26px; flex: 1">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: #8794AD">{{p.kind}}</div>
+<div style="font-size: 23px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">{{p.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #A3AEC4; flex: 1">{{p.desc}}</p>
+<div style="display: flex; gap: 24px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06)">
+<sc-for list="{{p.metrics}}" as="x" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: {{accent}}">{{x.v}}</div>
+<div style="font-size: 13px; color: #8794AD">{{x.l}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="stack" style="padding: 112px 24px; border-top: 1px solid rgba(255,255,255,0.05)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 640px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: {{accent}}">04 / STACK</div>
+<h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">The tools behind the flow.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{stack}}" as="g" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 18px; padding: 26px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); background: #0B111D">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="font-size: 18px; font-weight: 600">{{g.name}}</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8794AD">{{g.layer}}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{g.tools}}" as="t" hint-placeholder-count="4">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 7px 12px; border-radius: 8px; border: 1px solid rgba(125,243,236,0.16); color: #D4DCE8">{{t}}</span>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" style="padding: 40px 24px 112px">
+<div class="grid-bg" style="max-width: 1240px; margin: 0 auto; box-sizing: border-box; padding: clamp(40px, 7vw, 88px); border-radius: 28px; border: 1px solid rgba(125,243,236,0.18); background-color: #0A101C; box-shadow: 0 40px 120px -60px rgba(255,138,61,0.4); display: flex; flex-direction: column; align-items: flex-start; gap: 24px">
+<svg width="48" height="48" viewBox="0 0 96 96" aria-hidden="true" style="filter: drop-shadow(0 0 12px rgba(255,138,61,0.6))"><path d="M54 6C57 30 66 39 90 42C66 45 57 54 54 78C51 54 42 45 18 42C42 39 51 30 54 6Z" fill="#FF8A3D"></path><path d="M10 90Q18 64 42 56" stroke="#FF8A3D" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"></path></svg>
+<h2 style="margin: 0; font-size: clamp(36px, 5.5vw, 68px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 700; max-width: 820px">Got data that needs to move? Let's build the pipeline.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #A3AEC4; max-width: 560px">Open to [full-time roles / contract work] in data engineering and data platform teams.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; background: {{accent}}; color: #04121A; font-weight: 600; font-size: 16px; text-decoration: none">[you@domain.com]</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(230,236,245,0.22); color: #E6ECF5; font-size: 16px; text-decoration: none">LinkedIn</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(230,236,245,0.22); color: #E6ECF5; font-size: 16px; text-decoration: none">GitHub</a>
+</div>
+</div>
+</section>
+
+<footer style="border-top: 1px solid rgba(255,255,255,0.06); padding: 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8794AD">
+<span>© [Year] [Your name]</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #5BE38A"></span>last deploy: SUCCESS · 0 failed tasks</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#4DE8E0","options":["#4DE8E0","#8AA2FF","#A6F25E","#F06BD0"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  state = { mode: 'ELT' };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#4DE8E0';
+    const animate = this.props.animate ?? true;
+    const mode = this.state.mode;
+    const isELT = mode === 'ELT';
+    const ORANGE = '#FF8A3D';
+    const delays = (n, step) => Array.from({ length: n }, (_, i) => ({ delay: (i * step).toFixed(2) + 's' }));
+
+    const btn = (on) => 'min-width: 72px; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; cursor: pointer; font-family: \'JetBrains Mono\', monospace; font-size: 14px; font-weight: 500; ' +
+      (on ? 'background: ' + accent + '; color: #04121A' : 'background: transparent; color: #A3AEC4');
+
+    const S = {
+      extract: { name: 'Extract', isExtract: true, tools: ['Debezium CDC', 'Kafka Connect', 'REST / SFTP'],
+        desc: 'Capture change streams and batch drops from operational systems with zero load on production.' },
+      transform: { name: 'Transform', isTransform: true, tools: isELT ? ['dbt', 'SQL', 'Spark'] : ['Spark', 'PySpark', 'Flink'],
+        desc: isELT ? 'Model in the warehouse with dbt: versioned, tested, and rebuildable from raw at any time.' : 'Clean, join and aggregate in flight on Spark, so only curated data ever lands.' },
+      load: { name: 'Load', isLoad: true, tools: ['Delta Lake', 'Iceberg', 'Snowflake'],
+        desc: isELT ? 'Land raw data first, untouched and partitioned, so every downstream model can be replayed.' : 'Write curated, partitioned, schema-checked tables into the warehouse.' },
+      serve: { name: 'Serve', isServe: true, tools: ['Semantic layer', 'BI', 'Feature store'],
+        desc: 'Publish governed, documented tables to analysts, dashboards and ML models.' }
+    };
+    const order = isELT ? ['extract', 'load', 'transform', 'serve'] : ['extract', 'transform', 'load', 'serve'];
+    const stages = order.map((k, i) => {
+      const hot = k === 'transform';
+      return Object.assign({ isExtract: false, isTransform: false, isLoad: false, isServe: false }, S[k], {
+        num: '0' + (i + 1),
+        cardStyle: 'display: flex; flex-direction: column; gap: 14px; min-height: 280px; padding: 24px; border-radius: 20px; background: ' + (hot ? 'rgba(255,138,61,0.06)' : '#0B111D') + '; border: 1px solid ' + (hot ? 'rgba(255,138,61,0.45)' : 'rgba(255,255,255,0.08)'),
+        iconStyle: 'display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; color: ' + (hot ? ORANGE : accent) + '; background: ' + (hot ? 'rgba(255,138,61,0.12)' : 'rgba(77,232,224,0.08)')
+      });
+    });
+
+    const node = (label, hot) => ({ isNode: true, isConn: false, label,
+      style: 'flex: none; font-family: \'JetBrains Mono\', monospace; font-size: 12px; padding: 8px 10px; border-radius: 8px; white-space: nowrap; border: 1px solid ' + (hot ? 'rgba(255,138,61,0.55)' : 'rgba(125,243,236,0.25)') + '; color: ' + (hot ? '#FFB27A' : '#D4DCE8') + '; background: #0B111D' });
+    const conn = (d) => ({ isNode: false, isConn: true, delay: d });
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      sources: [
+        { name: 'PostgreSQL', kind: 'OLTP · CDC' },
+        { name: 'Kafka', kind: 'event streams' },
+        { name: 'SaaS APIs', kind: 'batch · REST' }
+      ],
+      layers: [
+        { name: 'bronze', color: '#C08457', blocks: delays(5, 0.18) },
+        { name: 'silver', color: '#B7C6D8', blocks: delays(3, 0.25) },
+        { name: 'gold', color: '#F4C350', blocks: delays(2, 0.35) }
+      ],
+      etlPressed: isELT ? 'false' : 'true',
+      eltPressed: isELT ? 'true' : 'false',
+      etlStyle: btn(!isELT),
+      eltStyle: btn(isELT),
+      setETL: () => this.setState({ mode: 'ETL' }),
+      setELT: () => this.setState({ mode: 'ELT' }),
+      modeCaption: isELT
+        ? 'ELT: land raw first, then transform inside the warehouse. Cheaper to change, fully replayable, easy to audit.'
+        : 'ETL: transform in flight on Spark before loading. Lean storage, curated tables only, ideal for heavy joins at scale.',
+      stages,
+      scaleStacks: [
+        { unit: 'GB', color: '#5E6E8A', blocks: delays(1, 0), hasNext: true },
+        { unit: 'TB', color: accent, blocks: delays(3, 0.2), hasNext: true },
+        { unit: 'PB', color: ORANGE, blocks: delays(6, 0.15), hasNext: false }
+      ],
+      stats: [
+        { value: '[X] PB', label: 'data processed per month', color: ORANGE },
+        { value: '[X]B', label: 'events ingested per day', color: accent },
+        { value: '[X]%', label: 'pipeline runs meeting SLA', color: accent },
+        { value: '−[X]%', label: 'warehouse compute cost after optimisation', color: '#E6ECF5' }
+      ],
+      projects: [
+        { kind: 'STREAMING · LAKEHOUSE', title: 'Real-time clickstream lakehouse',
+          desc: 'Replaced nightly batch jobs with a streaming pipeline feeding bronze, silver and gold Delta tables for product analytics.',
+          flow: [node('Kafka'), conn('0s'), node('Spark', true), conn('0.6s'), node('Delta')],
+          metrics: [{ v: '[X] s', l: 'end-to-end latency' }, { v: '[X]B', l: 'events / day' }] },
+        { kind: 'BATCH · ELT MIGRATION', title: 'Legacy ETL to cloud warehouse',
+          desc: 'Migrated [N] legacy jobs to an ELT stack with dbt models, tests and lineage, orchestrated in Airflow.',
+          flow: [node('S3'), conn('0.3s'), node('Snowflake'), conn('0.9s'), node('dbt', true)],
+          metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'runtime' }] },
+        { kind: 'QUALITY · OBSERVABILITY', title: 'Data quality and lineage platform',
+          desc: 'Added contracts, freshness checks and column-level lineage so broken data is caught before it reaches a dashboard.',
+          flow: [node('Airflow'), conn('0.2s'), node('Checks', true), conn('0.8s'), node('Alerts')],
+          metrics: [{ v: '[X]%', l: 'tables covered' }, { v: '[X] min', l: 'mean time to detect' }] }
+      ],
+      stack: [
+        { name: 'Processing', layer: 'compute', tools: ['Apache Spark', 'PySpark', 'Flink', 'SQL'] },
+        { name: 'Streaming', layer: 'ingest', tools: ['Kafka', 'Kinesis', 'Debezium'] },
+        { name: 'Storage & warehouse', layer: 'store', tools: ['Delta Lake', 'Iceberg', 'Snowflake', 'BigQuery'] },
+        { name: 'Modelling', layer: 'transform', tools: ['dbt', 'Python', 'Data contracts'] },
+        { name: 'Orchestration', layer: 'schedule', tools: ['Airflow', 'Dagster'] },
+        { name: 'Cloud & infra', layer: 'platform', tools: ['AWS', 'GCP', 'Terraform', 'Kubernetes'] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

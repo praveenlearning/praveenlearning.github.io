@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Suit HUD</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#04070D}
+a{color:#7FE9FF}a:hover{color:#C9F6FF}
+.brk{background:linear-gradient(#7FE9FF,#7FE9FF) top left/20px 2px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) top left/2px 20px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) top right/20px 2px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) top right/2px 20px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) bottom left/20px 2px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) bottom left/2px 20px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) bottom right/20px 2px no-repeat,linear-gradient(#7FE9FF,#7FE9FF) bottom right/2px 20px no-repeat,rgba(127,233,255,.04)}
+.grid{background-image:linear-gradient(rgba(127,233,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(127,233,255,.06) 1px,transparent 1px);background-size:40px 40px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+@keyframes lock{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+@keyframes scan{0%{top:0}100%{top:100%}}
+@keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@keyframes fill{from{width:0}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.corner{position:static !important}
+.hud-wrap{display:flex !important;flex-direction:column !important;gap:16px !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #04070D; color: #DDF7FF; font-family: 'Chakra Petch', system-ui, sans-serif">
+
+<header style="border-bottom: 1px solid rgba(127,233,255,0.2)">
+<nav style="max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'Share Tech Mono', monospace; font-size: 15px">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; min-height: 44px; color: #DDF7FF; text-decoration: none; letter-spacing: 0.1em">
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle cx="13" cy="13" r="11" stroke="{{accent}}" stroke-width="2"></circle><circle cx="13" cy="13" r="4" fill="{{accent}}"></circle><path d="M13 0v6M13 20v6M0 13h6M20 13h6" stroke="{{accent}}" stroke-width="2"></path></svg>
+SUIT OS // [YOUR NAME]
+</a>
+<div style="display: flex; gap: 22px; letter-spacing: 0.08em">
+<a href="#systems" style="color: #9CC7D6; text-decoration: none">SYSTEMS</a>
+<a href="#missions" style="color: #9CC7D6; text-decoration: none">MISSIONS</a>
+<a href="#arsenal" style="color: #9CC7D6; text-decoration: none">ARSENAL</a>
+<a href="#comms" style="color: {{accent}}; text-decoration: none">COMMS</a>
+</div>
+</nav>
+</header>
+
+<section id="top" class="grid" style="position: relative; padding: 40px 24px 64px; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(127,233,255,0.5), transparent); animation: scan 5s linear infinite"></div>
+<div class="hud-wrap" style="position: relative; max-width: 1280px; margin: 0 auto; min-height: 680px">
+
+<div class="corner brk" style="position: absolute; left: 0; top: 0; width: 280px; padding: 18px; font-family: 'Share Tech Mono', monospace; font-size: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="color: {{accent}}">PILOT</span>
+<span style="font-family: 'Chakra Petch', sans-serif; font-size: 22px; font-weight: 700">[YOUR NAME]</span>
+<span>CLASS: DATA ENGINEER</span>
+<span>SUIT: MK-[N] · [N] YRS ACTIVE</span>
+<span>BASE: [CITY]</span>
+</div>
+
+<div class="corner brk" style="position: absolute; right: 0; top: 0; width: 280px; padding: 18px; font-family: 'Share Tech Mono', monospace; font-size: 14px; display: flex; flex-direction: column; gap: 10px">
+<span style="color: {{accent}}">POWER CORE</span>
+<sc-for list="{{power}}" as="p" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between"><span>{{p.l}}</span><span>{{p.v}}</span></div>
+<div style="height: 6px; background: rgba(127,233,255,0.15)"><div style="{{p.bar}}"></div></div>
+</div>
+</sc-for>
+</div>
+
+<div class="corner brk" style="position: absolute; left: 0; bottom: 0; width: 280px; padding: 18px; font-family: 'Share Tech Mono', monospace; font-size: 14px; display: flex; flex-direction: column; gap: 6px">
+<span style="color: {{accent}}">SYSTEMS CHECK</span>
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="5"><span><span style="color: #7CFFB2">■</span> {{c}} ............ OK</span></sc-for>
+</div>
+
+<div class="corner brk" style="position: absolute; right: 0; bottom: 0; width: 200px; padding: 18px; font-family: 'Share Tech Mono', monospace; font-size: 14px; display: flex; flex-direction: column; gap: 8px">
+<span style="color: {{accent}}">ALTITUDE / SCALE</span>
+<sc-for list="{{ladder}}" as="l" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 10px"><span style="{{l.tick}}"></span><span style="{{l.text}}">{{l.u}}</span></div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 24px">
+<div role="img" aria-label="Targeting reticle locked on a data anomaly" style="position: relative; width: min(440px, 100%); aspect-ratio: 1">
+<div style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(127,233,255,0.5); animation: spin 30s linear infinite"></div>
+<div style="position: absolute; inset: 8%; border-radius: 50%; border: 3px solid transparent; border-top-color: {{accent}}; border-bottom-color: {{accent}}; animation: spinr 9s linear infinite"></div>
+<div style="position: absolute; inset: 18%; border-radius: 50%; border: 1px dotted rgba(127,233,255,0.6); animation: spin 14s linear infinite"></div>
+<div style="position: absolute; inset: 28%; border-radius: 50%; border: 2px solid transparent; border-left-color: #FF3D6E; border-right-color: #FF3D6E; animation: spin 5s linear infinite"></div>
+<div style="position: absolute; left: 50%; top: 4%; bottom: 4%; width: 1px; background: rgba(127,233,255,0.35)"></div>
+<div style="position: absolute; top: 50%; left: 4%; right: 4%; height: 1px; background: rgba(127,233,255,0.35)"></div>
+<div style="position: absolute; left: 58%; top: 26%; width: 64px; height: 64px; border: 2px solid #FF3D6E; animation: lock 1.2s ease-in-out infinite"></div>
+<span style="position: absolute; left: 58%; top: calc(26% - 26px); font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #FF7A98; white-space: nowrap">TARGET: SCHEMA DRIFT · LOCKED</span>
+<div style="position: absolute; inset: 40%; border-radius: 50%; background: radial-gradient(circle, rgba(127,233,255,0.5), rgba(127,233,255,0) 70%); display: flex; align-items: center; justify-content: center">
+<svg width="40" height="48" viewBox="0 0 40 48" fill="none" aria-hidden="true"><ellipse cx="20" cy="8" rx="16" ry="6" stroke="#DDF7FF" stroke-width="2"></ellipse><path d="M4 8v32c0 3.3 7.2 6 16 6s16-2.7 16-6V8M4 20c0 3.3 7.2 6 16 6s16-2.7 16-6M4 31c0 3.3 7.2 6 16 6s16-2.7 16-6" stroke="#DDF7FF" stroke-width="2"></path></svg>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; max-width: 720px">
+<h1 style="margin: 0; font-size: clamp(40px, 6vw, 76px); line-height: 1; font-weight: 700; letter-spacing: 0.01em; text-transform: uppercase">Suit up. <span style="color: {{accent}}">The data won't move itself.</span></h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.55; color: #9CC7D6">I'm [Your name], a data engineer. I build the armour around your data: pipelines that detect threats early, absorb load, and keep every system online.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="systems" style="padding: 88px 24px; border-top: 1px solid rgba(127,233,255,0.2)">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; letter-spacing: 0.1em; color: {{accent}}">// DIAGNOSTICS</span>
+<h2 style="margin: 0; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.02; font-weight: 700; text-transform: uppercase">Every subsystem, source to warehouse.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{systems}}" as="s" hint-placeholder-count="5">
+<div class="brk" style="display: flex; flex-direction: column; gap: 12px; padding: 22px">
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #9CC7D6">{{s.n}}</span>
+<span style="font-size: 21px; font-weight: 700; text-transform: uppercase; line-height: 1.1">{{s.name}}</span>
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; color: {{accent}}">{{s.tool}}</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #9CC7D6; flex: 1">{{s.d}}</p>
+<div style="display: flex; gap: 3px"><sc-for list="{{s.cells}}" as="c" hint-placeholder-count="10"><span style="{{c.s}}"></span></sc-for></div>
+</div>
+</sc-for>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 20px 0; border-top: 2px solid {{s.color}}">
+<span style="font-size: clamp(36px, 4vw, 52px); font-weight: 700; color: {{s.color}}">{{s.v}}</span>
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #9CC7D6">{{s.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="missions" class="grid" style="padding: 88px 24px; border-top: 1px solid rgba(127,233,255,0.2)">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; letter-spacing: 0.1em; color: {{accent}}">// MISSION REPLAYS</span>
+<h2 style="margin: 0; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.02; font-weight: 700; text-transform: uppercase">Threats neutralised.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+<sc-for list="{{missions}}" as="m" hint-placeholder-count="3">
+<a href="#comms" class="brk" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; text-decoration: none; color: #DDF7FF">
+<div style="display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 13px"><span style="color: #FF7A98">THREAT: {{m.threat}}</span><span style="color: #7CFFB2">CLEARED</span></div>
+<span style="font-size: 25px; font-weight: 700; line-height: 1.15; text-transform: uppercase">{{m.title}}</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #9CC7D6; flex: 1">{{m.d}}</p>
+<div style="display: flex; gap: 24px; padding-top: 12px; border-top: 1px dashed rgba(127,233,255,0.3)">
+<sc-for list="{{m.metrics}}" as="x" hint-placeholder-count="2"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 24px; font-weight: 700; color: {{accent}}">{{x.v}}</span><span style="font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #9CC7D6">{{x.l}}</span></div></sc-for>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="arsenal" style="padding: 88px 24px; border-top: 1px solid rgba(127,233,255,0.2)">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; letter-spacing: 0.1em; color: {{accent}}">// ARSENAL</span>
+<h2 style="margin: 0; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.02; font-weight: 700; text-transform: uppercase">Loadout.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px">
+<sc-for list="{{arsenal}}" as="a" hint-placeholder-count="12">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; aspect-ratio: 1.1; background: {{a.bg}}; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); text-align: center; padding: 0 18px">
+<span style="font-size: 18px; font-weight: 700">{{a.name}}</span>
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #9CC7D6">{{a.slot}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="comms" class="grid" style="padding: 88px 24px; border-top: 1px solid rgba(127,233,255,0.2)">
+<div class="brk" style="max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 56px); box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center">
+<span style="font-family: 'Share Tech Mono', monospace; font-size: 14px; letter-spacing: 0.12em; color: #FF7A98">● INCOMING TRANSMISSION</span>
+<div aria-hidden="true" style="display: flex; align-items: center; gap: 4px; height: 56px">
+<sc-for list="{{wave}}" as="w" hint-placeholder-count="24"><span style="{{w.s}}"></span></sc-for>
+</div>
+<h2 style="margin: 0; font-size: clamp(36px, 5.4vw, 68px); line-height: 1; font-weight: 700; text-transform: uppercase">Assemble your data team.</h2>
+<p style="margin: 0; font-size: 18px; color: #9CC7D6">Open to [full-time / contract] missions.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; padding: 0 24px; background: {{accent}}; color: #04070D; font-weight: 700; font-size: 16px; letter-spacing: 0.06em; text-decoration: none; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%)">[YOU@DOMAIN.COM]</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border: 1px solid #7FE9FF; color: #DDF7FF; font-weight: 600; letter-spacing: 0.06em; text-decoration: none">GITHUB</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border: 1px solid #7FE9FF; color: #DDF7FF; font-weight: 600; letter-spacing: 0.06em; text-decoration: none">LINKEDIN</a>
+</div>
+</div>
+</section>
+
+<footer style="border-top: 1px solid rgba(127,233,255,0.2); padding: 14px 24px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #9CC7D6">
+<span>© [YEAR] [YOUR NAME]</span>
+<span>ALL SYSTEMS NOMINAL</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#7FE9FF","options":["#7FE9FF","#FFB547","#7CFFB2","#FF7A98"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#7FE9FF';
+    const animate = this.props.animate ?? true;
+    const rand = (i) => Math.abs(Math.sin(i * 12.9898 + 3.7) * 43758.5453) % 1;
+    const meter = (n, c) => Array.from({ length: 10 }, (_, i) => ({ s: 'flex: 1; height: 10px; background: ' + (i < n ? c : 'rgba(127,233,255,0.12)') }));
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      power: [
+        { l: 'THROUGHPUT', v: '[X] TB/D', bar: 'height: 6px; width: 86%; background: ' + accent + '; animation: fill 2s ease-out' },
+        { l: 'RELIABILITY', v: '[X]% SLA', bar: 'height: 6px; width: 94%; background: #7CFFB2; animation: fill 2.4s ease-out' },
+        { l: 'COST EFFICIENCY', v: '−[X]%', bar: 'height: 6px; width: 72%; background: #FFB547; animation: fill 2.8s ease-out' }
+      ],
+      checks: ['INGEST', 'TRANSFORM', 'QUALITY', 'LOAD', 'SERVE'],
+      ladder: ['EB', 'PB', 'TB', 'GB', 'MB'].map(u => {
+        const on = u === 'PB';
+        return { u: on ? u + ' ◀ CRUISING' : u, tick: 'width: ' + (on ? 28 : 14) + 'px; height: 2px; background: ' + (on ? accent : 'rgba(127,233,255,0.4)'), text: on ? 'color: ' + accent : 'color: #9CC7D6' };
+      }),
+      systems: [
+        { n: 'SYS-01', name: 'Ingest thrusters', tool: 'Kafka · Debezium', d: 'Change data capture and event streams at full burn.', cells: meter(9, accent) },
+        { n: 'SYS-02', name: 'Transform core', tool: 'Apache Spark', d: 'Distributed compute that splits any load across the cluster.', cells: meter(10, '#FFB547') },
+        { n: 'SYS-03', name: 'Quality shields', tool: 'Contracts · tests', d: 'Blocks malformed data before it reaches a dashboard.', cells: meter(9, '#7CFFB2') },
+        { n: 'SYS-04', name: 'Load bay', tool: 'Delta · Iceberg', d: 'ACID writes to open tables, idempotent on every retry.', cells: meter(8, accent) },
+        { n: 'SYS-05', name: 'Warehouse uplink', tool: 'dbt · Snowflake', d: 'Tested models served to analysts and ML.', cells: meter(9, '#FF7A98') }
+      ],
+      stats: [
+        { v: '[X] PB', l: 'DATA SECURED', color: accent },
+        { v: '[X]B', l: 'EVENTS / DAY', color: '#DDF7FF' },
+        { v: '[N]', l: 'PIPELINES ONLINE', color: '#DDF7FF' },
+        { v: '[X]%', l: 'MISSIONS ON TIME', color: '#7CFFB2' }
+      ],
+      missions: [
+        { threat: 'LATENCY', title: 'Real-time clickstream lakehouse', d: 'Replaced nightly batch with Kafka, Spark Structured Streaming and Delta. Data lands in seconds.', metrics: [{ v: '[X] s', l: 'LATENCY' }, { v: '[X]B', l: 'EVENTS / DAY' }] },
+        { threat: 'LEGACY', title: 'Legacy ETL to cloud warehouse', d: '[N] stored procedures rebuilt as tested dbt models on Snowflake, orchestrated in Airflow.', metrics: [{ v: '[N]', l: 'JOBS MIGRATED' }, { v: '−[X]%', l: 'RUNTIME' }] },
+        { threat: 'BAD DATA', title: 'Data quality and lineage', d: 'Freshness, volume and schema monitors with column-level lineage across the warehouse.', metrics: [{ v: '[X]%', l: 'COVERAGE' }, { v: '[X] MIN', l: 'TO DETECT' }] }
+      ],
+      arsenal: [
+        ['Spark', 'compute'], ['Kafka', 'ingest'], ['Flink', 'stream'], ['dbt', 'model'], ['Delta Lake', 'store'], ['Iceberg', 'store'],
+        ['Snowflake', 'warehouse'], ['BigQuery', 'warehouse'], ['Airflow', 'orchestrate'], ['Python', 'language'], ['SQL', 'language'], ['Terraform', 'infra']
+      ].map((a, i) => ({ name: a[0], slot: a[1], bg: i % 3 === 0 ? 'rgba(127,233,255,0.16)' : 'rgba(127,233,255,0.07)' })),
+      wave: Array.from({ length: 32 }, (_, i) => ({ s: 'width: 4px; height: ' + (20 + Math.round(rand(i) * 36)) + 'px; background: ' + accent + '; transform-origin: center; animation: wave ' + (0.6 + rand(i + 4) * 0.8).toFixed(2) + 's ease-in-out infinite; animation-delay: -' + (rand(i + 9)).toFixed(2) + 's' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

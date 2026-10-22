@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Event Stream</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Unbounded:wght@400;500;700;800&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0D0A1C}
+a{color:#C8F560}a:hover{color:#E2FF9E}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+@keyframes flowX{0%{left:-8px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.lane{display:flex;gap:10px;width:max-content;animation:mq 30s linear infinite}
+.lane-rev{animation-direction:reverse}
+.outline{color:transparent;-webkit-text-stroke:1.5px rgba(241,238,255,.55)}
+.paused *{animation-play-state:paused !important}
+input,textarea{font:inherit}
+input:focus,textarea:focus{outline:2px solid #C8F560;outline-offset:1px}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #0D0A1C; color: #F1EEFF; font-family: 'DM Sans', system-ui, sans-serif; overflow-x: hidden">
+
+<header style="border-bottom: 1px solid rgba(173,166,207,0.16)">
+<nav style="max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; color: #F1EEFF">
+<svg width="30" height="22" viewBox="0 0 30 22" aria-hidden="true"><rect x="0" y="0" width="30" height="4" rx="2" fill="{{accent}}"></rect><rect x="6" y="9" width="24" height="4" rx="2" fill="#FF6E5A"></rect><rect x="0" y="18" width="20" height="4" rx="2" fill="#ADA6CF"></rect></svg>
+<span style="font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700">[YOUR NAME]</span>
+</a>
+<div class="navlinks" style="display: flex; gap: 30px; font-family: 'DM Mono', monospace; font-size: 14px">
+<a href="#guarantees" style="color: #ADA6CF; text-decoration: none">guarantees</a>
+<a href="#throughput" style="color: #ADA6CF; text-decoration: none">throughput</a>
+<a href="#offsets" style="color: #ADA6CF; text-decoration: none">offsets</a>
+<a href="#topics" style="color: #ADA6CF; text-decoration: none">topics</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 20px; border-radius: 999px; background: {{accent}}; color: #14110A; font-weight: 600; font-size: 15px; text-decoration: none">Subscribe</a>
+</nav>
+</header>
+
+<section id="top" style="padding: 80px 0 72px">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; font-family: 'DM Mono', monospace; font-size: 13px; color: #ADA6CF">
+<span style="padding: 6px 12px; border: 1px solid rgba(173,166,207,0.25); border-radius: 999px">topic: career.events</span>
+<span style="padding: 6px 12px; border: 1px solid rgba(173,166,207,0.25); border-radius: 999px">partitions: 4</span>
+<span style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid rgba(173,166,207,0.25); border-radius: 999px"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; animation: blink 1.4s ease-in-out infinite"></span>consumer lag: 0</span>
+</div>
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(52px, 10vw, 148px); line-height: 0.95; letter-spacing: -0.04em; font-weight: 800">Data in <span style="color: {{accent}}">motion.</span></h1>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: end">
+<p style="margin: 0; font-size: 20px; line-height: 1.55; color: #ADA6CF; max-width: 620px">I'm [Your name], a data engineer building event-driven systems: streams that capture every change, process it once, and land it where it matters within seconds.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start">
+<a href="#topics" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; background: {{accent}}; color: #14110A; font-weight: 600; font-size: 16px; text-decoration: none">See what I've built</a>
+<a href="#contact" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(241,238,255,0.3); color: #F1EEFF; font-size: 16px; text-decoration: none">Résumé</a>
+</div>
+</div>
+</div>
+
+<div style="position: relative; margin-top: 64px; display: flex; flex-direction: column; gap: 12px; padding: 28px 0; border-top: 1px solid rgba(173,166,207,0.12); border-bottom: 1px solid rgba(173,166,207,0.12); background: #100C24">
+<sc-for list="{{lanes}}" as="ln" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 0">
+<div style="flex: none; width: 64px; padding-left: 20px; font-family: 'DM Mono', monospace; font-size: 12px; color: #ADA6CF">{{ln.label}}</div>
+<div style="flex: 1; min-width: 0; overflow: hidden">
+<div class="lane" style="{{ln.style}}" aria-hidden="true">
+<sc-for list="{{ln.msgs}}" as="m" hint-placeholder-count="8">
+<span style="{{m.style}}"><span style="color: #ADA6CF">{{m.off}}</span> {{m.type}}</span>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-for>
+<div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 74%; width: 2px; background: {{accent}}; box-shadow: 0 0 18px {{accent}}">
+<span style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 10px; border-radius: 999px; background: {{accent}}; color: #14110A; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500">consumer · [your_name]</span>
+</div>
+</div>
+</section>
+
+<section id="guarantees" style="padding: 104px 24px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<div style="font-family: 'DM Mono', monospace; font-size: 13px; color: {{accent}}">01 — DELIVERY SEMANTICS</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Exactly once, end to end.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #ADA6CF">Every hop is designed so that retries, rebalances and replays never double-count or drop a record.</p>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{hops}}" as="h" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 26px; border-radius: 22px; background: #161230; border: 1px solid rgba(173,166,207,0.16)">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-family: 'Unbounded', sans-serif; font-size: 40px; font-weight: 800; color: {{h.color}}">{{h.n}}</span>
+<span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #ADA6CF">{{h.tool}}</span>
+</div>
+<div class="mconn" aria-hidden="true" style="position: relative; height: 2px; background: rgba(200,245,96,0.18)"><span style="position: absolute; top: -2px; left: -8px; width: 8px; height: 6px; border-radius: 3px; background: {{h.color}}; animation: flowX 2s linear infinite; animation-delay: {{h.delay}}"></span></div>
+<div style="font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700">{{h.t}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #ADA6CF; flex: 1">{{h.d}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{h.tags}}" as="t" hint-placeholder-count="2"><span style="font-family: 'DM Mono', monospace; font-size: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(241,238,255,0.07); color: #E0DBF7">{{t}}</span></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="throughput" style="padding: 104px 24px; background: #100C24; border-top: 1px solid rgba(173,166,207,0.12); border-bottom: 1px solid rgba(173,166,207,0.12)">
+<div class="cols" style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'DM Mono', monospace; font-size: 13px; color: {{accent}}">02 — THROUGHPUT</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Billions of events. Steady as a heartbeat.</h2>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 22px; background: #161230; border: 1px solid rgba(173,166,207,0.16)">
+<div style="display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 12px; color: #ADA6CF"><span>events / sec</span><span>illustrative</span></div>
+<div aria-hidden="true" style="display: flex; align-items: flex-end; gap: 4px; height: 200px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="40">
+<div style="{{b.style}}"></div>
+</sc-for>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 22px 0; border-bottom: 1px solid rgba(173,166,207,0.16)">
+<span style="font-size: 17px; color: #ADA6CF">{{s.l}}</span>
+<span style="font-family: 'Unbounded', sans-serif; font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.03em; color: {{s.color}}">{{s.v}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="offsets" style="padding: 104px 24px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<div style="font-family: 'DM Mono', monospace; font-size: 13px; color: {{accent}}">03 — COMMITTED OFFSETS</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Career log, newest first.</h2>
+</div>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{career}}" as="c" hint-placeholder-count="4">
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 4fr) minmax(0, 4fr); gap: 24px; align-items: center; padding: 26px 0; border-top: 1px solid rgba(173,166,207,0.16)">
+<span style="font-family: 'DM Mono', monospace; font-size: 15px; color: {{c.color}}">{{c.off}}</span>
+<span style="font-family: 'DM Mono', monospace; font-size: 14px; color: #ADA6CF">{{c.when}}</span>
+<span style="font-family: 'Unbounded', sans-serif; font-size: 19px; font-weight: 500">{{c.role}}</span>
+<span style="font-size: 15px; line-height: 1.5; color: #ADA6CF">{{c.d}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="topics" style="padding: 104px 24px; border-top: 1px solid rgba(173,166,207,0.12)">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<div style="font-family: 'DM Mono', monospace; font-size: 13px; color: {{accent}}">04 — TOPICS I'VE BUILT</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(30px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700">Selected projects.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+<sc-for list="{{topics}}" as="tp" hint-placeholder-count="3">
+<a href="#contact" style="display: flex; flex-direction: column; border-radius: 24px; background: #161230; border: 1px solid rgba(173,166,207,0.16); overflow: hidden; text-decoration: none; color: #F1EEFF">
+<div aria-hidden="true" style="display: flex; flex-direction: column; gap: 14px; padding: 24px; background: #120E28; border-bottom: 1px solid rgba(173,166,207,0.12)">
+<sc-for list="{{tp.parts}}" as="pt" hint-placeholder-count="3">
+<div style="position: relative; height: 2px; background: rgba(173,166,207,0.18)"><span style="{{pt.style}}"></span></div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 26px; flex: 1">
+<span style="font-family: 'DM Mono', monospace; font-size: 14px; color: {{accent}}">{{tp.topic}}</span>
+<div style="font-family: 'Unbounded', sans-serif; font-size: 21px; font-weight: 700; line-height: 1.25">{{tp.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #ADA6CF; flex: 1">{{tp.desc}}</p>
+<div style="display: flex; gap: 24px; padding-top: 14px; border-top: 1px solid rgba(173,166,207,0.14)">
+<sc-for list="{{tp.metrics}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Unbounded', sans-serif; font-size: 20px; font-weight: 700">{{m.v}}</span>
+<span style="font-size: 13px; color: #ADA6CF">{{m.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section aria-label="{{toolsLabel}}" style="padding: 56px 0; border-top: 1px solid rgba(173,166,207,0.12); border-bottom: 1px solid rgba(173,166,207,0.12); display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+<div style="overflow: hidden" aria-hidden="true">
+<div class="lane" style="gap: 48px; animation-duration: 40s">
+<sc-for list="{{toolsA}}" as="t" hint-placeholder-count="8"><span class="outline" style="font-family: 'Unbounded', sans-serif; font-size: clamp(36px, 6vw, 80px); font-weight: 800; white-space: nowrap">{{t}}</span></sc-for>
+</div>
+</div>
+<div style="overflow: hidden" aria-hidden="true">
+<div class="lane lane-rev" style="gap: 48px; animation-duration: 46s">
+<sc-for list="{{toolsB}}" as="t" hint-placeholder-count="8"><span style="font-family: 'Unbounded', sans-serif; font-size: clamp(36px, 6vw, 80px); font-weight: 800; white-space: nowrap; color: {{accent}}">{{t}}</span></sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" style="padding: 104px 24px">
+<div class="cols" style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<div style="font-family: 'DM Mono', monospace; font-size: 13px; color: {{accent}}">05 — PRODUCE A MESSAGE</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-size: clamp(34px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800">Let's get your data moving.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #ADA6CF">Open to [full-time roles / contract work] in streaming and data platform engineering.</p>
+<div style="display: flex; flex-direction: column; gap: 10px; font-family: 'DM Mono', monospace; font-size: 15px">
+<a href="mailto:[you@domain.com]" style="color: #F1EEFF">[you@domain.com]</a>
+<a href="https://linkedin.com/in/[handle]" style="color: #F1EEFF">linkedin.com/in/[handle]</a>
+<a href="https://github.com/[handle]" style="color: #F1EEFF">github.com/[handle]</a>
+</div>
+</div>
+<form style="display: flex; flex-direction: column; gap: 18px; padding: 32px; border-radius: 24px; background: #161230; border: 1px solid rgba(173,166,207,0.16)">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="st-key" style="font-family: 'DM Mono', monospace; font-size: 13px; color: #ADA6CF">key · your name</label>
+<input id="st-key" type="text" placeholder="Ada Lovelace" style="min-height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 12px; border: 1px solid rgba(173,166,207,0.28); background: #0D0A1C; color: #F1EEFF; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="st-header" style="font-family: 'DM Mono', monospace; font-size: 13px; color: #ADA6CF">header · reply-to email</label>
+<input id="st-header" type="email" placeholder="you@company.com" style="min-height: 48px; box-sizing: border-box; padding: 0 16px; border-radius: 12px; border: 1px solid rgba(173,166,207,0.28); background: #0D0A1C; color: #F1EEFF; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="st-value" style="font-family: 'DM Mono', monospace; font-size: 13px; color: #ADA6CF">value · message</label>
+<textarea id="st-value" rows="4" placeholder="We have a Kafka cluster and a deadline…" style="box-sizing: border-box; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(173,166,207,0.28); background: #0D0A1C; color: #F1EEFF; font-size: 16px; resize: vertical"></textarea>
+</div>
+<button type="button" style="min-height: 52px; border: 0; border-radius: 999px; background: {{accent}}; color: #14110A; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">Publish to topic →</button>
+</form>
+</div>
+</section>
+
+<footer style="border-top: 1px solid rgba(173,166,207,0.12); padding: 20px 24px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'DM Mono', monospace; font-size: 13px; color: #ADA6CF">
+<span>© [Year] [Your name]</span>
+<span>committed offset: latest · lag 0</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C8F560","options":["#C8F560","#5EEAD4","#FFD84D","#FF8FB1"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#C8F560';
+    const animate = this.props.animate ?? true;
+    const CORAL = '#FF6E5A', LILAC = '#ADA6CF';
+    const types = ['page_view', 'add_to_cart', 'order_placed', 'cdc.update', 'sensor.read', 'login', 'refund', 'click', 'cdc.insert', 'payment'];
+    const tint = (t) => t.startsWith('cdc') ? CORAL : (t === 'order_placed' || t === 'payment') ? accent : LILAC;
+    const rand = (i) => Math.abs(Math.sin(i * 12.9898 + 7.3) * 43758.5453) % 1;
+
+    const lanes = [0, 1, 2, 3].map((p) => {
+      const base = 10240 + p * 3117;
+      const half = Array.from({ length: 12 }, (_, i) => {
+        const t = types[Math.floor(rand(p * 31 + i) * types.length)];
+        const c = tint(t);
+        return { off: '#' + (base + i), type: t,
+          style: 'flex: none; font-family: \'DM Mono\', monospace; font-size: 13px; padding: 8px 14px; border-radius: 999px; white-space: nowrap; color: #F1EEFF; background: #161230; border: 1px solid ' + (c === LILAC ? 'rgba(173,166,207,0.25)' : c) };
+      });
+      return { label: 'P' + p, msgs: half.concat(half),
+        style: 'animation-duration: ' + [34, 44, 28, 38][p] + 's' + (p % 2 ? '; animation-direction: reverse' : '') };
+    });
+
+    const bars = Array.from({ length: 44 }, (_, i) => {
+      const h = 35 + Math.round(rand(i + 100) * 65);
+      const c = i % 11 === 7 ? CORAL : accent;
+      return { style: 'flex: 1; height: ' + h + '%; border-radius: 3px 3px 0 0; transform-origin: bottom; background: ' + c + '; opacity: ' + (0.55 + rand(i + 5) * 0.45).toFixed(2) + '; animation: eq ' + (1.4 + rand(i + 9) * 1.6).toFixed(2) + 's ease-in-out infinite; animation-delay: -' + (rand(i + 3) * 2).toFixed(2) + 's' };
+    });
+
+    const part = (d, dur, c) => ({ style: 'position: absolute; top: -2px; left: -8px; width: 8px; height: 6px; border-radius: 3px; background: ' + c + '; animation: flowX ' + dur + 's linear infinite; animation-delay: ' + d + 's' });
+
+    const toolsA = ['Kafka', 'Flink', 'Apache Spark', 'Debezium', 'Kinesis', 'Delta Lake'];
+    const toolsB = ['Iceberg', 'dbt', 'Snowflake', 'Airflow', 'Terraform', 'Kubernetes'];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      lanes,
+      hops: [
+        { n: '01', t: 'Produce', tool: 'Debezium', color: accent, delay: '0s', d: 'Change data capture streams every insert, update and delete from source databases.', tags: ['idempotent', 'schema registry'] },
+        { n: '02', t: 'Broker', tool: 'Kafka', color: LILAC, delay: '0.5s', d: 'Partitioned, replicated topics keep ordering per key and survive broker loss.', tags: ['RF = 3', 'compacted'] },
+        { n: '03', t: 'Process', tool: 'Flink · Spark', color: CORAL, delay: '1s', d: 'Stateful windows, joins and dedup with checkpoints that make restarts invisible.', tags: ['watermarks', 'checkpoints'] },
+        { n: '04', t: 'Sink', tool: 'Delta · Iceberg', color: accent, delay: '1.5s', d: 'Transactional writes to the lakehouse, committed together with consumer offsets.', tags: ['ACID', 'exactly-once'] }
+      ],
+      bars,
+      stats: [
+        { l: 'Peak events per second', v: '[X]M', color: accent },
+        { l: 'Events processed per day', v: '[X]B', color: '#F1EEFF' },
+        { l: 'Source-to-lake latency', v: '[X] s', color: '#F1EEFF' },
+        { l: 'Data stored', v: '[X] PB', color: CORAL }
+      ],
+      career: [
+        { off: 'offset 0003 · latest', when: '[YYYY] — now', role: '[Role] · [Company]', d: '[One line on scope, e.g. owns the streaming platform for N teams.]', color: accent },
+        { off: 'offset 0002', when: '[YYYY] — [YYYY]', role: '[Role] · [Company]', d: '[One line on the biggest system you shipped there.]', color: LILAC },
+        { off: 'offset 0001', when: '[YYYY] — [YYYY]', role: '[Role] · [Company]', d: '[One line on what you learned or built.]', color: LILAC },
+        { off: 'offset 0000', when: '[YYYY]', role: '[Degree] · [University]', d: '[Where it started.]', color: LILAC }
+      ],
+      topics: [
+        { topic: 'clickstream.v2', title: 'Real-time clickstream lakehouse', desc: 'Product events flow from Kafka through Spark Structured Streaming into bronze, silver and gold Delta tables.',
+          parts: [part(0, 1.6, accent), part(0.5, 2.1, accent), part(0.2, 1.8, CORAL)], metrics: [{ v: '[X] s', l: 'latency' }, { v: '[X]B', l: 'events / day' }] },
+        { topic: 'cdc.orders', title: 'CDC-driven warehouse sync', desc: 'Debezium change streams replaced nightly dumps, keeping the warehouse minutes behind production.',
+          parts: [part(0.3, 2.2, CORAL), part(0, 1.7, LILAC), part(0.8, 2, accent)], metrics: [{ v: '[N]', l: 'tables synced' }, { v: '−[X]%', l: 'load on source DB' }] },
+        { topic: 'iot.telemetry', title: 'Sensor telemetry at scale', desc: 'Windowed aggregation and anomaly flags over device telemetry, with late-data handling via watermarks.',
+          parts: [part(0.1, 1.5, accent), part(0.6, 1.9, LILAC), part(0.4, 2.4, accent)], metrics: [{ v: '[X]K', l: 'devices' }, { v: '[X]M', l: 'readings / min' }] }
+      ],
+      toolsLabel: 'Tools: ' + toolsA.concat(toolsB).join(', '),
+      toolsA: toolsA.concat(toolsA),
+      toolsB: toolsB.concat(toolsB)
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Block Storage</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=Martian+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFE14D}
+a{color:#0A0A0A}a:hover{color:#2340FF}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes write{0%{background:#FFE14D}4%,80%{background:#0A0A0A}90%,100%{background:#FFE14D}}
+@keyframes writeB{0%{background:#FFE14D}4%,80%{background:#2340FF}90%,100%{background:#FFE14D}}
+@keyframes blink{50%{opacity:0}}
+.ticker{display:flex;gap:56px;width:max-content;animation:mq 40s linear infinite}
+.cell{aspect-ratio:1;border:1.5px solid #0A0A0A;animation:write 9s steps(1) infinite}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #FFE14D; color: #0A0A0A; font-family: 'Archivo', system-ui, sans-serif">
+
+<div aria-hidden="true" style="overflow: hidden; background: #0A0A0A; color: #FFE14D; padding: 10px 0; font-family: 'Martian Mono', monospace; font-size: 12px">
+<div class="ticker">
+<sc-for list="{{ticker}}" as="tk" hint-placeholder-count="10"><span style="white-space: nowrap"><span style="{{tk.s}}">{{tk.lvl}}</span> {{tk.msg}}</span></sc-for>
+</div>
+</div>
+
+<header style="border-bottom: 3px solid #0A0A0A">
+<nav style="max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; min-height: 44px; text-decoration: none; color: #0A0A0A">
+<span aria-hidden="true" style="display: grid; grid-template-columns: repeat(2, 10px); gap: 2px"><span style="height: 10px; background: #0A0A0A"></span><span style="height: 10px; background: #0A0A0A"></span><span style="height: 10px; background: #2340FF"></span><span style="height: 10px; background: #0A0A0A"></span></span>
+<span style="font-size: 20px; font-weight: 900; font-stretch: 70%; text-transform: uppercase; letter-spacing: 0.01em">[Your Name]</span>
+</a>
+<div class="navlinks" style="display: flex; gap: 0; font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">
+<a href="#flow" style="padding: 12px 18px; border-left: 3px solid #0A0A0A; text-decoration: none">Flow</a>
+<a href="#scale" style="padding: 12px 18px; border-left: 3px solid #0A0A0A; text-decoration: none">Scale</a>
+<a href="#work" style="padding: 12px 18px; border-left: 3px solid #0A0A0A; text-decoration: none">Work</a>
+<a href="#stack" style="padding: 12px 18px; border-left: 3px solid #0A0A0A; border-right: 3px solid #0A0A0A; text-decoration: none">Stack</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 20px; background: #0A0A0A; color: #FFE14D; font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 700; text-transform: uppercase; text-decoration: none">Hire →</a>
+</nav>
+</header>
+
+<section id="top" style="border-bottom: 3px solid #0A0A0A">
+<div class="cols" style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr)">
+<div style="display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: 64px 40px 56px 24px; border-right: 3px solid #0A0A0A">
+<div style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">Data Engineer / [City] / [N] yrs</div>
+<h1 style="margin: 0; font-size: clamp(64px, 10.5vw, 168px); line-height: 0.84; font-weight: 900; font-stretch: 62%; text-transform: uppercase; letter-spacing: -0.01em">Moving<br>petabytes<br><span style="color: {{accent}}">for a living.</span></h1>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center">
+<p style="margin: 0; max-width: 460px; font-size: 18px; line-height: 1.5; font-weight: 500">I build the pipelines that pull data out of production, shape it, and stack it in the warehouse — block by block, without dropping one.</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 18px; padding: 40px 24px">
+<div style="display: flex; justify-content: space-between; font-family: 'Martian Mono', monospace; font-size: 12px; font-weight: 500; text-transform: uppercase"><span>/dev/warehouse</span><span>writing<span style="animation: blink 1s steps(1) infinite">_</span></span></div>
+<div aria-hidden="true" style="display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="32"><div class="cell" style="{{c.style}}"></div></sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; font-family: 'Martian Mono', monospace; font-size: 12px">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; background: #0A0A0A"></span>data block</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; background: #2340FF"></span>metadata / index</span>
+</div>
+<a href="#work" style="display: flex; align-items: center; justify-content: space-between; min-height: 64px; box-sizing: border-box; padding: 0 22px; margin-top: auto; background: #0A0A0A; color: #FFE14D; font-size: 22px; font-weight: 800; font-stretch: 75%; text-transform: uppercase; text-decoration: none">See the work <span aria-hidden="true">↓</span></a>
+</div>
+</div>
+</section>
+
+<section id="flow" style="border-bottom: 3px solid #0A0A0A; padding: 72px 0">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(44px, 6vw, 88px); line-height: 0.9; font-weight: 900; font-stretch: 62%; text-transform: uppercase">Source ▶ Warehouse</h2>
+<span style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">01 / The flow</span>
+</div>
+<div style="overflow-x: auto; padding-bottom: 6px">
+<div style="display: flex; min-width: 980px">
+<sc-for list="{{chev}}" as="ch" hint-placeholder-count="5">
+<div style="{{ch.style}}">
+<span style="font-family: 'Martian Mono', monospace; font-size: 12px; font-weight: 500">{{ch.n}}</span>
+<span style="font-size: 34px; font-weight: 900; font-stretch: 70%; text-transform: uppercase; line-height: 1">{{ch.t}}</span>
+<span style="font-family: 'Martian Mono', monospace; font-size: 12px">{{ch.tools}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; max-width: 720px; font-size: 18px; line-height: 1.55; font-weight: 500">Extract with change data capture, transform at scale on Spark, load into open table formats, and serve tested models. Same five steps, whether it's a gigabyte or a petabyte.</p>
+</div>
+</section>
+
+<section id="scale" style="border-bottom: 3px solid #0A0A0A; background: #FFFFFF">
+<div class="cols" style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr)">
+<div style="display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 56px 32px 48px 24px; border-right: 3px solid #0A0A0A">
+<span style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">02 / Scale</span>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="width: 18px; height: 18px; background: #2340FF"></div>
+<div style="font-size: 72px; line-height: 0.85; font-weight: 900; font-stretch: 62%">1 TB</div>
+<div style="font-family: 'Martian Mono', monospace; font-size: 12px; line-height: 1.6">One square. Roughly what a busy app logs in a day.</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px; padding: 56px 24px 48px 32px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+<div style="font-size: clamp(56px, 8vw, 120px); line-height: 0.85; font-weight: 900; font-stretch: 62%">1 PB = 1,000 TB</div>
+<span style="font-family: 'Martian Mono', monospace; font-size: 12px">↓ every square below is one terabyte</span>
+</div>
+<div role="img" aria-label="A grid of 1,000 squares, each representing one terabyte, together making one petabyte" style="display: grid; grid-template-columns: repeat(50, minmax(0, 1fr)); gap: 2px">
+<sc-for list="{{pb}}" as="p" hint-placeholder-count="50"><div style="{{p.style}}"></div></sc-for>
+</div>
+</div>
+</div>
+<div class="cols" style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 3px solid #0A0A0A">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="{{s.style}}">
+<div style="font-size: clamp(48px, 5.4vw, 80px); line-height: 0.9; font-weight: 900; font-stretch: 62%">{{s.v}}</div>
+<div style="font-family: 'Martian Mono', monospace; font-size: 12px; line-height: 1.6; text-transform: uppercase">{{s.l}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="work" style="border-bottom: 3px solid #0A0A0A; padding: 72px 0 80px">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(44px, 6vw, 88px); line-height: 0.9; font-weight: 900; font-stretch: 62%; text-transform: uppercase">Shipped to prod</h2>
+<span style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">03 / Work</span>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{work}}" as="w" hint-placeholder-count="3">
+<a href="#contact" style="display: flex; flex-direction: column; background: #FFFFFF; border: 3px solid #0A0A0A; box-shadow: 8px 8px 0 #0A0A0A; text-decoration: none; color: #0A0A0A">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 18px 20px; border-bottom: 3px solid #0A0A0A; background: {{w.band}}; color: {{w.bandText}}">
+<span style="font-size: 72px; line-height: 0.8; font-weight: 900; font-stretch: 62%">{{w.n}}</span>
+<span style="font-family: 'Martian Mono', monospace; font-size: 12px; font-weight: 500; text-transform: uppercase; text-align: right">{{w.kind}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 22px 20px; flex: 1">
+<div style="font-size: 30px; line-height: 0.95; font-weight: 900; font-stretch: 70%; text-transform: uppercase">{{w.title}}</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; font-weight: 500; flex: 1">{{w.desc}}</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 2px solid #0A0A0A">
+<sc-for list="{{w.metrics}}" as="m" hint-placeholder-count="2">
+<div style="{{m.style}}">
+<span style="font-size: 26px; font-weight: 900; font-stretch: 70%">{{m.v}}</span>
+<span style="font-family: 'Martian Mono', monospace; font-size: 11px; text-transform: uppercase">{{m.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="stack" style="border-bottom: 3px solid #0A0A0A">
+<div style="max-width: 1280px; margin: 0 auto; padding: 72px 24px 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<h2 style="margin: 0; font-size: clamp(44px, 6vw, 88px); line-height: 0.9; font-weight: 900; font-stretch: 62%; text-transform: uppercase">Tools of the trade</h2>
+<span style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">04 / Stack</span>
+</div>
+<div class="cols" style="max-width: 1280px; margin: 40px auto 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 3px solid #0A0A0A">
+<sc-for list="{{stack}}" as="s" hint-placeholder-count="12">
+<div style="{{s.style}}">
+<span style="font-family: 'Martian Mono', monospace; font-size: 11px; text-transform: uppercase">{{s.layer}}</span>
+<span style="font-size: 32px; line-height: 0.95; font-weight: 900; font-stretch: 70%; text-transform: uppercase">{{s.name}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="contact" style="background: #0A0A0A; color: #FFE14D; padding: 80px 24px">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<span style="font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">05 / Contact — open to [full-time / contract]</span>
+<h2 style="margin: 0; font-size: clamp(56px, 9vw, 150px); line-height: 0.84; font-weight: 900; font-stretch: 62%; text-transform: uppercase">Got data?<br>Let's move it.</h2>
+<a href="mailto:[you@domain.com]" style="width: fit-content; max-width: 100%; overflow-wrap: anywhere; font-size: clamp(28px, 4.4vw, 64px); font-weight: 900; font-stretch: 70%; color: #FFE14D; text-decoration-thickness: 4px; text-underline-offset: 8px">[YOU@DOMAIN.COM] →</a>
+<div style="display: flex; flex-wrap: wrap; gap: 0; font-family: 'Martian Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase">
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border: 3px solid #FFE14D; color: #FFE14D; text-decoration: none">LinkedIn</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border: 3px solid #FFE14D; border-left: 0; color: #FFE14D; text-decoration: none">GitHub</a>
+<a href="#top" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border: 3px solid #FFE14D; border-left: 0; color: #FFE14D; text-decoration: none">Résumé PDF</a>
+</div>
+</div>
+</section>
+
+<footer style="padding: 16px 24px; border-top: 3px solid #0A0A0A">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'Martian Mono', monospace; font-size: 12px; font-weight: 500; text-transform: uppercase">
+<span>© [Year] [Your name]</span>
+<span>0 blocks lost</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2340FF","options":["#2340FF","#E8361E","#0A0A0A","#0F8A4B"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#2340FF';
+    const animate = this.props.animate ?? true;
+    const INK = '#0A0A0A', Y = '#FFE14D';
+
+    const logs = [
+      ['OK', 'extract_cdc · orders · dt=[date] committed'],
+      ['OK', 'spark_transform · 400 partitions written'],
+      ['OK', 'dbt_build · all tests passed'],
+      ['WARN', 'late events · watermark extended 10m'],
+      ['OK', 'publish_marts · gold.sessions refreshed'],
+      ['OK', 'vacuum · old files compacted']
+    ];
+    const tick = logs.map(l => ({ lvl: '[' + l[0] + ']', msg: l[1], s: 'font-weight: 700; color: ' + (l[0] === 'OK' ? '#7CFF8A' : '#FF8A65') }));
+
+    const cells = Array.from({ length: 160 }, (_, i) => ({
+      style: 'animation-delay: ' + (i * 0.04).toFixed(2) + 's' + (i % 23 === 7 ? '; animation-name: writeB' : '')
+    }));
+
+    const chevData = [
+      ['01', 'Source', 'Postgres · APIs · events'],
+      ['02', 'Extract', 'Debezium · Kafka'],
+      ['03', 'Transform', 'Spark · dbt'],
+      ['04', 'Load', 'Delta · Iceberg'],
+      ['05', 'Warehouse', 'Snowflake · BI']
+    ];
+    const fills = [['#FFFFFF', INK], [INK, Y], [accent, '#FFFFFF'], [INK, Y], ['#FFFFFF', INK]];
+    const chevFixed = chevData.map((c, i) => ({ n: c[0], t: c[1], tools: c[2],
+      style: 'flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 22px 44px 22px ' + (i === 0 ? '24px' : '48px') + '; margin-left: ' + (i === 0 ? '0' : '-22px') + '; background: ' + fills[i][0] + '; color: ' + fills[i][1] + '; clip-path: ' + (i === 0
+        ? 'polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%)'
+        : 'polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%, 28px 50%)') }));
+
+    const pb = Array.from({ length: 1000 }, (_, i) => ({ style: 'aspect-ratio: 1; background: ' + (i === 0 ? accent : INK) }));
+
+    const statData = [['[X] PB', 'stored under management'], ['[X] TB', 'ingested per day'], ['[N]', 'pipelines in production'], ['[X]%', 'runs inside SLA']];
+
+    const stackData = [
+      ['process', 'Spark'], ['process', 'Flink'], ['ingest', 'Kafka'], ['ingest', 'Debezium'],
+      ['store', 'Delta Lake'], ['store', 'Iceberg'], ['warehouse', 'Snowflake'], ['warehouse', 'BigQuery'],
+      ['model', 'dbt'], ['orchestrate', 'Airflow'], ['infra', 'Terraform'], ['language', 'Python · SQL']
+    ];
+
+    const workData = [
+      { kind: 'Streaming', title: 'Real-time clickstream lakehouse', desc: 'Kafka into Spark Structured Streaming into Delta. Dashboards refresh in seconds, not overnight.', metrics: [['[X] s', 'latency'], ['[X]B', 'events/day']] },
+      { kind: 'Migration', title: 'Legacy ETL to cloud warehouse', desc: '[N] stored procedures rebuilt as tested dbt models on Snowflake, orchestrated in Airflow.', metrics: [['[N]', 'jobs moved'], ['−[X]%', 'runtime']] },
+      { kind: 'Quality', title: 'Data quality and lineage', desc: 'Freshness, volume and schema checks with column-level lineage. Bad data stops at the gate.', metrics: [['[X]%', 'coverage'], ['[X] min', 'to detect']] }
+    ];
+    const bands = [[INK, Y], [accent, '#FFFFFF'], [Y, INK]];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      ticker: tick.concat(tick),
+      cells,
+      chev: chevFixed,
+      pb,
+      stats: statData.map((s, i) => ({ v: s[0], l: s[1],
+        style: 'display: flex; flex-direction: column; gap: 12px; padding: 32px 24px; background: ' + (i === 0 ? Y : '#FFFFFF') + (i > 0 ? '; border-left: 3px solid ' + INK : '') })),
+      work: workData.map((w, i) => ({ ...w, n: '0' + (i + 1), band: bands[i][0], bandText: bands[i][1],
+        metrics: w.metrics.map((m, j) => ({ v: m[0], l: m[1], style: 'display: flex; flex-direction: column; gap: 4px; padding: 12px' + (j > 0 ? '; border-left: 2px solid ' + INK : '') })) })),
+      stack: stackData.map((s, i) => ({ layer: s[0], name: s[1],
+        style: 'display: flex; flex-direction: column; gap: 10px; padding: 26px 24px; min-height: 120px; box-sizing: border-box; justify-content: space-between; border-bottom: 3px solid ' + INK + (i % 4 ? '; border-left: 3px solid ' + INK : '') + (i === 0 ? '; background: ' + INK + '; color: ' + Y : i === 6 ? '; background: ' + accent + '; color: #FFFFFF' : '') }))
+    };
+  }
+}
+</script>
+</body>
+</html>

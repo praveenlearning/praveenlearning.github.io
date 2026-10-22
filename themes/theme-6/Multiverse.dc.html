@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Multiverse Time Travel</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&amp;family=Azeret+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F0820}
+a{color:#3FF0D2}a:hover{color:#9FFBEA}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes dash{to{stroke-dashoffset:-40}}
+.paused *{animation-play-state:paused !important}
+.chip{min-height:48px;padding:0 18px;border-radius:999px;cursor:pointer;font-family:'Azeret Mono',monospace;font-size:14px}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #0F0820; color: #F2ECFF; font-family: 'Sora', system-ui, sans-serif; overflow-x: hidden">
+
+<header style="border-bottom: 1px solid rgba(183,174,214,0.15)">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; min-height: 44px; color: #F2ECFF; text-decoration: none; font-weight: 700; font-size: 18px">
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="5" y="5" width="18" height="18" stroke="#3FF0D2" stroke-width="2" transform="rotate(45 14 14)"></rect><circle cx="14" cy="14" r="4" fill="#FF5CA8"></circle></svg>
+[Your Name]
+</a>
+<div class="navlinks" style="display: flex; gap: 28px; font-size: 15px">
+<a href="#timelines" style="color: #B7AED6; text-decoration: none">Timelines</a>
+<a href="#timetravel" style="color: #B7AED6; text-decoration: none">Time travel</a>
+<a href="#nexus" style="color: #B7AED6; text-decoration: none">Nexus events</a>
+<a href="#constants" style="color: #B7AED6; text-decoration: none">Constants</a>
+</div>
+<a href="#portal" style="display: flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: linear-gradient(90deg, #3FF0D2, {{accent}}); color: #0F0820; font-weight: 700; font-size: 15px; text-decoration: none">Open a portal</a>
+</nav>
+</header>
+
+<section id="top" style="padding: 64px 24px 80px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 40px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #3FF0D2">DATA ENGINEER · ACROSS EVERY TIMELINE</span>
+<h1 style="margin: 0; font-size: clamp(48px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.045em; font-weight: 800">One engineer.<br><span style="color: {{accent}}">Infinite</span> timelines.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; color: #B7AED6; max-width: 520px">I'm [Your name]. In every version of reality I end up doing the same thing: building pipelines where every table can travel back to any point in its history.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="#timelines" style="display: flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; background: #3FF0D2; color: #0F0820; font-weight: 700; text-decoration: none">Explore variants</a>
+<a href="#portal" style="display: flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid rgba(242,236,255,0.3); color: #F2ECFF; text-decoration: none">Résumé</a>
+</div>
+</div>
+<svg viewBox="0 0 400 400" role="img" aria-label="A portal of rotating geometric rings" style="width: min(520px, 100%); justify-self: center; overflow: visible">
+<defs><radialGradient id="mv-core"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="0.35" stop-color="#3FF0D2"></stop><stop offset="1" stop-color="#3FF0D2" stop-opacity="0"></stop></radialGradient></defs>
+<circle cx="200" cy="200" r="190" fill="none" stroke="#3FF0D2" stroke-opacity="0.35" stroke-dasharray="2 10" style="transform-origin: 200px 200px; animation: spin 40s linear infinite"></circle>
+<g style="transform-origin: 200px 200px; animation: spin 24s linear infinite"><rect x="70" y="70" width="260" height="260" fill="none" stroke="{{accent}}" stroke-width="2" stroke-opacity="0.8"></rect></g>
+<g style="transform-origin: 200px 200px; animation: spinr 18s linear infinite"><rect x="70" y="70" width="260" height="260" fill="none" stroke="#3FF0D2" stroke-width="2" transform="rotate(45 200 200)"></rect></g>
+<g style="transform-origin: 200px 200px; animation: spin 12s linear infinite"><polygon points="200,90 295,145 295,255 200,310 105,255 105,145" fill="none" stroke="#B7AED6" stroke-width="1.5"></polygon></g>
+<g style="transform-origin: 200px 200px; animation: spinr 8s linear infinite"><polygon points="200,125 265,238 135,238" fill="none" stroke="{{accent}}" stroke-width="2"></polygon></g>
+<circle cx="200" cy="200" r="70" fill="url(#mv-core)" style="animation: breathe 3s ease-in-out infinite"></circle>
+<g fill="#F2ECFF" font-family="'Azeret Mono', monospace" font-size="11">
+<text x="200" y="20" text-anchor="middle">v0</text><text x="385" y="204" text-anchor="end">v1</text><text x="200" y="392" text-anchor="middle">v2</text><text x="15" y="204">v3</text>
+</g>
+</svg>
+</div>
+</section>
+
+<section id="timelines" style="padding: 96px 24px; border-top: 1px solid rgba(183,174,214,0.15)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 640px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: {{accent}}">01 · VARIANTS</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800">Three timelines. Same engineer.</h2>
+</div>
+<div role="tablist" aria-label="Timelines" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" class="chip" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="overflow-x: auto; border-radius: 24px; background: #150C2B; border: 1px solid rgba(183,174,214,0.15); padding: 24px">
+<svg viewBox="0 0 1000 300" role="img" aria-label="Branching timeline: alpha branches up, beta continues straight, gamma branches down" style="display: block; width: 100%; min-width: 700px; height: auto; font-family: 'Azeret Mono', monospace">
+<path d="M40 150H240" stroke="#B7AED6" stroke-width="3" fill="none"></path>
+<path d="M240 150C320 150 320 50 400 50H950" stroke="{{br0.stroke}}" stroke-width="{{br0.w}}" fill="none" stroke-dasharray="{{br0.dash}}" style="animation: dash 1s linear infinite"></path>
+<path d="M240 150H950" stroke="{{br1.stroke}}" stroke-width="{{br1.w}}" fill="none" stroke-dasharray="{{br1.dash}}" style="animation: dash 1s linear infinite"></path>
+<path d="M240 150C320 150 320 250 400 250H950" stroke="{{br2.stroke}}" stroke-width="{{br2.w}}" fill="none" stroke-dasharray="{{br2.dash}}" style="animation: dash 1s linear infinite"></path>
+<circle cx="40" cy="150" r="8" fill="#F2ECFF"></circle>
+<circle cx="240" cy="150" r="12" fill="#0F0820" stroke="#F2ECFF" stroke-width="3"></circle>
+<circle cx="950" cy="50" r="10" fill="{{br0.stroke}}"></circle><circle cx="950" cy="150" r="10" fill="{{br1.stroke}}"></circle><circle cx="950" cy="250" r="10" fill="{{br2.stroke}}"></circle>
+<g font-size="13" fill="#F2ECFF">
+<text x="40" y="128">origin · [Year]</text>
+<text x="240" y="186" text-anchor="middle">branch point</text>
+<text x="930" y="32" text-anchor="end">α · streaming</text>
+<text x="930" y="132" text-anchor="end">β · warehouse</text>
+<text x="930" y="282" text-anchor="end">γ · quality</text>
+</g>
+</svg>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: 24px; background: #1A1033; border: 1px solid {{cur.color}}">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; color: {{cur.color}}">{{cur.code}}</span>
+<h3 style="margin: 0; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 700">{{cur.title}}</h3>
+<p style="margin: 0; font-size: 17px; line-height: 1.65; color: #B7AED6">{{cur.desc}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{cur.tags}}" as="g" hint-placeholder-count="3"><span style="font-family: 'Azeret Mono', monospace; font-size: 12px; padding: 6px 12px; border-radius: 999px; background: rgba(242,236,255,0.07)">{{g}}</span></sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{cur.metrics}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 24px 28px; border-radius: 24px; background: #1A1033; border: 1px solid rgba(183,174,214,0.15)">
+<span style="font-size: clamp(36px, 4vw, 52px); font-weight: 800; letter-spacing: -0.04em; color: {{cur.color}}">{{m.v}}</span>
+<span style="font-size: 15px; color: #B7AED6">{{m.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="timetravel" style="padding: 96px 24px; border-top: 1px solid rgba(183,174,214,0.15); background: #120A27">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: {{accent}}">02 · TIME TRAVEL</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800">Real time travel exists. It's called a table version.</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.65; color: #B7AED6">Delta Lake and Iceberg keep every commit, so any table can be queried as it looked at any point in the past. I use it to audit, debug and roll back with confidence. Try it on my career:</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 28px; border-radius: 24px; background: #0B0618; border: 1px solid rgba(63,240,210,0.3)">
+<div style="font-family: 'Azeret Mono', monospace; font-size: 15px; line-height: 1.7; overflow-x: auto; white-space: nowrap"><span style="color: {{accent}}">SELECT</span> * <span style="color: {{accent}}">FROM</span> career <span style="color: {{accent}}">VERSION AS OF</span> <span style="color: #3FF0D2">{{verNum}}</span>;</div>
+<div role="group" aria-label="Table version" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{versions}}" as="v" hint-placeholder-count="4">
+<button type="button" class="chip" aria-pressed="{{v.pressed}}" onClick="{{v.pick}}" style="{{v.style}}">v{{v.n}}</button>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px 16px; padding: 18px; border-radius: 14px; background: #150C2B; font-size: 16px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; color: #B7AED6">when</span><span>{{ver.when}}</span>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; color: #B7AED6">role</span><span style="font-weight: 600">{{ver.role}}</span>
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; color: #B7AED6">commit</span><span style="color: #B7AED6">{{ver.note}}</span>
+</div>
+</div>
+</div>
+</section>
+
+<section id="nexus" style="padding: 96px 24px; border-top: 1px solid rgba(183,174,214,0.15)">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 640px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: {{accent}}">03 · NEXUS EVENTS</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800">Scale across every reality.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 26px; border-radius: 24px; background: #1A1033; border: 1px solid rgba(183,174,214,0.15)">
+<span style="font-size: clamp(36px, 4vw, 52px); font-weight: 800; letter-spacing: -0.04em; color: {{s.color}}">{{s.v}}</span>
+<span style="font-size: 15px; line-height: 1.45; color: #B7AED6">{{s.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="constants" style="padding: 96px 24px; border-top: 1px solid rgba(183,174,214,0.15)">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: {{accent}}">04 · CONSTANTS</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 52px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800">Tools that exist in every universe.</h2>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{constants}}" as="c" hint-placeholder-count="12"><span style="{{c.s}}">{{c.name}}</span></sc-for>
+</div>
+</div>
+</section>
+
+<section id="portal" style="padding: 96px 24px; border-top: 1px solid rgba(183,174,214,0.15)">
+<div style="max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; padding: clamp(32px, 5vw, 64px); box-sizing: border-box; border-radius: 32px; background: radial-gradient(circle at 50% 0%, rgba(63,240,210,0.18), rgba(15,8,32,0) 60%), #150C2B; border: 1px solid rgba(63,240,210,0.3)">
+<span style="font-family: 'Azeret Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #3FF0D2">05 · OPEN A PORTAL</span>
+<h2 style="margin: 0; font-size: clamp(40px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.045em; font-weight: 800">In this timeline, <span style="color: {{accent}}">we work together.</span></h2>
+<p style="margin: 0; font-size: 18px; color: #B7AED6">Open to [full-time / contract] roles in data engineering.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; background: linear-gradient(90deg, #3FF0D2, {{accent}}); color: #0F0820; font-weight: 700; text-decoration: none">[you@domain.com]</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(242,236,255,0.3); color: #F2ECFF; text-decoration: none">GitHub</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(242,236,255,0.3); color: #F2ECFF; text-decoration: none">LinkedIn</a>
+</div>
+</div>
+</section>
+
+<footer style="border-top: 1px solid rgba(183,174,214,0.15); padding: 18px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: 'Azeret Mono', monospace; font-size: 12px; color: #B7AED6">
+<span>© [Year] [Your name]</span>
+<span>current version: latest · all timelines consistent</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF5CA8","options":["#FF5CA8","#FFC857","#8C7CFF","#3FF0D2"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3700}}'>
+class Component extends DCLogic {
+  state = { t: 0, v: 3 };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#FF5CA8';
+    const animate = this.props.animate ?? true;
+    const TEAL = '#3FF0D2', GOLD = '#FFC857';
+    const { t, v } = this.state;
+    const colors = [TEAL, accent, GOLD];
+
+    const lines = [
+      { label: 'α streaming', code: 'TIMELINE α · STREAMING VARIANT', title: 'Real-time clickstream lakehouse', tags: ['Kafka', 'Spark Streaming', 'Delta Lake'],
+        desc: 'In this reality the nightly batch never survived. Events flow from Kafka through Spark Structured Streaming into bronze, silver and gold Delta tables within seconds.',
+        metrics: [{ v: '[X] s', l: 'end-to-end latency' }, { v: '[X]B', l: 'events per day' }] },
+      { label: 'β warehouse', code: 'TIMELINE β · WAREHOUSE VARIANT', title: 'Legacy ETL to cloud warehouse', tags: ['dbt', 'Snowflake', 'Airflow'],
+        desc: 'Here the legacy procedures were tamed: [N] jobs rebuilt as tested, documented dbt models on Snowflake, with lineage that anyone can follow.',
+        metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'total runtime' }] },
+      { label: 'γ quality', code: 'TIMELINE γ · QUALITY VARIANT', title: 'Data quality and lineage platform', tags: ['Contracts', 'Great Expectations', 'OpenLineage'],
+        desc: 'In this branch, bad data is caught at the edge. Freshness, volume and schema monitors with column-level lineage protect every dashboard.',
+        metrics: [{ v: '[X]%', l: 'tables covered' }, { v: '[X] min', l: 'mean time to detect' }] }
+    ];
+
+    const br = (i) => ({ stroke: i === t ? colors[i] : 'rgba(183,174,214,0.35)', w: i === t ? '5' : '2', dash: i === t ? '14 6' : '4 8' });
+
+    const vers = [
+      { when: '[Year]', role: '[Degree] · [University]', note: 'initial commit: first SQL query' },
+      { when: '[Year]', role: '[Role] · [Company]', note: 'added: batch ETL, Airflow' },
+      { when: '[Year]', role: '[Role] · [Company]', note: 'added: Spark, streaming, lakehouse' },
+      { when: 'now', role: 'Data Engineer · [Company]', note: 'HEAD: open to new timelines' }
+    ];
+
+    const chip = (on, c) => on ? 'background: ' + c + '; color: #0F0820; border: 1px solid ' + c + '; font-weight: 500' : 'background: transparent; color: #F2ECFF; border: 1px solid rgba(242,236,255,0.25)';
+    const cur = lines[t];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      tabs: lines.map((l, i) => ({ label: l.label, selected: i === t ? 'true' : 'false', pick: () => this.setState({ t: i }), style: chip(i === t, colors[i]) })),
+      br0: br(0), br1: br(1), br2: br(2),
+      cur: { ...cur, color: colors[t] },
+      verNum: String(v),
+      versions: vers.map((x, i) => ({ n: String(i), pressed: i === v ? 'true' : 'false', pick: () => this.setState({ v: i }), style: chip(i === v, TEAL) })),
+      ver: vers[v],
+      stats: [
+        { v: '[X] PB', l: 'data kept consistent across versions', color: TEAL },
+        { v: '[X]B', l: 'events per day', color: accent },
+        { v: '[N]', l: 'production pipelines', color: '#F2ECFF' },
+        { v: '[X]%', l: 'runs inside SLA', color: GOLD }
+      ],
+      constants: ['Apache Spark', 'Kafka', 'Flink', 'dbt', 'Delta Lake', 'Iceberg', 'Snowflake', 'BigQuery', 'Airflow', 'Python', 'SQL', 'Terraform'].map((n, i) => ({ name: n,
+        s: 'padding: 12px 20px; border-radius: 999px; font-size: 17px; font-weight: 600; border: 1px solid ' + colors[i % 3] + '; color: ' + (i % 3 === 0 ? '#F2ECFF' : colors[i % 3]) + '; background: rgba(242,236,255,0.03)' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

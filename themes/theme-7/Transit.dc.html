@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Pipeline Transit Map</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&amp;family=Red+Hat+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAFAF7}
+a{color:#1F6FD6}a:hover{color:#124A94}
+.train{position:absolute;top:0;left:0;width:22px;height:10px;border-radius:5px;border:2px solid #FFFFFF;offset-rotate:auto;animation:ride 9s linear infinite}
+@keyframes ride{from{offset-distance:0%}to{offset-distance:100%}}
+@keyframes flap{0%,92%,100%{opacity:1}96%{opacity:.35}}
+.paused *{animation-play-state:paused !important}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.navlinks{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #FAFAF7; color: #161616; font-family: 'Figtree', system-ui, sans-serif">
+
+<header style="background: #161616; color: #FFFFFF">
+<nav style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; min-height: 44px; color: #FFFFFF; text-decoration: none">
+<span aria-hidden="true" style="position: relative; width: 34px; height: 34px; border-radius: 50%; border: 6px solid #E2362B; box-sizing: border-box; display: flex; align-items: center"><span style="position: absolute; left: -10px; right: -10px; height: 8px; background: #1F6FD6"></span></span>
+<span style="font-size: 18px; font-weight: 800">[Your Name]</span>
+</a>
+<div class="navlinks" style="display: flex; gap: 28px; font-size: 15px; font-weight: 600">
+<a href="#map" style="color: #FFFFFF; text-decoration: none">Network map</a>
+<a href="#timetable" style="color: #FFFFFF; text-decoration: none">Timetable</a>
+<a href="#lines" style="color: #FFFFFF; text-decoration: none">Lines opened</a>
+<a href="#stations" style="color: #FFFFFF; text-decoration: none">Stations</a>
+</div>
+<a href="#contact" style="display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 20px; border-radius: 999px; background: #F2B705; color: #161616; font-weight: 800; font-size: 15px; text-decoration: none">Next stop: you</a>
+</nav>
+</header>
+
+<section id="top" style="padding: 72px 24px 32px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 10px; font-family: 'Red Hat Mono', monospace; font-size: 13px; font-weight: 500; color: #4A4A4A">
+<span style="width: 14px; height: 14px; border-radius: 50%; background: #149145"></span>Data Engineer · all lines running
+</div>
+<h1 style="margin: 0; font-size: clamp(46px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.04em; font-weight: 900">All lines lead to the <span style="color: {{accent}}">warehouse.</span></h1>
+</div>
+<p style="margin: 0; font-size: 19px; line-height: 1.55; color: #3D3D3D">I'm [Your name]. I design data networks where every source has a route, every transfer is on time, and every passenger, from analyst to ML model, reaches the right station.</p>
+</div>
+</section>
+
+<section id="map" style="padding: 24px 24px 72px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+<div style="overflow-x: auto; border-radius: 24px; background: #FFFFFF; border: 2px solid #161616">
+<div style="position: relative; width: 1180px; height: 440px; margin: 0 auto">
+<svg width="1180" height="440" viewBox="0 0 1180 440" role="img" aria-label="Transit-style map: ingest and batch lines feed the Bronze interchange, a transform line runs through Silver to Gold, and serve and ML lines branch out to dashboards, reverse ETL, ML features and notebooks" style="position: absolute; inset: 0; font-family: 'Figtree', sans-serif">
+<g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M30 90H340L480 230H520" stroke="#E2362B"></path>
+<path d="M30 370H340L480 230H520" stroke="#1F6FD6"></path>
+<path d="M520 230H880" stroke="#149145"></path>
+<path d="M880 230L1000 110H1150" stroke="#F2B705"></path>
+<path d="M880 230L1000 350H1150" stroke="#7B3FBF"></path>
+</g>
+<g fill="#FFFFFF" stroke-width="5">
+<circle cx="90" cy="90" r="9" stroke="#E2362B"></circle><circle cx="210" cy="90" r="9" stroke="#E2362B"></circle><circle cx="330" cy="90" r="9" stroke="#E2362B"></circle>
+<circle cx="90" cy="370" r="9" stroke="#1F6FD6"></circle><circle cx="210" cy="370" r="9" stroke="#1F6FD6"></circle><circle cx="330" cy="370" r="9" stroke="#1F6FD6"></circle>
+<circle cx="700" cy="230" r="9" stroke="#149145"></circle>
+<circle cx="1040" cy="110" r="9" stroke="#F2B705"></circle><circle cx="1140" cy="110" r="9" stroke="#F2B705"></circle>
+<circle cx="1040" cy="350" r="9" stroke="#7B3FBF"></circle><circle cx="1140" cy="350" r="9" stroke="#7B3FBF"></circle>
+</g>
+<g fill="#FFFFFF" stroke="#161616" stroke-width="4">
+<rect x="500" y="208" width="40" height="44" rx="20"></rect>
+<rect x="860" y="208" width="40" height="44" rx="20"></rect>
+</g>
+<g font-size="15" font-weight="700" fill="#161616">
+<text x="90" y="66" text-anchor="middle">PostgreSQL</text><text x="210" y="66" text-anchor="middle">Kafka</text><text x="330" y="66" text-anchor="middle">CDC</text>
+<text x="90" y="402" text-anchor="middle">SaaS APIs</text><text x="210" y="402" text-anchor="middle">S3 files</text><text x="330" y="402" text-anchor="middle">App logs</text>
+<text x="520" y="286" text-anchor="middle" font-size="17" font-weight="800">Bronze</text>
+<text x="700" y="202" text-anchor="middle">Silver</text>
+<text x="880" y="286" text-anchor="middle" font-size="17" font-weight="800">Gold</text>
+<text x="1040" y="86" text-anchor="middle">Dashboards</text><text x="1140" y="86" text-anchor="end">Reverse ETL</text>
+<text x="1040" y="382" text-anchor="middle">ML features</text><text x="1140" y="382" text-anchor="end">Notebooks</text>
+</g>
+<g font-family="'Red Hat Mono', monospace" font-size="12" fill="#4A4A4A">
+<text x="520" y="304" text-anchor="middle">Delta · raw</text>
+<text x="700" y="262" text-anchor="middle">Spark · cleanse</text>
+<text x="880" y="304" text-anchor="middle">dbt · model</text>
+</g>
+</svg>
+<span class="train" aria-hidden="true" style="background: #E2362B; offset-path: path('M30 90H340L480 230H520')"></span>
+<span class="train" aria-hidden="true" style="background: #1F6FD6; offset-path: path('M30 370H340L480 230H520'); animation-delay: -4s"></span>
+<span class="train" aria-hidden="true" style="background: #149145; offset-path: path('M520 230H880'); animation-duration: 6s"></span>
+<span class="train" aria-hidden="true" style="background: #149145; offset-path: path('M520 230H880'); animation-duration: 6s; animation-delay: -3s"></span>
+<span class="train" aria-hidden="true" style="background: #F2B705; offset-path: path('M880 230L1000 110H1150'); animation-duration: 7s"></span>
+<span class="train" aria-hidden="true" style="background: #7B3FBF; offset-path: path('M880 230L1000 350H1150'); animation-duration: 7s; animation-delay: -3.5s"></span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px; font-weight: 600">
+<sc-for list="{{legend}}" as="lg" hint-placeholder-count="5">
+<span style="display: flex; align-items: center; gap: 8px"><span style="{{lg.swatch}}"></span>{{lg.name}}</span>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="timetable" style="padding: 88px 24px; background: #161616; color: #FFFFFF">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px; color: #F2B705">Departures</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 56px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 900">Every pipeline runs to a timetable.</h2>
+</div>
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px; color: #BDBDBD">Schedules shown are typical examples</span>
+</div>
+<div style="overflow-x: auto; border-radius: 16px; background: #1F1F1F">
+<table style="width: 100%; min-width: 760px; border-collapse: collapse; font-family: 'Red Hat Mono', monospace; font-size: 15px">
+<thead>
+<tr style="text-align: left; color: #BDBDBD; font-size: 12px">
+<th scope="col" style="padding: 16px 20px; font-weight: 500">LINE</th>
+<th scope="col" style="padding: 16px 20px; font-weight: 500">FROM</th>
+<th scope="col" style="padding: 16px 20px; font-weight: 500">TO</th>
+<th scope="col" style="padding: 16px 20px; font-weight: 500">EVERY</th>
+<th scope="col" style="padding: 16px 20px; font-weight: 500">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{departures}}" as="d" hint-placeholder-count="5">
+<tr style="border-top: 1px solid #333333; animation: flap 6s steps(1) infinite; animation-delay: {{d.delay}}">
+<td style="padding: 18px 20px"><span style="{{d.badge}}">{{d.line}}</span></td>
+<td style="padding: 18px 20px; color: #F2B705">{{d.from}}</td>
+<td style="padding: 18px 20px; color: #F2B705">{{d.to}}</td>
+<td style="padding: 18px 20px">{{d.every}}</td>
+<td style="padding: 18px 20px; color: {{d.statusColor}}">{{d.status}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section style="padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px; color: #4A4A4A">Ridership</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 56px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 900">Carrying petabytes, on time.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 26px; border-radius: 20px; border: 2px solid #161616; background: #FFFFFF">
+<span style="{{s.roundel}}">{{s.code}}</span>
+<div style="font-size: clamp(40px, 4.4vw, 56px); line-height: 1; font-weight: 900; letter-spacing: -0.04em">{{s.v}}</div>
+<div style="font-size: 15px; line-height: 1.45; color: #3D3D3D">{{s.l}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="lines" style="padding: 88px 24px; border-top: 2px solid #161616">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px; color: #4A4A4A">Lines I've opened</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 56px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 900">Selected projects.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{projects}}" as="p" hint-placeholder-count="3">
+<a href="#contact" style="display: flex; flex-direction: column; border-radius: 22px; border: 2px solid #161616; background: #FFFFFF; overflow: hidden; text-decoration: none; color: #161616">
+<div aria-hidden="true" style="position: relative; display: flex; justify-content: space-between; align-items: center; height: 72px; padding: 0 28px">
+<span style="position: absolute; left: 28px; right: 28px; top: 50%; height: 8px; margin-top: -4px; border-radius: 4px; background: {{p.color}}"></span>
+<sc-for list="{{p.stops}}" as="st" hint-placeholder-count="4"><span style="position: relative; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; border: 5px solid {{p.color}}; box-sizing: border-box"></span></sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 4px 26px 26px; flex: 1">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 12px; color: #4A4A4A">{{p.route}}</span>
+<div style="font-size: 24px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em">{{p.title}}</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3D3D3D; flex: 1">{{p.desc}}</p>
+<div style="display: flex; gap: 24px; padding-top: 14px; border-top: 2px dashed #D9D9D2">
+<sc-for list="{{p.metrics}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 900">{{m.v}}</span><span style="font-size: 13px; color: #4A4A4A">{{m.l}}</span></div>
+</sc-for>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="stations" style="padding: 88px 24px; border-top: 2px solid #161616">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px; color: #4A4A4A">Station index</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4.6vw, 56px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 900">Tools, by the lines they serve.</h2>
+</div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 40px">
+<sc-for list="{{stations}}" as="s" hint-placeholder-count="12">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid #D9D9D2">
+<span style="font-size: 18px; font-weight: 700">{{s.name}}</span>
+<span style="display: flex; gap: 4px"><sc-for list="{{s.dots}}" as="dt" hint-placeholder-count="2"><span style="{{dt.s}}"></span></sc-for></span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" style="padding: 40px 24px 96px">
+<div class="cols" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px; align-items: center; padding: clamp(32px, 5vw, 64px); box-sizing: border-box; border-radius: 28px; background: #1F6FD6; color: #FFFFFF">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<span style="font-family: 'Red Hat Mono', monospace; font-size: 13px">Next stop</span>
+<h2 style="margin: 0; font-size: clamp(38px, 5.6vw, 76px); line-height: 0.98; letter-spacing: -0.04em; font-weight: 900">Your team. Doors opening.</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 999px; background: #FFFFFF; color: #161616; font-weight: 800; font-size: 16px; text-decoration: none">[you@domain.com]</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 999px; border: 2px solid #FFFFFF; color: #FFFFFF; font-weight: 700; font-size: 16px; text-decoration: none">LinkedIn</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 52px; box-sizing: border-box; padding: 0 24px; border-radius: 999px; border: 2px solid #FFFFFF; color: #FFFFFF; font-weight: 700; font-size: 16px; text-decoration: none">GitHub</a>
+</div>
+</div>
+<div aria-hidden="true" style="justify-self: center; position: relative; width: 200px; height: 200px; border-radius: 50%; border: 30px solid #E2362B; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+<span style="position: absolute; left: -46px; right: -46px; height: 48px; background: #161616; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; letter-spacing: 0.04em">HIRE ME</span>
+</div>
+</div>
+</section>
+
+<footer style="background: #161616; color: #BDBDBD; padding: 20px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'Red Hat Mono', monospace; font-size: 13px">
+<span>© [Year] [Your name]</span>
+<span>Good service on all lines</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#149145","options":["#149145","#E2362B","#1F6FD6","#7B3FBF"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#149145';
+    const animate = this.props.animate ?? true;
+    const C = { ingest: '#E2362B', batch: '#1F6FD6', transform: '#149145', serve: '#F2B705', ml: '#7B3FBF' };
+    const names = { ingest: 'Ingest line', batch: 'Batch line', transform: 'Transform line', serve: 'Serve line', ml: 'ML line' };
+    const sw = (c) => 'display: inline-block; width: 28px; height: 8px; border-radius: 4px; background: ' + c;
+    const badge = (k) => 'display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 999px; font-weight: 600; background: ' + C[k] + '; color: ' + (k === 'serve' ? '#161616' : '#FFFFFF');
+    const dot = (k) => ({ s: 'width: 14px; height: 14px; border-radius: 50%; background: ' + C[k] });
+    const roundel = (c) => 'display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: ' + c + '; color: ' + (c === C.serve ? '#161616' : '#FFFFFF') + '; font-family: \'Red Hat Mono\', monospace; font-size: 15px; font-weight: 600';
+
+    const dep = [
+      ['ingest', 'Ingest', 'PostgreSQL CDC', 'Bronze', '1 min', 'On time'],
+      ['batch', 'Batch', 'SaaS APIs', 'Bronze', 'hourly', 'On time'],
+      ['transform', 'Transform', 'Bronze', 'Gold', '15 min', 'Boarding'],
+      ['serve', 'Serve', 'Gold', 'Dashboards', '5 min', 'On time'],
+      ['ml', 'ML', 'Gold', 'Feature store', 'daily 02:00', 'Scheduled']
+    ];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      legend: Object.keys(C).map(k => ({ name: names[k], swatch: sw(C[k]) })),
+      departures: dep.map((d, i) => ({ line: d[1], from: d[2], to: d[3], every: d[4], status: d[5], badge: badge(d[0]),
+        statusColor: d[5] === 'Boarding' ? '#F2B705' : d[5] === 'Scheduled' ? '#BDBDBD' : '#5BD68A', delay: (i * 1.1).toFixed(1) + 's' })),
+      stats: [
+        { code: 'PB', v: '[X] PB', l: 'data carried across the network', roundel: roundel(C.transform) },
+        { code: 'EV', v: '[X]B', l: 'events boarded per day', roundel: roundel(C.ingest) },
+        { code: 'SLA', v: '[X]%', l: 'pipelines arriving on time', roundel: roundel(C.serve) },
+        { code: 'RT', v: '[N]', l: 'production routes in service', roundel: roundel(C.batch) }
+      ],
+      projects: [
+        { color: C.ingest, route: 'Kafka → Spark → Delta', title: 'Real-time clickstream lakehouse', stops: [1, 2, 3, 4],
+          desc: 'An express service replacing the overnight batch: events reach gold tables within seconds.', metrics: [{ v: '[X] s', l: 'journey time' }, { v: '[X]B', l: 'events / day' }] },
+        { color: C.transform, route: 'S3 → Snowflake → dbt', title: 'Legacy ETL to cloud warehouse', stops: [1, 2, 3],
+          desc: '[N] stored procedures rerouted through tested dbt models, orchestrated in Airflow.', metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'runtime' }] },
+        { color: C.ml, route: 'Airflow → checks → alerts', title: 'Data quality and lineage', stops: [1, 2, 3, 4, 5],
+          desc: 'Signal checks on every line: freshness, volume and schema monitors with column-level lineage.', metrics: [{ v: '[X]%', l: 'tables covered' }, { v: '[X] min', l: 'to detect' }] }
+      ],
+      stations: [
+        ['Airflow', ['transform', 'serve']], ['Apache Spark', ['transform']], ['BigQuery', ['serve']],
+        ['dbt', ['transform']], ['Debezium', ['ingest']], ['Delta Lake', ['transform', 'ml']],
+        ['Fivetran', ['batch']], ['Flink', ['ingest']], ['Iceberg', ['transform']],
+        ['Kafka', ['ingest']], ['MLflow', ['ml']], ['Snowflake', ['serve']]
+      ].map(s => ({ name: s[0], dots: s[1].map(dot) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

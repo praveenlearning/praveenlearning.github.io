@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — man data-engineer</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F3EE}
+a{color:#111111;text-decoration-thickness:2px}a:hover{color:#B4232A}
+@keyframes blink{50%{opacity:0}}
+.paused *{animation-play-state:paused !important}
+.sec{display:grid;grid-template-columns:200px minmax(0,1fr);gap:8px 32px;padding:22px 0}
+@media (max-width:760px){
+.sec{grid-template-columns:minmax(0,1fr) !important}
+.hdr-mid{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #F4F3EE; color: #111111; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 17px; line-height: 1.6">
+
+<div style="max-width: 1040px; margin: 0 auto; padding: 48px 24px 120px">
+<header style="display: flex; justify-content: space-between; gap: 16px; padding-bottom: 28px; border-bottom: 1px solid #111111">
+<span style="font-weight: 700">DATA-ENGINEER(1)</span>
+<span class="hdr-mid">User Commands</span>
+<span style="font-weight: 700">DATA-ENGINEER(1)</span>
+</header>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">NAME</h2>
+<div><h1 style="margin: 0; font-size: clamp(30px, 4.6vw, 56px); line-height: 1.08; font-weight: 700">data-engineer — moves raw data into <span style="color: {{accent}}">trusted tables</span></h1></div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">SYNOPSIS</h2>
+<div style="padding: 18px 22px; background: #111111; color: #F4F3EE; overflow-x: auto; white-space: nowrap"><b>data-engineer</b> [<b>--stream</b> | <b>--batch</b>] [<b>--model</b> <u>dbt</u>] [<b>--scale</b> <u>PB</u>] <u>source</u>... <b>&gt;</b> <u>warehouse</u></div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">DESCRIPTION</h2>
+<div style="display: flex; flex-direction: column; gap: 18px">
+<p style="margin: 0"><b>[Your name]</b> is a data engineer who designs, builds and operates the pipelines that carry data from operational systems to the people and models who depend on it. Sources are read once, transformed deterministically, and written idempotently, so that any run may be repeated without side effects.</p>
+<pre aria-label="Pipeline: sources flow through extract, transform, validate and load into the warehouse" style="margin: 0; padding: 20px 0; border-top: 1px dashed #111111; border-bottom: 1px dashed #111111; font-family: inherit; font-size: 15px; line-height: 1.5; overflow-x: auto">  postgres ─┐
+  kafka    ─┼─&gt; extract ─&gt; <b style="color: {{accent}}">transform</b> ─&gt; validate ─&gt; load ─&gt; <b>warehouse</b>
+  s3       ─┘    (cdc)      (spark)      (tests)    (delta)   (gold)</pre>
+<p style="margin: 0">Operation is quiet by default. On failure, <b>data-engineer</b> fails loudly, early and upstream, before bad rows reach a dashboard.</p>
+</div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">OPTIONS</h2>
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 18px">
+<sc-for list="{{options}}" as="o" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<dt style="font-weight: 700"><span style="color: {{accent}}">{{o.flag}}</span> <u style="font-weight: 400">{{o.arg}}</u></dt>
+<dd style="margin: 0 0 0 40px">{{o.d}}</dd>
+</div>
+</sc-for>
+</dl>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">EXAMPLES</h2>
+<div style="display: flex; flex-direction: column; gap: 28px">
+<sc-for list="{{examples}}" as="e" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="padding: 14px 18px; background: #111111; color: #F4F3EE; overflow-x: auto; white-space: nowrap">$ {{e.cmd}}</div>
+<div style="font-weight: 700; font-size: 20px">{{e.title}}</div>
+<p style="margin: 0">{{e.d}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 28px; color: #3B3B3B">
+<sc-for list="{{e.out}}" as="x" hint-placeholder-count="2"><span>{{x.l}}: <b style="color: #111111">{{x.v}}</b></span></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">EXIT STATUS</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: 1px solid #111111">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-right: 1px solid #111111; border-bottom: 1px solid #111111">
+<span style="font-size: 40px; line-height: 1.1; font-weight: 700">{{s.v}}</span>
+<span style="font-size: 15px; color: #3B3B3B">{{s.l}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">FILES</h2>
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{files}}" as="f" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 16px">
+<dt style="font-style: italic; overflow-wrap: anywhere">{{f.path}}</dt>
+<dd style="margin: 0">{{f.d}}</dd>
+</div>
+</sc-for>
+</dl>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">BUGS</h2>
+<p style="margin: 0">None known. Every model ships with tests; the ones that slipped through are documented in the postmortems.</p>
+</section>
+
+<section id="see-also" class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">SEE ALSO</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 22px">
+<a href="mailto:[you@domain.com]" style="font-weight: 700">mail(1)</a><span>[you@domain.com]</span>
+<a href="https://github.com/[handle]" style="font-weight: 700">github(1)</a>
+<a href="https://linkedin.com/in/[handle]" style="font-weight: 700">linkedin(1)</a>
+<a href="#top" style="font-weight: 700">resume(5)</a>
+</div>
+</section>
+
+<section class="sec">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">AUTHOR</h2>
+<p style="margin: 0">Written by [Your name], based in [City]. Currently open to [full-time / contract] roles. Report hiring opportunities to <a href="mailto:[you@domain.com]">[you@domain.com]</a>.</p>
+</section>
+
+<footer style="display: flex; justify-content: space-between; gap: 16px; padding-top: 28px; border-top: 1px solid #111111">
+<span>[your_name] 1.0</span>
+<span class="hdr-mid">October 2026</span>
+<span style="font-weight: 700">DATA-ENGINEER(1)</span>
+</footer>
+</div>
+
+<div style="position: sticky; bottom: 0; background: #111111; color: #F4F3EE; padding: 8px 24px; font-size: 15px">Manual page data-engineer(1) line 1 (press h for help or q to quit)<span style="display: inline-block; width: 9px; height: 17px; margin-left: 6px; vertical-align: text-bottom; background: #F4F3EE; animation: blink 1s steps(1) infinite"></span></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4232A","options":["#B4232A","#111111","#1F4FB4","#1C7A43"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#B4232A';
+    const animate = this.props.animate ?? true;
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      options: [
+        { flag: '-s, --stream', arg: 'topic', d: 'Consume change streams and events in real time with Kafka, Flink or Spark Structured Streaming. Exactly-once where it matters.' },
+        { flag: '-b, --batch', arg: 'schedule', d: 'Run incremental batch loads on a schedule. Only new partitions are processed.' },
+        { flag: '-m, --model', arg: 'dbt', d: 'Build tested, documented warehouse models with clear grain and ownership.' },
+        { flag: '-o, --orchestrate', arg: 'airflow', d: 'Schedule, retry and alert across the whole DAG with explicit SLAs.' },
+        { flag: '-q, --quality', arg: 'contract', d: 'Enforce schemas at the edge and test freshness, volume and uniqueness downstream.' },
+        { flag: '--scale', arg: 'PB', d: 'Partition, cluster and tune so the same pipeline holds from gigabytes to petabytes.' }
+      ],
+      examples: [
+        { cmd: 'data-engineer --stream clickstream > delta://gold/sessions', title: 'Real-time clickstream lakehouse',
+          d: 'Replaced a nightly batch with Spark Structured Streaming into bronze, silver and gold Delta tables.', out: [{ l: 'latency', v: '[X] s' }, { l: 'events/day', v: '[X]B' }] },
+        { cmd: 'data-engineer --batch --model dbt legacy_procs/* > snowflake', title: 'Legacy ETL to cloud warehouse',
+          d: 'Rebuilt [N] stored procedures as dbt models on Snowflake, orchestrated in Airflow.', out: [{ l: 'jobs migrated', v: '[N]' }, { l: 'runtime', v: '−[X]%' }] },
+        { cmd: 'data-engineer --quality contract warehouse/* 2> alerts', title: 'Data quality and lineage platform',
+          d: 'Freshness, volume and schema monitors with column-level lineage across the warehouse.', out: [{ l: 'coverage', v: '[X]%' }, { l: 'time to detect', v: '[X] min' }] }
+      ],
+      stats: [
+        { v: '[X] PB', l: 'data under management' },
+        { v: '[X]B', l: 'events per day' },
+        { v: '[N]', l: 'pipelines in production' },
+        { v: '[X]%', l: 'runs exiting 0 within SLA' }
+      ],
+      files: [
+        { path: '/usr/bin/spark, flink', d: 'distributed batch and stream processing' },
+        { path: '/var/spool/kafka, debezium', d: 'event streams and change data capture' },
+        { path: '/srv/lake/{delta,iceberg}', d: 'open table formats on object storage' },
+        { path: '/etc/dbt/models', d: 'tested warehouse models' },
+        { path: '/opt/{snowflake,bigquery}', d: 'analytics warehouses' },
+        { path: '/etc/cron.d/airflow', d: 'orchestration and SLAs' },
+        { path: '~/.terraform', d: 'infrastructure as code' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio — Tiling Desktop</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1D2021}
+a{color:#83A598}a:hover{color:#B3D1C4}
+@keyframes blink{50%{opacity:0}}
+@keyframes grow{0%{width:0}80%,100%{width:100%}}
+.paused *{animation-play-state:paused !important}
+.fm{min-height:44px;width:100%;text-align:left;border:0;cursor:pointer;font:inherit;padding:0 12px}
+@media (max-width:900px){
+.cols{grid-template-columns:minmax(0,1fr) !important}
+.cols > *{grid-column:auto !important;grid-row:auto !important}
+.wslabel{display:none !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="min-height: 100vh; background: #1D2021; color: #EBDBB2; font-family: 'Fira Code', ui-monospace, monospace; font-size: 15px">
+
+<header style="position: sticky; top: 0; z-index: 5; background: #282828; border-bottom: 2px solid #3C3836">
+<nav style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 12px; min-height: 44px; flex-wrap: wrap">
+<div style="display: flex; align-items: stretch">
+<sc-for list="{{workspaces}}" as="w" hint-placeholder-count="5">
+<a href="{{w.href}}" style="{{w.style}}">{{w.n}}<span class="wslabel">:{{w.label}}</span></a>
+</sc-for>
+</div>
+<span style="color: #A89984; font-size: 14px">[your_name]@lakehouse</span>
+<div style="display: flex; gap: 16px; font-size: 14px">
+<span style="color: #B8BB26">● spark</span>
+<span style="color: #FABD2F">● kafka</span>
+<span style="color: {{accent}}">⏻ open to work</span>
+</div>
+</nav>
+</header>
+
+<main style="padding: 12px; display: flex; flex-direction: column; gap: 12px">
+
+<section id="ws1" class="cols" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto; gap: 12px">
+<div style="grid-column: span 7; grid-row: span 2; display: flex; flex-direction: column; border: 2px solid {{accent}}; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: {{accent}}; color: #1D2021; font-size: 13px; font-weight: 600"><span>alacritty — ~</span><span>[1]</span></div>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; padding: 28px 24px; align-items: start; flex: 1">
+<pre aria-hidden="true" style="margin: 0; color: {{accent}}; font-size: 15px; line-height: 1.35; font-weight: 600">     _.--------._
+   .'            '.
+   |'-.        .-'|
+   |   '------'   |
+   |'-.        .-'|
+   |   '------'   |
+   |'-.        .-'|
+   |   '------'   |
+   '._          _.'
+      '--------'</pre>
+<div style="display: flex; flex-direction: column; gap: 4px; line-height: 1.55; min-width: 0">
+<span><span style="color: {{accent}}; font-weight: 700">[your_name]</span>@<span style="color: {{accent}}; font-weight: 700">lakehouse</span></span>
+<span style="color: #665C54">--------------------------</span>
+<sc-for list="{{fetch}}" as="f" hint-placeholder-count="9">
+<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><span style="color: {{accent}}; font-weight: 600">{{f.k}}</span>: {{f.v}}</span>
+</sc-for>
+<span aria-hidden="true" style="display: flex; gap: 0; padding-top: 12px"><sc-for list="{{swatches}}" as="s" hint-placeholder-count="8"><span style="{{s.s}}"></span></sc-for></span>
+</div>
+</div>
+<div style="padding: 0 24px 22px; color: #A89984">$ <span style="display: inline-block; width: 9px; height: 18px; vertical-align: text-bottom; background: #EBDBB2; animation: blink 1s steps(1) infinite"></span></div>
+</div>
+
+<div style="grid-column: span 5; display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>nvim — about.md</span><span>[2]</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 24px">
+<h1 style="margin: 0; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.12; font-weight: 700; color: #EBDBB2"><span style="color: #665C54"># </span>I pipe raw data into <span style="color: {{accent}}">trusted tables.</span></h1>
+<p style="margin: 0; line-height: 1.7; color: #D5C4A1">Data engineer. I build batch and streaming pipelines the Unix way: small tools, clean interfaces, and output you can pipe into anything.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="#ws4" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; background: {{accent}}; color: #1D2021; font-weight: 600; text-decoration: none">cd ~/projects</a>
+<a href="#ws5" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border: 2px solid #504945; color: #EBDBB2; text-decoration: none">cat resume.pdf</a>
+</div>
+</div>
+</div>
+
+<div style="grid-column: span 5; display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>tail -f pipeline.log</span><span>[3]</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 20px 24px; font-size: 14px">
+<sc-for list="{{jobs}}" as="j" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 150px minmax(0, 1fr) 48px; gap: 12px; align-items: center">
+<span style="color: #D5C4A1">{{j.name}}</span>
+<span style="height: 10px; background: #3C3836"><span style="{{j.bar}}"></span></span>
+<span style="color: {{j.color}}; text-align: right">{{j.state}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="ws2" style="display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>nvim — ~/bin/pipeline.sh</span><span>[2:pipeline]</span></div>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0">
+<div style="padding: 24px; border-right: 2px solid #3C3836; font-size: 14px; line-height: 1.8; overflow-x: auto; white-space: pre"><span style="color: #928374">#!/usr/bin/env bash
+# how data moves, the unix way</span>
+<span style="color: #FB4934">set</span> -euo pipefail
+
+<span style="color: #8EC07C">extract</span>   <span style="color: #928374"># cdc + events</span>
+  | <span style="color: #8EC07C">transform</span> <span style="color: #928374"># spark, at scale</span>
+  | <span style="color: #8EC07C">validate</span>  <span style="color: #928374"># contracts + tests</span>
+  | <span style="color: #8EC07C">load</span>      <span style="color: #928374"># delta / iceberg</span>
+  &gt; <span style="color: #FABD2F">warehouse</span></div>
+<div style="display: flex; flex-direction: column; gap: 20px; padding: 24px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 700"><span style="color: #665C54">## </span>Everything is a stream.</h2>
+<pre aria-label="Pipeline diagram: PostgreSQL, Kafka and S3 merge into Spark, then Delta, then dbt, then the warehouse" style="margin: 0; padding: 20px; background: #1D2021; color: #EBDBB2; font-size: 14px; line-height: 1.7; overflow-x: auto"><span style="color: #83A598">[postgres]</span>──┐
+<span style="color: #83A598">[kafka]</span>─────┼──▶ <span style="color: {{accent}}">spark</span> ──▶ <span style="color: #B8BB26">delta</span> ──▶ <span style="color: #D3869B">dbt</span> ──▶ <span style="color: #FABD2F">[warehouse]</span>
+<span style="color: #83A598">[s3]</span>────────┘</pre>
+<p style="margin: 0; line-height: 1.7; color: #D5C4A1">Each stage does one job and does it well. Stages are idempotent, so any day can be re-run; contracts sit at the edges, so a broken upstream fails loudly instead of quietly corrupting a dashboard.</p>
+</div>
+</div>
+</section>
+
+<section id="ws3" class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>zsh — du -sh /lake/*</span><span>[3:scale]</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 24px; font-size: 14px; overflow-x: auto">
+<span><span style="color: #B8BB26">❯</span> du -sh /lake/* | sort -h</span>
+<sc-for list="{{du}}" as="d" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 72px 150px minmax(0, 1fr); gap: 12px; white-space: nowrap">
+<span style="color: {{accent}}">{{d.size}}</span><span>{{d.path}}</span><span style="color: {{d.color}}; overflow: hidden">{{d.bar}}</span>
+</div>
+</sc-for>
+<span style="color: #928374; padding-top: 6px"># bar lengths illustrative</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>zsh — uptime</span><span>[3:scale]</span></div>
+<div class="cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 24px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 18px; background: #1D2021; border-left: 0">
+<span style="font-size: clamp(30px, 3.4vw, 44px); font-weight: 700; color: {{s.color}}">{{s.v}}</span>
+<span style="font-size: 13px; color: #A89984">{{s.l}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="ws4" style="display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>lf — ~/projects</span><span>[4:projects]</span></div>
+<div class="cols" style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) minmax(0, 7fr); min-height: 380px">
+<div style="padding: 12px 0; border-right: 2px solid #3C3836; color: #A89984; font-size: 14px; display: flex; flex-direction: column">
+<span style="padding: 10px 12px; color: #83A598">~/</span>
+<span style="padding: 10px 12px; background: #3C3836; color: #83A598; font-weight: 600">projects/</span>
+<span style="padding: 10px 12px; color: #83A598">talks/</span>
+<span style="padding: 10px 12px">resume.pdf</span>
+</div>
+<div role="listbox" aria-label="Projects" style="padding: 12px 0; border-right: 2px solid #3C3836; display: flex; flex-direction: column">
+<sc-for list="{{projects}}" as="p" hint-placeholder-count="3">
+<button type="button" class="fm" role="option" aria-selected="{{p.selected}}" onClick="{{p.pick}}" style="{{p.style}}">{{p.dir}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 24px 28px">
+<span style="color: #928374; font-size: 13px">{{current.dir}}README.md</span>
+<h3 style="margin: 0; font-size: 26px; font-weight: 700"><span style="color: #665C54"># </span>{{current.title}}</h3>
+<p style="margin: 0; line-height: 1.7; color: #D5C4A1">{{current.desc}}</p>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+<sc-for list="{{current.metrics}}" as="m" hint-placeholder-count="2">
+<span><span style="color: {{accent}}">-</span> <span style="color: #FABD2F">{{m.v}}</span> {{m.l}}</span>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{current.tags}}" as="t" hint-placeholder-count="3"><span style="padding: 4px 10px; background: #3C3836; color: #8EC07C; font-size: 13px">`{{t}}`</span></sc-for>
+</div>
+</div>
+</div>
+<div style="padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px">{{fmStatus}}</div>
+</section>
+
+<section id="ws5" class="cols" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 12px">
+<div style="display: flex; flex-direction: column; border: 2px solid #504945; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: #3C3836; color: #A89984; font-size: 13px"><span>zsh — ls /opt/stack</span><span>[5:stack]</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 24px">
+<span><span style="color: #B8BB26">❯</span> ls --color /opt/stack</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px 16px">
+<sc-for list="{{stack}}" as="s" hint-placeholder-count="12"><span style="{{s.s}}">{{s.name}}</span></sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #A89984; padding-top: 6px">
+<span><span style="color: #83A598">■</span> ingest</span><span><span style="color: #FE8019">■</span> process</span><span><span style="color: #B8BB26">■</span> store</span><span><span style="color: #D3869B">■</span> model</span><span><span style="color: #FABD2F">■</span> operate</span>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; border: 2px solid {{accent}}; background: #282828">
+<div style="display: flex; justify-content: space-between; padding: 6px 12px; background: {{accent}}; color: #1D2021; font-size: 13px; font-weight: 600"><span>neomutt — compose</span><span>[5]</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 24px; font-size: 14px">
+<span><span style="color: #A89984">To:</span> <a href="mailto:[you@domain.com]">[you@domain.com]</a></span>
+<span><span style="color: #A89984">Subject:</span> let's pipe some data</span>
+<span style="color: #665C54">────────────────────────</span>
+<h2 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 700">Open to [full-time / contract] roles.</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="mailto:[you@domain.com]" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; background: {{accent}}; color: #1D2021; font-weight: 600; text-decoration: none">:send</a>
+<a href="https://github.com/[handle]" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border: 2px solid #504945; color: #EBDBB2; text-decoration: none">github</a>
+<a href="https://linkedin.com/in/[handle]" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border: 2px solid #504945; color: #EBDBB2; text-decoration: none">linkedin</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 8px 12px; background: #282828; border-top: 2px solid #3C3836; color: #A89984; font-size: 13px">
+<span>© [Year] [Your name]</span>
+<span>exit 0</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FE8019","options":["#FE8019","#8EC07C","#83A598","#D3869B"]},"animate":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  state = { proj: 0 };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#FE8019';
+    const animate = this.props.animate ?? true;
+    const proj = this.state.proj;
+    const C = { red: '#FB4934', green: '#B8BB26', yellow: '#FABD2F', blue: '#83A598', purple: '#D3869B', aqua: '#8EC07C', orange: '#FE8019', gray: '#A89984' };
+
+    const ws = [['1', 'home', '#ws1'], ['2', 'pipeline', '#ws2'], ['3', 'scale', '#ws3'], ['4', 'projects', '#ws4'], ['5', 'stack', '#ws5']];
+    const block = '█';
+    const bar = (n) => block.repeat(n);
+
+    const projects = [
+      { dir: 'clickstream-lakehouse/', title: 'Real-time clickstream lakehouse', tags: ['kafka', 'spark', 'delta'],
+        desc: 'Replaced a nightly batch with Spark Structured Streaming into bronze, silver and gold Delta tables. Product dashboards now refresh within seconds of an event.',
+        metrics: [{ v: '[X] s', l: 'end-to-end latency' }, { v: '[X]B', l: 'events per day' }] },
+      { dir: 'etl-migration/', title: 'Legacy ETL to cloud warehouse', tags: ['dbt', 'snowflake', 'airflow'],
+        desc: 'Rebuilt [N] stored-procedure jobs as tested, documented dbt models on Snowflake, orchestrated with Airflow and full lineage.',
+        metrics: [{ v: '[N]', l: 'jobs migrated' }, { v: '−[X]%', l: 'total runtime' }] },
+      { dir: 'data-quality/', title: 'Data quality and lineage platform', tags: ['great-expectations', 'openlineage'],
+        desc: 'Freshness, volume and schema monitors with column-level lineage, so a broken upstream feed is caught long before it reaches a dashboard.',
+        metrics: [{ v: '[X]%', l: 'tables covered' }, { v: '[X] min', l: 'mean time to detect' }] }
+    ];
+
+    const stack = [
+      ['kafka', C.blue], ['debezium', C.blue], ['fivetran', C.blue],
+      ['spark', C.orange], ['flink', C.orange], ['python', C.orange],
+      ['delta-lake', C.green], ['iceberg', C.green], ['snowflake', C.green],
+      ['dbt', C.purple], ['sql', C.purple],
+      ['airflow', C.yellow], ['terraform', C.yellow], ['kubernetes', C.yellow]
+    ];
+
+    return {
+      accent,
+      rootClass: animate ? '' : 'paused',
+      workspaces: ws.map((w, i) => ({ n: w[0], label: w[1], href: w[2],
+        style: 'display: flex; align-items: center; min-height: 44px; padding: 0 12px; text-decoration: none; font-size: 14px; ' + (i === 0 ? 'background: ' + accent + '; color: #1D2021; font-weight: 600' : 'color: #EBDBB2') })),
+      fetch: [
+        { k: 'OS', v: 'Data Engineer x86_64' },
+        { k: 'Host', v: '[Company]' },
+        { k: 'Uptime', v: '[N] years' },
+        { k: 'Packages', v: 'spark, kafka, dbt, airflow' },
+        { k: 'Shell', v: 'bash, python, sql' },
+        { k: 'Throughput', v: '[X] TB / day' },
+        { k: 'Storage', v: '[X] PB' },
+        { k: 'Pipelines', v: '[N] running' },
+        { k: 'Location', v: '[City]' }
+      ],
+      swatches: ['#282828', C.red, C.green, C.yellow, C.blue, C.purple, C.aqua, '#EBDBB2'].map(c => ({ s: 'display: block; width: 28px; height: 18px; background: ' + c })),
+      jobs: [
+        ['extract_cdc', C.green, 'done', 0], ['spark_transform', C.green, 'done', 0.6], ['dbt_build', C.yellow, 'run', 1.2], ['publish_marts', C.gray, 'wait', 1.8]
+      ].map(j => ({ name: j[0], color: j[1], state: j[2],
+        bar: 'display: block; height: 10px; background: ' + j[1] + '; animation: grow 4s ease-in-out infinite; animation-delay: ' + j[3] + 's' })),
+      du: [
+        { size: '[X]G', path: '/lake/gold', bar: bar(6), color: C.yellow },
+        { size: '[X]T', path: '/lake/silver', bar: bar(14), color: C.aqua },
+        { size: '[X]T', path: '/lake/bronze', bar: bar(24), color: C.orange },
+        { size: '[X]P', path: '/lake/total', bar: bar(34), color: C.red }
+      ],
+      stats: [
+        { v: '[X] PB', l: 'under management', color: accent },
+        { v: '[X]B', l: 'events / day', color: C.aqua },
+        { v: '[N]', l: 'pipelines in prod', color: C.yellow },
+        { v: '[X]%', l: 'runs inside SLA', color: C.green }
+      ],
+      projects: projects.map((p, i) => ({ dir: p.dir, selected: i === proj ? 'true' : 'false',
+        pick: () => this.setState({ proj: i }),
+        style: i === proj ? 'background: ' + accent + '; color: #1D2021; font-weight: 600' : 'background: transparent; color: #83A598' })),
+      current: projects[proj],
+      fmStatus: 'drwxr-xr-x  [your_name]  ' + (proj + 1) + '/' + projects.length + '  ~/projects/' + projects[proj].dir,
+      stack: stack.map(s => ({ name: s[0], s: 'color: ' + s[1] + '; font-weight: 600' }))
+    };
+  }
+}
+</script>
+</body>
+</html>
