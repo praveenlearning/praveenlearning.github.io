@@ -139,6 +139,26 @@ When content changes here, update the matching Markdown file, and vice versa. Ne
 introduce a claim in `data.js` that is not supported by those files or stated by
 Praveen directly.
 
+## Specs
+
+Features are specified in `specs/` before they are built. One file per feature,
+numbered, following `specs/TEMPLATE.md`. `specs/README.md` explains the lifecycle and
+when a spec is worth writing at all.
+
+The workflow is three commands, and the separation between them is the point:
+
+- `/spec <feature>` interrogates and writes the spec. No code.
+- `/plan specs/NNNN-*.md` turns it into an implementation plan. No code.
+- `/build specs/NNNN-*.md` implements it, verifies it, and reports each Verification
+  line as met or not met.
+
+A spec and the code implementing it land in the same commit. When behaviour changes,
+the spec is edited first and the code second, so the two never disagree. A spec that
+no longer matches the code is worse than no spec, because it is believed.
+
+`specs/0001-two-summaries.md` is a worked example, written after the fact, showing the
+level of detail expected.
+
 ## Writing rules
 
 - **Never invent.** No job titles, years of experience, metrics, technologies, or
@@ -190,6 +210,16 @@ though the reason is worth one clause when it explains the rule.
 ## Decisions
 
 Recorded as they are made, newest first.
+
+**2026-10-22**
+
+- Features are specified in `specs/` before they are built, with `/spec`, `/plan` and
+  `/build` keeping specification, planning and implementation in separate steps. The
+  separation is what stops a conversation sliding from an idea straight into edits
+  with the reasoning left in the transcript rather than the repository.
+- Verification lines in a spec must be checkable. `node check.js` covers rendering and
+  nothing else, which is how the DOCX button stayed broken through several sessions:
+  the library failed to load in a browser while every headless check passed.
 
 **2026-10-19**
 
