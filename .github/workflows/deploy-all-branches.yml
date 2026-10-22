@@ -1,5 +1,6 @@
 # Publishes every branch to GitHub Pages in one deploy:
-#   main        -> /
+#   v3          -> /  and  /v3/
+#   main        -> /legacy/
 #   <branch>    -> /<branch>/
 #
 # Branches are discovered at run time, so adding or deleting one needs no edit here.
@@ -41,22 +42,48 @@ jobs:
 
           for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
             branch="${ref#origin/}"
-            [ "$branch" = "HEAD" ] && continue
 
-            if [ "$branch" = "main" ]; then dest="site"; else dest="site/$branch"; fi
-            mkdir -p "$dest"
+            # refs/remotes/origin/HEAD shortens to plain "origin", not "origin/HEAD",
+            # so both spellings have to be skipped or a bogus /origin/ gets published.
+            case "$branch" in HEAD|origin) continue ;; esac
 
-            # git archive writes the tree without a .git directory, so there is
-            # nothing to clean up afterwards.
-            git archive "$ref" | tar -x -C "$dest"
+            # Where each branch lands. v3 is the published portfolio and takes the
+            # root, while also staying at /v3/ so existing links keep working. main
+            # is the earlier compact layout and moves to /legacy/.
+            case "$branch" in
+              v3)   dests="site site/v3" ;;
+              main) dests="site/legacy" ;;
+              *)    dests="site/$branch" ;;
+            esac
 
-            # Repository furniture: useful in the repo, pointless on the site, and
-            # otherwise published once per branch. Delete this line to publish it.
-            rm -rf "$dest/docs" "$dest/themes" "$dest/.claude" "$dest/.github"
-            rm -f  "$dest/AGENTS.md" "$dest/CLAUDE.md" "$dest/_README.md" \
-                   "$dest/README.md" "$dest/check.js" "$dest/.gitignore"
+            for dest in $dests; do
+              # Staged in a temp directory rather than extracted straight into
+              # $dest: for v3 the destination IS site, and pruning at that level
+              # would delete the sibling branch directories already published
+              # beside it. Prune the staging copy, then move it into place.
+              stage="$(mktemp -d)"
+              git archive "$ref" | tar -x -C "$stage"
 
-            echo "published $branch -> ${dest#site}/"
+              # Keep only what the site actually serves. This is a whitelist on
+              # purpose: a blacklist silently published anything newly added to a
+              # branch, which is how specs/ reached the live site. Anything not
+              # named here is repo furniture and does not ship.
+              find "$stage" -mindepth 1 -maxdepth 1 \
+                ! -name 'index.html' \
+                ! -name 'styles.css' \
+                ! -name 'print.css' \
+                ! -name 'data.js' \
+                ! -name 'index.js' \
+                ! -name '.nojekyll' \
+                ! -name 'assets' \
+                -exec rm -rf {} +
+
+              mkdir -p "$dest"
+              cp -R "$stage"/. "$dest"/
+              rm -rf "$stage"
+
+              echo "published $branch -> ${dest#site}/"
+            done
           done
 
           touch site/.nojekyll
