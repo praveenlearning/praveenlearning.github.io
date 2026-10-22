@@ -15,6 +15,8 @@ const profileData = {
 
   // One line under the name in the hero. Stylistic, not a factual claim - edit freely.
   tagline: 'Building data platforms where the next dataset is a matter of configuration, not code.',
+  // The phrase lifted into the counter-accent in the v7 hero. Must appear in `tagline`.
+  taglineAccent: 'configuration, not code',
 
   summary:
     'Senior Data Engineer with 6+ years of experience designing, building and modernising production data ' +
@@ -98,6 +100,58 @@ const profileData = {
       ]
     }
   ],
+
+  /* ---- content for the Multiverse design (v7) ----
+     Every string below traces to resume-projects.md or current_skills.md. */
+
+  // 01 - Variants: three patterns, all genuinely used.
+  patterns: [
+    {
+      id: 'etl',
+      label: 'ETL',
+      headline: 'Conform in flight, then land.',
+      detail: 'Transform on Spark before anything reaches the warehouse, so only conformed, schema-checked data is ever stored. Suits heavy joins and mapping work at scale.',
+      where: ['OHDSI OMOP Standardisation', 'Product Merchandise Data']
+    },
+    {
+      id: 'elt',
+      label: 'ELT',
+      headline: 'Land raw, model in the warehouse.',
+      detail: 'Keep the raw layer partitioned and untouched, then build conformed models over it with dbt. Cheaper to change, fully replayable, easy to audit.',
+      where: ['Data Platform Modernisation']
+    },
+    {
+      id: 'events',
+      label: 'Event-driven',
+      headline: 'No one presses the button.',
+      detail: 'An object landing in S3 starts the run: validation, data quality checks, transformation and load carry through without manual intervention.',
+      where: ['OHDSI OMOP Standardisation']
+    }
+  ],
+
+  // 02 - Reframed from the reference's Delta/Iceberg time travel onto work that exists.
+  replay: {
+    headline: 'Any run can be run again.',
+    detail: 'Not table time travel, but the same property earned a different way: nothing downstream is precious, because everything downstream can be rebuilt.',
+    points: [
+      { k: 'raw kept whole', v: 'Source data lands partitioned and untouched, so every downstream model can be rebuilt from it.' },
+      { k: 'idempotent loads', v: 'Identifier collisions resolve across studies and re-runs produce no duplicate records.' },
+      { k: 'validated before publish', v: 'A candidate schema is rebuilt and checked by automated data quality analysis before anything is promoted.' }
+    ]
+  },
+
+  // 03 - Nexus events: named facts rather than figures.
+  facts: [
+    { v: 'OMOP CDM', l: 'research data standardised into a shared model' },
+    { v: 'L1/L2/L3', l: 'medallion layers in a BigQuery warehouse' },
+    { v: 'Neo4j', l: 'graph models derived from relational structures' },
+    { v: 'S3 + EventBridge', l: 'event-driven orchestration into Glue' }
+  ],
+
+  cta: {
+    headline: 'In this timeline, we work together.',
+    copy: 'Open to senior data engineering roles on data platform teams.'
+  },
 
   // Rendered only when non-empty. Add what you actually hold, e.g.
   // { name: 'AWS Certified AI Practitioner', issuer: 'Amazon Web Services', year: '2025' }

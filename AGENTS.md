@@ -213,13 +213,16 @@ Recorded as they are made, newest first.
 
 **2026-10-22**
 
-- Features are specified in `specs/` before they are built, with `/spec`, `/plan` and
-  `/build` keeping specification, planning and implementation in separate steps. The
-  separation is what stops a conversation sliding from an idea straight into edits
-  with the reasoning left in the transcript rather than the repository.
-- Verification lines in a spec must be checkable. `node check.js` covers rendering and
-  nothing else, which is how the DOCX button stayed broken through several sessions:
-  the library failed to load in a browser while every headless check passed.
+- `v7` implements `themes/theme-6` (Multiverse). Its reference frames everything around
+  Delta Lake and Iceberg table time travel, which appears nowhere in Praveen's stack.
+  The visual language was kept and the subject reframed onto a raw layer kept
+  replayable, idempotent collision-safe loads, and a candidate schema validated before
+  promotion. The reference's metrics section became named facts rather than figures.
+- Every colour in `styles.css` is a token from the first line, including panel
+  backgrounds. v3 shipped hardcoded dark panels that became unreadable when the theme
+  flipped; v7's light theme worked first time because nothing was hardcoded.
+- The headline's accented phrase is named explicitly in `data.js` as `taglineAccent`
+  rather than inferred by the renderer, so the split never has to be guessed.
 
 **2026-10-19**
 

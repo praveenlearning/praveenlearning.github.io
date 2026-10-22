@@ -127,6 +127,7 @@ function renderContact(contact) {
 
 function renderSocialLinks(contact) {
   const target = document.querySelector('.social-links');
+  if (!target) return;  // not present in this layout
   target.textContent = '';
 
   const entries = [];
@@ -146,6 +147,7 @@ function renderSocialLinks(contact) {
 
 function renderHighlights(highlights) {
   const target = document.querySelector('.highlights');
+  if (!target) return;  // not present in this layout
   target.textContent = '';
   (highlights || []).forEach((item) => {
     const li = el('li');
@@ -299,13 +301,171 @@ function renderAtsPreHeader(data) {
   target.appendChild(el('span', 'ats-contact', contactLine(data.contact)));
 }
 
+
+/* ---------- Multiverse components (v7) ---------- */
+
+function svgEl(tag, attrs) {
+  const node = document.createElementNS(SVG_NS, tag);
+  Object.keys(attrs || {}).forEach((k) => node.setAttribute(k, attrs[k]));
+  return node;
+}
+
+/* The portal: nested rings rotating at different speeds, a breathing core, and
+   version labels. Drawn here so it inherits the theme tokens. */
+function renderPortal() {
+  const target = document.querySelector('.hero-portal');
+  if (!target) return;
+  target.textContent = '';
+
+  const svg = svgEl('svg', { viewBox: '0 0 400 400', role: 'img', 'aria-label': 'Nested rings rotating around a core' });
+
+  const defs = svgEl('defs', {});
+  const grad = svgEl('radialGradient', { id: 'mv-core' });
+  grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': '#ffffff' }));
+  grad.appendChild(svgEl('stop', { offset: '0.35', 'stop-color': 'var(--accent)' }));
+  grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': 'var(--accent)', 'stop-opacity': '0' }));
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
+  const dotted = svgEl('circle', {
+    cx: '200', cy: '200', r: '190', fill: 'none', stroke: 'var(--accent)',
+    'stroke-opacity': '0.35', 'stroke-dasharray': '2 10', class: 'ring-dotted'
+  });
+  svg.appendChild(dotted);
+
+  const rings = [
+    { shape: 'rect', attrs: { x: '70', y: '70', width: '260', height: '260', fill: 'none', stroke: 'var(--pink)', 'stroke-width': '2', 'stroke-opacity': '0.8' }, cls: 'ring-a' },
+    { shape: 'rect', attrs: { x: '70', y: '70', width: '260', height: '260', fill: 'none', stroke: 'var(--accent)', 'stroke-width': '2', transform: 'rotate(45 200 200)' }, cls: 'ring-b' },
+    { shape: 'polygon', attrs: { points: '200,90 295,145 295,255 200,310 105,255 105,145', fill: 'none', stroke: 'var(--muted)', 'stroke-width': '1.5' }, cls: 'ring-c' },
+    { shape: 'polygon', attrs: { points: '200,125 265,238 135,238', fill: 'none', stroke: 'var(--pink)', 'stroke-width': '2' }, cls: 'ring-d' }
+  ];
+  rings.forEach((ring) => {
+    const g = svgEl('g', { class: 'ring ' + ring.cls });
+    g.appendChild(svgEl(ring.shape, ring.attrs));
+    svg.appendChild(g);
+  });
+
+  svg.appendChild(svgEl('circle', { cx: '200', cy: '200', r: '70', fill: 'url(#mv-core)', class: 'core' }));
+
+  const labels = [['v0', 200, 20, 'middle'], ['v1', 385, 204, 'end'], ['v2', 200, 392, 'middle'], ['v3', 15, 204, 'start']];
+  const group = svgEl('g', { class: 'ring-labels' });
+  labels.forEach((label) => {
+    const text = svgEl('text', { x: String(label[1]), y: String(label[2]), 'text-anchor': label[3] });
+    text.textContent = label[0];
+    group.appendChild(text);
+  });
+  svg.appendChild(group);
+
+  target.appendChild(svg);
+}
+
+/* 01 - Variants. Chips switch the panel below, the way the ETL/ELT toggle does. */
+function renderPatternPanel(data, id) {
+  const panel = document.querySelector('.pattern-panel');
+  if (!panel) return;
+  const pattern = (data.patterns || []).filter((p) => p.id === id)[0];
+  if (!pattern) return;
+
+  panel.textContent = '';
+  panel.appendChild(el('h3', 'pattern-headline', pattern.headline));
+  panel.appendChild(el('p', 'pattern-detail', pattern.detail));
+
+  const where = el('div', 'pattern-where');
+  where.appendChild(el('span', 'pattern-where-label', 'used on'));
+  const list = el('ul', 'chips');
+  (pattern.where || []).forEach((name) => list.appendChild(el('li', null, name)));
+  where.appendChild(list);
+  panel.appendChild(where);
+
+  document.querySelectorAll('.chip').forEach((chip) => {
+    const on = chip.getAttribute('data-pattern') === id;
+    chip.classList[on ? 'add' : 'remove']('is-on');
+    chip.setAttribute('aria-selected', String(on));
+  });
+}
+
+function renderPatterns(data) {
+  const row = document.querySelector('.chips-row');
+  if (!row || !data.patterns) return;
+  row.textContent = '';
+
+  data.patterns.forEach((pattern) => {
+    const chip = el('button', 'chip', pattern.label);
+    chip.type = 'button';
+    chip.setAttribute('role', 'tab');
+    chip.setAttribute('data-pattern', pattern.id);
+    chip.addEventListener('click', () => renderPatternPanel(data, pattern.id));
+    row.appendChild(chip);
+  });
+
+  renderPatternPanel(data, data.patterns[0].id);
+}
+
+/* 02 - Replay, reframed from the reference's table time travel. */
+function renderReplay(replay) {
+  const target = document.querySelector('.replay-points');
+  if (!target || !replay) return;
+
+  const headline = document.querySelector('.replay-headline');
+  if (headline) headline.textContent = replay.headline;
+  const detail = document.querySelector('.replay-detail');
+  if (detail) detail.textContent = replay.detail;
+
+  target.textContent = '';
+  (replay.points || []).forEach((point, index) => {
+    const row = el('div', 'replay-point');
+    row.appendChild(el('span', 'replay-version', 'v' + index));
+    const body = el('div');
+    body.appendChild(el('p', 'replay-key', point.k));
+    body.appendChild(el('p', 'replay-value', point.v));
+    row.appendChild(body);
+    target.appendChild(row);
+  });
+}
+
+/* 03 - Nexus events: named facts, deliberately not figures. */
+function renderFacts(facts) {
+  const target = document.querySelector('.fact-cards');
+  if (!target) return;
+  target.textContent = '';
+  (facts || []).forEach((fact) => {
+    const card = el('div', 'fact-card');
+    card.appendChild(el('span', 'fact-value', fact.v));
+    card.appendChild(el('span', 'fact-label', fact.l));
+    target.appendChild(card);
+  });
+}
+
+function renderCta(data) {
+  if (!data.cta) return;
+  const headline = document.querySelector('.cta-headline');
+  const copy = document.querySelector('.cta-copy');
+  if (headline) headline.textContent = data.cta.headline;
+  if (copy) copy.textContent = data.cta.copy;
+}
+
 function renderProfile(data) {
   document.querySelector('.profile-name').textContent = data.name;
   document.querySelector('.profile-role').textContent = data.role;
-  document.querySelector('.hero-tagline').textContent = data.tagline || '';
+  // The headline carries one accented phrase, named explicitly in data.js so the
+  // renderer never has to guess where to split it.
+  const taglineNode = document.querySelector('.hero-tagline');
+  if (taglineNode) {
+    taglineNode.textContent = '';
+    const full = data.tagline || '';
+    const phrase = data.taglineAccent;
+    const at = phrase ? full.indexOf(phrase) : -1;
+    if (at === -1) {
+      taglineNode.textContent = full;
+    } else {
+      taglineNode.appendChild(document.createTextNode(full.slice(0, at)));
+      taglineNode.appendChild(el('span', 'accent', phrase));
+      taglineNode.appendChild(document.createTextNode(full.slice(at + phrase.length)));
+    }
+  }
   document.querySelector('.profile-summary').textContent = data.summary;
   document.querySelector('.profile-summary-ats').textContent = atsSummary(data);
-  document.querySelector('.nav-initials').textContent = initials(data.name);
+  document.querySelector('.nav-initials').textContent = data.name;
   document.querySelector('.footer-name').textContent = data.name;
   document.title = data.name + ' | ' + data.role;
 
@@ -317,6 +477,11 @@ function renderProfile(data) {
   renderEducation(data.education);
   renderCertifications(data.certifications);
   renderPersonalProjects(data.personalProjects);
+  renderPortal();
+  renderPatterns(data);
+  renderReplay(data.replay);
+  renderFacts(data.facts);
+  renderCta(data);
   renderAtsPreHeader(data);
 }
 
